@@ -12,6 +12,12 @@ What is mobyle2
 How do i use it
 =================
 
+.. toctree::
+   :maxdepth: 3
+
+   install_mobyle2_prod.rst
+
+
 
 How can i contribute to its development
 =========================================
