@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to Mobyle2’s documentation! &mdash; Mobyle2 - Last updated: Nov 22, 2011</title>
+    <title>Search &mdash; Mobyle2 - Last updated: Nov 22, 2011</title>
     <link rel="stylesheet" href="static/custom.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -21,13 +21,19 @@
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/searchtools.js"></script>
     <link rel="search" type="application/opensearchdescription+xml"
           title="Search within Mobyle2 - Last updated: Nov 22, 2011"
           href="static/opensearch.xml"/>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="Mobyle2 - Last updated: Nov 22, 2011" href="#" />
+    <link rel="top" title="Mobyle2 - Last updated: Nov 22, 2011" href="index.html" />
+  <script type="text/javascript">
+    jQuery(function() { Search.loadIndex("searchindex.js"); });
+  </script>
+  
     <script src="static/jquery.min.js" type="text/javascript"></script>
     <script src="static/jquery.zrssfeed.min.js" type="text/javascript"></script>
+
 
   </head>
   <body>
@@ -37,29 +43,16 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="#">Mobyle2 - Last updated: Nov 22, 2011</a> &raquo;</li> 
+        <li><a href="index.html">Mobyle2 - Last updated: Nov 22, 2011</a> &raquo;</li> 
       </ul>
     </div>
     <div class="document">
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="#">
+            <p class="logo"><a href="index.html">
               <img class="logo" src="static/logo.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" size="18" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-<h3><a href="#">Table Of Contents</a></h3>
+<h3><a href="index.html">Table Of Contents</a></h3>
 
         </div>
       </div>
@@ -83,19 +76,29 @@
     <div class="bodywrapper">
       <div class="body">
         
-  <div class="section" id="welcome-to-mobyle2-s-documentation">
-<h1>Welcome to Mobyle2&#8217;s documentation!<a class="headerlink" href="#welcome-to-mobyle2-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="what-is-mobyle2">
-<h2>What is mobyle2<a class="headerlink" href="#what-is-mobyle2" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="how-do-i-use-it">
-<h2>How do i use it<a class="headerlink" href="#how-do-i-use-it" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="how-can-i-contribute-to-its-development">
-<h2>How can i contribute to its development<a class="headerlink" href="#how-can-i-contribute-to-its-development" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
-
+  <h1 id="search-documentation">Search</h1>
+  <div id="fallback" class="admonition warning">
+  <script type="text/javascript">$('#fallback').hide();</script>
+  <p>
+    Please activate JavaScript to enable the search
+    functionality.
+  </p>
+  </div>
+  <p>
+    From here you can search these documents. Enter your search
+    words into the box below and click "search". Note that the search
+    function will automatically search for all of the words. Pages
+    containing fewer words won't appear in the result list.
+  </p>
+  <form action="" method="get">
+    <input type="text" name="q" value="" />
+    <input type="submit" value="search" />
+    <span id="search-progress" style="padding-left: 10px"></span>
+  </form>
+  
+  <div id="search-results">
+  
+  </div>
 
       </div>
       <div class="clearer"></div>
@@ -107,7 +110,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="#">Mobyle2 - Last updated: Nov 22, 2011</a> &raquo;</li> 
+        <li><a href="index.html">Mobyle2 - Last updated: Nov 22, 2011</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

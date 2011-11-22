@@ -1,0 +1,1 @@
+Search.setIndex({objects:{},terms:{what:0,develop:0,welcom:0,mobyle2:0,minitag:[],how:0,can:0,document:0,contribut:0},objtypes:{},titles:["Welcome to Mobyle2&#8217;s documentation!"],objnames:{},filenames:["index"]})
