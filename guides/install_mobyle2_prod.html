@@ -1,0 +1,339 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Production installation guide &mdash; Mobyle2 - Last updated: Nov 22, 2011</title>
+    
+    <link rel="stylesheet" href="../static/custom.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Last updated: Nov 22, 2011',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Mobyle2 - Last updated: Nov 22, 2011"
+          href="../static/opensearch.xml"/>
+    <link rel="shortcut icon" href="../static/favicon.ico"/>
+    <link rel="top" title="Mobyle2 - Last updated: Nov 22, 2011" href="../index.html" />
+    <link rel="next" title="Development installation guide (in EDIT)" href="install_mobyle2_dev.html" />
+    <link rel="prev" title="Welcome to Mobyle2’s documentation!" href="../index.html" />
+    <script src="static/jquery.min.js" type="text/javascript"></script>
+    <script src="static/jquery.zrssfeed.min.js" type="text/javascript"></script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_mobyle2_dev.html" title="Development installation guide (in EDIT)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to Mobyle2’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Mobyle2 - Last updated: Nov 22, 2011</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="document">
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../static/logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Production installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_mobyle2_dev.html">Development installation guide (in EDIT)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../documente.html">Contribute to the mobyle2 documentation project</a></li>
+</ul>
+
+        </div>
+      </div>
+  <script type="text/javascript">
+  $(document).ready(function () {
+      $('#zrssfeed-mobyle2').rssfeed('https://github.com/mobyle2.atom', {
+          limit: 5
+      });
+  });
+  $(document).ready(function () {
+      $('#zrssfeed-kiorky').rssfeed('https://github.com/kiorky.atom', {
+          limit: 5
+      });
+  }); 
+  </script>
+  <div class="documentwrapper">
+    <div id="zrssfeed">
+      <div id="zrssfeed-mobyle2"></div>
+      <div id="zrssfeed-kiorky"></div>
+    </div>   
+    <div class="bodywrapper">
+      <div class="body">
+        
+  <div class="section" id="production-installation-guide">
+<h1>Production installation guide<a class="headerlink" href="#production-installation-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="create-a-mintiage-user-and-install-mandatory-requirements">
+<h2>Create a mintiage user and install mandatory requirements<a class="headerlink" href="#create-a-mintiage-user-and-install-mandatory-requirements" title="Permalink to this headline">¶</a></h2>
+<p>-:user: root</p>
+<div class="highlight-sh"><div class="highlight"><pre>mkdir -p /opt/minitage
+useradd -d /opt/minitage -m mobyle2
+apt-get install build-essential m4 libtool pkg-config autoconf gettext bzip2 groff man-db automake libsigc++-2.0-dev tcl8.4
+chown -Rf mobyle2 /opt/minitage
+</pre></div>
+</div>
+</div>
+<div class="section" id="minitage-installation">
+<h2>Minitage Installation<a class="headerlink" href="#minitage-installation" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">user:</th><td class="field-body">mobyle2</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">export </span><span class="nv">prefix</span><span class="o">=</span><span class="nv">$HOME</span>/
+<span class="nb">export </span><span class="nv">python</span><span class="o">=</span><span class="nv">$HOME</span>/tools/python
+mkdir -p <span class="nv">$python</span>
+<span class="nb">cd</span> <span class="nv">$python</span>
+wget --no-check-certificate https://github.com/minitage/minitage.shell/raw/master/PyBootstrapper.sh
+bash ./PyBootstrapper.sh <span class="nv">$python</span>
+/opt/minitage/tools/python/bin/virtualenv --no-site-packages --distribute /opt/minitage/
+. /opt/minitage/bin/activate
+easy_install -U minitage.core
+minimerge -s
+</pre></div>
+</div>
+</div>
+<div class="section" id="mobyle2-base-installation">
+<h2>Mobyle2 base Installation<a class="headerlink" href="#mobyle2-base-installation" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">user:</th><td class="field-body">mobyle2</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd</span> /opt/minitage/minilays/
+git clone https://github.com/mobyle2/mobyle2.minilay.git
+ssh-keygen -&gt; enregistrer la clé dans les repos github comme deploy key
+minimerge -av mobyle2-prod
+</pre></div>
+</div>
+<p>When the install crashes, we need to touch the missing production-related settings file which MUST not be commited.
+- :user: mobyle2</p>
+<div class="highlight-sh"><div class="highlight"><pre>touch /opt/minitage/pyramid/mobyle2-prod/etc/sys/settings-prod.cfg
+</pre></div>
+</div>
+</div>
+<div class="section" id="postgresql-postgresql">
+<h2>Postgresql postgresql<a class="headerlink" href="#postgresql-postgresql" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">user:</th><td class="field-body">root</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre>apt-get install postgresql-8.4
+su postgres -c <span class="s2">&quot;createuser mobyle2 -P&quot;</span>
+    Enter password <span class="k">for </span>new role:
+    Enter it again:
+    Shall the new role be a superuser? <span class="o">(</span>y/n<span class="o">)</span> n
+    Shall the new role be allowed to create databases? <span class="o">(</span>y/n<span class="o">)</span> y
+    Shall the new role be allowed to create more new roles? <span class="o">(</span>y/n<span class="o">)</span> n
+su postgres -c <span class="s2">&quot;createdb  -Eutf-8 -O mobyle2 mobyle2&quot;</span>
+</pre></div>
+</div>
+<p>Please note the postgresql password for future reference.</p>
+<p>Change by overriding the default buildout configuration files into etc/sys/settings-prod.cfg</p>
+<div class="highlight-ini"><pre>[users]
+pyramid=mobyle2
+
+[passwords]
+admin=XXXXXX
+
+[db] # parametres postgresql
+user = mobyle2
+password =  ************
+host = localhost
+port = 5432
+name = mobyle2
+
+[hosts]
+instance=0.0.0.0
+instance1=0.0.0.0
+instance2=0.0.0.0
+instance3=0.0.0.0
+instance4=0.0.0.0
+# l'HOST exterieur d'ou est accessible velruse
+velruse=mobyle2.somewhere.fr
+[ports]
+instance=9090
+instance1=9091
+instance2=9092
+instance3=9093
+instance4=9094
+# le port
+velruse=8080</pre>
+</div>
+<p>Please note that it is important to define here:</p>
+<blockquote>
+<div><ul class="simple">
+<li>The database access</li>
+<li>The filesystem user</li>
+<li>The passwords</li>
+</ul>
+</div></blockquote>
+<p>It is also important to configure the &#8216;Velruse&#8217; address. It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).</p>
+</div>
+<div class="section" id="logrotate-init-script-installation">
+<h2>logrotate &amp; init script installation<a class="headerlink" href="#logrotate-init-script-installation" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">user:</th><td class="field-body">root</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre>ln -s /opt/minitage/pyramid/mobyle2-prod/etc/init.d/supervisor.initd /etc/init.d/supervisor.mobyle2
+ln -s /opt/minitage/pyramid/mobyle2-prod/etc/logrotate.conf /etc/logrotate.d/mobyle2
+update-rc.d -f supervisor.mobyle2 defaults 99
+</pre></div>
+</div>
+</div>
+<div class="section" id="launch-the-application-in-foreground">
+<h2>Launch the application in foreground<a class="headerlink" href="#launch-the-application-in-foreground" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">user:</th><td class="field-body">mobyle2</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd</span> /opt/minitage/pyramid/mobyle2-prod
+. sys/share/minitage/minitage.env
+./bin/gunicorn_paster etc/wsgi/instance1.ini
+</pre></div>
+</div>
+</div>
+<div class="section" id="launch-the-application-via-the-supervisor-daemon">
+<h2>Launch the application via the supervisor daemon<a class="headerlink" href="#launch-the-application-via-the-supervisor-daemon" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">user:</th><td class="field-body">root</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre>/etc/init.d/supervisor.mobyle2 restart
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-the-supervisor-wrapper">
+<h2>Use the supervisor wrapper<a class="headerlink" href="#use-the-supervisor-wrapper" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">user:</th><td class="field-body">mobyle2</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd</span> /opt/minitage/pyramid/mobyle2-prod
+. sys/share/minitage/minitage.env
+./bin/supervisorctl --help
+EX: ./bin/supervisorctl restart instance1
+</pre></div>
+</div>
+<p>URLS:</p>
+<div class="highlight-python"><pre>http://localhost:9090 : Supervisor
+http://localhost:9091 : application</pre>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="clearer"></div>
+    </div> 
+  </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_mobyle2_dev.html" title="Development installation guide (in EDIT)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to Mobyle2’s documentation!"
+             >previous</a> |</li>
+        <li><a href="../index.html">Mobyle2 - Last updated: Nov 22, 2011</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Mathieu Le Marec - Pasquet.
+      Last updated on Nov 22, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

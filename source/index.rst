@@ -9,18 +9,25 @@ What is mobyle2
 =================
 
 
-How do i use it
-=================
+Installation guides
+=====================
 
 .. toctree::
-   :maxdepth: 3
-
-   install_mobyle2_prod.rst
+   :maxdepth: 1
 
 
+   guides/install_mobyle2_prod
+   guides/install_mobyle2_dev
 
-How can i contribute to its development
-=========================================
+How can i contribute to this documentation
+==================================================
+
+.. toctree::
+    :maxdepth: 1
+
+    documente.rst
+
+
 
 
 .. Indices and tables

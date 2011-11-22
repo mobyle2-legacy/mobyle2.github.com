@@ -1,6 +1,4 @@
 
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -9,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &mdash; Mobyle2 - Last updated: Nov 22, 2011</title>
+    <title>Contribute to the mobyle2 documentation project &mdash; Mobyle2 - Last updated: Nov 22, 2011</title>
     
     <link rel="stylesheet" href="static/custom.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
@@ -31,6 +29,7 @@
           href="static/opensearch.xml"/>
     <link rel="shortcut icon" href="static/favicon.ico"/>
     <link rel="top" title="Mobyle2 - Last updated: Nov 22, 2011" href="index.html" />
+    <link rel="prev" title="Development installation guide (in EDIT)" href="guides/install_mobyle2_dev.html" />
     <script src="static/jquery.min.js" type="text/javascript"></script>
     <script src="static/jquery.zrssfeed.min.js" type="text/javascript"></script>
 
@@ -40,8 +39,11 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
+          <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="guides/install_mobyle2_dev.html" title="Development installation guide (in EDIT)"
+             accesskey="P">previous</a> |</li>
         <li><a href="index.html">Mobyle2 - Last updated: Nov 22, 2011</a> &raquo;</li> 
       </ul>
     </div>
@@ -69,8 +71,8 @@
 <li class="toctree-l1"><a class="reference internal" href="guides/install_mobyle2_prod.html">Production installation guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/install_mobyle2_dev.html">Development installation guide (in EDIT)</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="documente.html">Contribute to the mobyle2 documentation project</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Contribute to the mobyle2 documentation project</a></li>
 </ul>
 
         </div>
@@ -95,11 +97,39 @@
     <div class="bodywrapper">
       <div class="body">
         
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
+  <div class="section" id="contribute-to-the-mobyle2-documentation-project">
+<h1>Contribute to the mobyle2 documentation project<a class="headerlink" href="#contribute-to-the-mobyle2-documentation-project" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install-the-documentation-project">
+<h2>Install the documentation project<a class="headerlink" href="#install-the-documentation-project" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh"><div class="highlight"><pre>git clone https://github.com/mobyle2/mobyle2.github.com.git
+<span class="nb">cd </span>mobyle2.github.com/source
+python bootstrap.py -d
+bin/buildout
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-sphinx-luke">
+<h2>Use sphinx, luke<a class="headerlink" href="#use-sphinx-luke" title="Permalink to this headline">¶</a></h2>
+<p>This documentation use sphinx and publish the result using <a class="reference external" href="http://pypi.python.org/pypi/sphinxtogithub">sphinxtogithub</a> extension to github pages.
+You well need to edit files in source</p>
+<p>Eg:</p>
+<div class="highlight-sh"><div class="highlight"><pre>vim <span class="nb">source</span>/index.rst
+</pre></div>
+</div>
+<p>Then you ll have to regenerate the documentation</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd source</span> <span class="o">&amp;&amp;</span> make html
+</pre></div>
+</div>
+<p>When you have finished:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Verify your build by visiting ./index.html with a regular browser</li>
+<li>Commit ALL the changes you made and what has been regenerated</li>
+<li>Push them to github</li>
+<li>When you received the email notifying the pages regeneration, look the <a class="reference external" href="http://mobyle2.github.com/">website</a>.</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 
 
@@ -111,8 +141,11 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
+          <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="guides/install_mobyle2_dev.html" title="Development installation guide (in EDIT)"
+             >previous</a> |</li>
         <li><a href="index.html">Mobyle2 - Last updated: Nov 22, 2011</a> &raquo;</li> 
       </ul>
     </div>
