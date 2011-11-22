@@ -1,5 +1,10 @@
-Development installation guide (in EDIT)
+Developer guide (not done at 100% yet)
 ===========================================
+
+
+Install your mobyle2 instnace
+++++++++++++++++++++++++++++++++++
+
 
 Create a mintiage user and install mandatory requirements
 --------------------------------------------------------------
@@ -48,21 +53,55 @@ When the install crashes, we need to touch the missing production-related settin
 
     touch $prefix/pyramid/mobyle2/etc/sys/settings-prod.cfg
 
+The project shell profile
+------------------------------
+Minitage provide a shell sourcable file that helps you to use the constructed minitage environment.
+It will update common unix environment variables to grab all your project dependencies along your current shell.
+For exemple, it will put all related binaries inside your current ``$PATH`` variable.
 
-Postgresql postgresql
------------------------------------------------------------------
-- :user: root
+You can generate one by issuing the following command:
 
 .. code-block:: sh
 
-    apt-get install postgresql-8.4
-    su postgres -c "createuser mobyle2 -P"
-        Enter password for new role:
-        Enter it again:
-        Shall the new role be a superuser? (y/n) n
-        Shall the new role be allowed to create databases? (y/n) y
-        Shall the new role be allowed to create more new roles? (y/n) n
-    su postgres -c "createdb  -Eutf-8 -O mobyle2 mobyle2"
+    miniemrge -NE mobyle2
+
+Think to regenerate it each once you touch to the project minibuilds.
+
+Now, to use it in your current shell, please source it:
+
+.. code-block:: sh
+
+    . $prefix/pyramid/mobyle2/sys/share/minitage/minitage.env
+
+***PLEASE Always activate the environment shell before doing anything to the project.***
+
+Postgresql installation
+-----------------------------------------------------------------
+
+You can install an instance of a postgresql server inside a subdirectory of your minitage based project.
+This is prettry easy:
+
+.. code-block:: sh
+
+    $MT/bin/paster create -t minitage.instances.postgresql mobyle2 project_dependencies='' project_eggs='' inside_minitage=y db_name=mobyle2 db_port=5438 db_password=secret db_user=mobyle2 db_host=localhost
+
+You can start the server with:
+
+.. code-block:: sh
+
+        $prefix/sys/etc/init.d/mobyle2_postgresql.mobyle2 restart
+
+Will install a database named ``mobyle2`` listening on the port ``5438`` and which lives under ``$prefix/pyramid/mobyle2/sys/``.
+
+B./sys/etc/init.d/mobyle2_postgresql.mobyle2y default the superuser is named as ``your current loggued user`` and the database owner is ``mobyle2``.
+
+Some wrappers have been generated, please look inside ``sys/bin``.
+They are very useful as they make a lot of assumptions like setting automaticly the host & port to connect to (our database).
+EG
+
+.. code-block:: sh
+
+        mobyle2.psql
 
 Please note the postgresql password for future reference.
 
@@ -71,10 +110,7 @@ How to override some settings locally to your instance:
 
 It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).
 
-Make a local config in the project directory file like
-
-
-$prefix/pyramid/mobyle2/myconfig.cfg
+Make a local config in the project directory file like ``$prefix/pyramid/mobyle2/myconfig.cfg``.
 
 .. code-block:: sh
 
@@ -113,6 +149,30 @@ Launch the application in foreground
     cd $prefix/pyramid/mobyle2
     . sys/share/minitage/minitage.env
     ./p.sh
+
+Update your mobyle2 instance
++++++++++++++++++++++++++++++
+
+This is a minimum 2 steps thing
+
+- You need first to update your project:
+
+.. code-block:: sh
+
+    cd $prefix/pyramid/mobyle2
+    git pull
+
+
+Then you can update python packages or sources grabbed on various repositories for your project
+
+.. code-block:: sh
+
+    ./bin/develop up -v
+
+On any suspicious output, just update the code by hand of the relative modules inside ``src.mrdeveloper/``.
+
+
+
 
 
 Some nots:
