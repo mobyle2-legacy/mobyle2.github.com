@@ -67,7 +67,7 @@ release = version
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', 'lib', 'bin', 'include', 'src']
+exclude_patterns = ['_build', 'lib', 'bin', 'include', 'src', 'eggs']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -184,8 +184,8 @@ htmlhelp_basename = 'mobyle2-github-doc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 
-   'mobyle2-github.tex', 
+  ('index',
+   'mobyle2-github.tex',
    u'Mobyle2 github Documentation',
    u'kiorky', 'manual'),
 ]
