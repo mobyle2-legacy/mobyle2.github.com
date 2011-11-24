@@ -102,6 +102,21 @@ EG
 
 Please note the postgresql password for future reference.
 
+
+Openldap installation (not mandatory)
+-----------------------------------------
+.. code-block:: sh
+
+    $MT/bin/easy_install -U minitage.paste.extras
+    $MT/bin/paster create -t minitage.instances.openldap mobyle2 db_suffix=net db_orga=mobyle2 ssl_port=6636  db_port=3389 db_user=$(whoami) db_password=secret  --no-interactive
+
+Init script to start the server::
+
+    ./sys/etc/init.d/openldap_mobyle2_mobyle2.net 
+    
+You have preconfigured wrappers to any ldap tools inside ``sys/bin`` as usual.                                 
+
+
 How to override some settings locally to your instance:
 --------------------------------------------------------
 

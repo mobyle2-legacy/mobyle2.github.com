@@ -135,8 +135,8 @@ version src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/
 <div class="section" id="creer-un-alias-du-manage-du-repository">
 <h2>Créer un alias du manage du repository<a class="headerlink" href="#creer-un-alias-du-manage-du-repository" title="Permalink to this headline">¶</a></h2>
 <p>créer un alias avec le rép de versions et l&#8217;uri de la db</p>
-<div class="highlight-sh"><div class="highlight"><pre>bin/migrate manage manage.py --repository-src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/ <span class="se">\</span>
---url-postgresql+psycopg2://mobyle2:secret@localhost:5438/mobyle2
+<div class="highlight-sh"><div class="highlight"><pre>bin/migrate manage manage.py --repository<span class="o">=</span><span class="s2">&quot;$INS/src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/&quot;</span> <span class="se">\</span>
+--url<span class="o">=</span><span class="s2">&quot;postgresql+psycopg2://mobyle2:secret@localhost:5438/mobyle2&quot;</span>
 </pre></div>
 </div>
 <p>ce qui nous permet dorénavant de taper</p>

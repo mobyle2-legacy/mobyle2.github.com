@@ -194,6 +194,17 @@ EG</p>
 </div>
 <p>Please note the postgresql password for future reference.</p>
 </div>
+<div class="section" id="openldap-installation-not-mandatory">
+<h2>Openldap installation (not mandatory)<a class="headerlink" href="#openldap-installation-not-mandatory" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$MT</span>/bin/easy_install -U minitage.paste.extras
+<span class="nv">$MT</span>/bin/paster create -t minitage.instances.openldap mobyle2 <span class="nv">db_suffix</span><span class="o">=</span>net <span class="nv">db_orga</span><span class="o">=</span>mobyle2 <span class="nv">ssl_port</span><span class="o">=</span>6636  <span class="nv">db_port</span><span class="o">=</span>3389 <span class="nv">db_user</span><span class="o">=</span><span class="k">$(</span>whoami<span class="k">)</span> <span class="nv">db_password</span><span class="o">=</span>secret  --no-interactive
+</pre></div>
+</div>
+<p>Init script to start the server:</p>
+<div class="highlight-python"><pre>./sys/etc/init.d/openldap_mobyle2_mobyle2.net</pre>
+</div>
+<p>You have preconfigured wrappers to any ldap tools inside <tt class="docutils literal"><span class="pre">sys/bin</span></tt> as usual.</p>
+</div>
 <div class="section" id="how-to-override-some-settings-locally-to-your-instance">
 <h2>How to override some settings locally to your instance:<a class="headerlink" href="#how-to-override-some-settings-locally-to-your-instance" title="Permalink to this headline">¶</a></h2>
 <p>It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).</p>
