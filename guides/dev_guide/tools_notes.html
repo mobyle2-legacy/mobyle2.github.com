@@ -1,0 +1,204 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Utiliser le pshell &mdash; Mobyle2 - Last updated: Nov 24, 2011</title>
+    
+    <link rel="stylesheet" href="../../static/custom.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'Last updated: Nov 24, 2011',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Mobyle2 - Last updated: Nov 24, 2011"
+          href="../../static/opensearch.xml"/>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="Mobyle2 - Last updated: Nov 24, 2011" href="../../index.html" />
+    <link rel="up" title="Developer guide (not done at 100% yet)" href="index.html" />
+    <link rel="next" title="Contribute to the mobyle2 documentation project" href="../../documente.html" />
+    <link rel="prev" title="Install your mobyle2 instnace" href="install_mobyle2_dev.html" />
+    <script src="static/jquery.min.js" type="text/javascript"></script>
+    <script src="static/jquery.zrssfeed.min.js" type="text/javascript"></script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../documente.html" title="Contribute to the mobyle2 documentation project"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install_mobyle2_dev.html" title="Install your mobyle2 instnace"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 24, 2011</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Developer guide (not done at 100% yet)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="document">
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../static/logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install_mobyle2_prod.html">Production installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Developer guide (not done at 100% yet)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../documente.html">Contribute to the mobyle2 documentation project</a></li>
+</ul>
+
+        </div>
+      </div>
+  <script type="text/javascript">
+  $(document).ready(function () {
+      $('#zrssfeed-mobyle2').rssfeed('https://github.com/mobyle2.atom', {
+          limit: 5
+      });
+  });
+  $(document).ready(function () {
+      $('#zrssfeed-kiorky').rssfeed('https://github.com/kiorky.atom', {
+          limit: 5
+      });
+  }); 
+  </script>
+  <div class="documentwrapper">
+    <div id="zrssfeed">
+      <div id="zrssfeed-mobyle2"></div>
+      <div id="zrssfeed-kiorky"></div>
+    </div>   
+    <div class="bodywrapper">
+      <div class="body">
+        
+  <div class="section" id="utiliser-le-pshell">
+<h1>Utiliser le pshell<a class="headerlink" href="#utiliser-le-pshell" title="Permalink to this headline">¶</a></h1>
+<p>lancer le pshell pyramid sous minitage</p>
+<div class="highlight-sh"><div class="highlight"><pre>bin/paster --plugin-pyramid  pshell etc/wsgi/instance.ini#projectapp
+</pre></div>
+</div>
+</div>
+<div class="section" id="sqlalchemy-migrations">
+<h1>sqlalchemy-migrations<a class="headerlink" href="#sqlalchemy-migrations" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://readthedocs.org/docs/sqlalchemy-migrate/en/v0.7.2/versioning.html#project-setup">http://readthedocs.org/docs/sqlalchemy-migrate/en/v0.7.2/versioning.html#project-setup</a></p>
+<div class="section" id="creer-le-rep-de-version-des-db">
+<h2>Créer le rep de version des db<a class="headerlink" href="#creer-le-rep-de-version-des-db" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh"><div class="highlight"><pre>bin/migrate create src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations <span class="s2">&quot;mobyle2 project&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mettre-la-db-sous-version">
+<h2>Mettre la db sous version<a class="headerlink" href="#mettre-la-db-sous-version" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh"><div class="highlight"><pre>bin/pyramidpy src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/manage.py version_control <span class="se">\</span>
+postgresql+psycopg2://mobyle2:secret@localhost:5438/mobyle2 <span class="se">\</span>
+src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/
+</pre></div>
+</div>
+<p>exemple  récuperer le numéro de version</p>
+<div class="highlight-sh"><div class="highlight"><pre>bin/pyramidpy src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/manage.py <span class="se">\</span>
+version src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/
+</pre></div>
+</div>
+</div>
+<div class="section" id="creer-un-alias-du-manage-du-repository">
+<h2>Créer un alias du manage du repository<a class="headerlink" href="#creer-un-alias-du-manage-du-repository" title="Permalink to this headline">¶</a></h2>
+<p>créer un alias avec le rép de versions et l&#8217;uri de la db</p>
+<div class="highlight-sh"><div class="highlight"><pre>bin/migrate manage manage.py --repository-src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/ <span class="se">\</span>
+--url-postgresql+psycopg2://mobyle2:secret@localhost:5438/mobyle2
+</pre></div>
+</div>
+<p>ce qui nous permet dorénavant de taper</p>
+<div class="highlight-sh"><div class="highlight"><pre>bin/pyramidpy manage.py db_version
+</pre></div>
+</div>
+</div>
+<div class="section" id="creer-un-script-de-migration">
+<h2>Créer un script de migration<a class="headerlink" href="#creer-un-script-de-migration" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh"><div class="highlight"><pre>bin/pyramidpy manage.py script <span class="s1">&#39;remove_project-and_add_workspace&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="migrer">
+<h2>Migrer<a class="headerlink" href="#migrer" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh"><div class="highlight"><pre>bin/pyramidpy manage.py upgrade
+0 -&gt; 1...
+<span class="k">done</span>
+
+bin/pyramidpy manage.py db_version
+1
+</pre></div>
+</div>
+</div>
+<div class="section" id="downgrader">
+<h2>Downgrader<a class="headerlink" href="#downgrader" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh"><div class="highlight"><pre>bin/pyramidpy manage.py downgrade --version 0
+1 -&gt; 0...
+<span class="k">done</span>
+
+bin/pyramidpy manage.py db_version
+0
+</pre></div>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="clearer"></div>
+    </div> 
+  </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../documente.html" title="Contribute to the mobyle2 documentation project"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install_mobyle2_dev.html" title="Install your mobyle2 instnace"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 24, 2011</a> &raquo;</li>
+          <li><a href="index.html" >Developer guide (not done at 100% yet)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Mathieu Le Marec - Pasquet.
+      Last updated on Nov 24, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
