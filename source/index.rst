@@ -17,7 +17,7 @@ Installation guides
 
 
    guides/install_mobyle2_prod
-   guides/install_mobyle2_dev
+   guides/dev_guide/index.rst
 
 How can i contribute to this documentation
 ==================================================

@@ -1,6 +1,3 @@
-Developer guide (not done at 100% yet)
-===========================================
-
 
 Install your mobyle2 instnace
 ++++++++++++++++++++++++++++++++++
