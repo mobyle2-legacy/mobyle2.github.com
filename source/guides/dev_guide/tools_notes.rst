@@ -44,8 +44,8 @@ créer un alias avec le rép de versions et l'uri de la db
 
 .. code-block:: sh
     
-    bin/migrate manage manage.py --repository-src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/ \
-    --url-postgresql+psycopg2://mobyle2:secret@localhost:5438/mobyle2
+    bin/migrate manage manage.py --repository="$INS/src.mrdeveloper/mobyle2.core/src/mobyle2/core/schemas_migrations/" \
+    --url="postgresql+psycopg2://mobyle2:secret@localhost:5438/mobyle2"
 
 ce qui nous permet dorénavant de taper 
 
