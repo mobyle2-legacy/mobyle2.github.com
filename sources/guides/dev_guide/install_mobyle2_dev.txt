@@ -1,5 +1,5 @@
 
-Install your mobyle2 instnace
+Install your mobyle2 instance
 ++++++++++++++++++++++++++++++++++
 
 
@@ -43,12 +43,6 @@ Mobyle2 base Installation
         ssh-keygen -> enregistrer la clé dans les repos github comme deploy key
         minimerge -av mobyle2
 
-When the install crashes, we need to touch the missing production-related settings file which MUST not be commited.
-- :user: mobyle2
-
-.. code-block:: sh
-
-    touch $prefix/pyramid/mobyle2/etc/sys/settings-prod.cfg
 
 The project shell profile
 ------------------------------
@@ -108,48 +102,74 @@ Openldap installation (not mandatory)
 .. code-block:: sh
 
     $MT/bin/easy_install -U minitage.paste.extras
-    $MT/bin/paster create -t minitage.instances.openldap mobyle2 db_suffix=net db_orga=mobyle2 ssl_port=6636  db_port=3389 db_user=$(whoami) db_password=secret  --no-interactive
+    $MT/bin/paster create -t minitage.instances.openldap mobyle2 db_suffix=net db_orga=mobyle2 ssl_port=6636  db_port=3389 db_user=$(whoami) db_password=secret db_host=127.0.0.1  --no-interactive
+
+Mettre ::
+
+    dn: dc=mobyle2,dc=net
+    objectClass: dcObject
+    objectClass: organization
+    dc: mobyle2
+    o: Example Corporation
+    description: The Example Corporation
+
+    dn: dc=people,dc=mobyle2,dc=net
+    objectClass: dcObject
+    objectClass: organization
+    dc: people
+    o: Example Corporation
+    description: The Example Corporation
+
+    dn: dc=people,dc=mobyle2,dc=net
+    objectClass: dcObject
+    objectClass: organization
+    dc: people
+    o: Example Corporation
+    description:: VGhlIEV4YW1wbGUgQ29ycG9yYXRpb24g
+    structuralObjectClass: organization
+    creatorsName: cn=kiorky,dc=mobyle2,dc=net
+    modifiersName: cn=kiorky,dc=mobyle2,dc=net
+
+    dn: cn=toto,dc=people,dc=mobyle2,dc=net
+    gidNumber: 2
+    objectClass: posixAccount
+    objectClass: top
+    objectClass: inetOrgPerson
+    objectClass: organizationalPerson
+    objectClass: person
+    uidNumber: 1
+    uid: 1
+    homeDirectory: /where
+    sn: toto
+    cn: toto
+    structuralObjectClass: inetOrgPerson
+    creatorsName: cn=kiorky,dc=mobyle2,dc=net
+    createTimestamp: 20111124184725Z
+    mail: toto@foo.com
+    userPassword:: e1NTSEF9MmI1THl6UEI0NTFvTW5SdkMzV1Q4QmJUYlNJL3hwWm9iWDg1TEE9PQ==
+    modifiersName: cn=kiorky,dc=mobyle2,dc=net
+
+Dans un fichier base.ldif
+
+puis
+
+.. code-block:: sh
+
+    ./sys/bin/mobyle2.net.slapadd  -l base.ldif
 
 Init script to start the server::
 
-    ./sys/etc/init.d/openldap_mobyle2_mobyle2.net 
-    
-You have preconfigured wrappers to any ldap tools inside ``sys/bin`` as usual.                                 
+    ./sys/etc/init.d/openldap_mobyle2_mobyle2.net
+
+You have preconfigured wrappers to any ldap tools inside ``sys/bin`` as usual.
+
+On peut ensuite se connecter au serveur ldap pour nos tests.
 
 
 How to override some settings locally to your instance:
 --------------------------------------------------------
+Please refer to the :ref:`override settings` section.
 
-It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).
-
-Make a local config in the project directory file like ``$prefix/pyramid/mobyle2/myconfig.cfg``.
-
-.. code-block:: sh
-
-    touch myconfig.cfg
-
-Input any changes you want after extending the dev buildout configuration:
-EG:
-
-.. code-block:: ini
-
-
-    [buildout]
-    extends=minitage.buildout-dev.cfg
-    [db]
-    port=5439
-
-
-
-logrotate & init script installation
------------------------------------------------------------------
-- :user: root
-
-.. code-block:: sh
-
-    ln -s $prefix/pyramid/mobyle2/etc/init.d/supervisor.initd /etc/init.d/supervisor.mobyle2
-    ln -s $prefix/pyramid/mobyle2/etc/logrotate.conf /etc/logrotate.d/mobyle2
-    update-rc.d -f supervisor.mobyle2 defaults 99
 
 Launch the application in foreground
 -----------------------------------------------------------------
@@ -184,10 +204,7 @@ Then you can update python packages or sources grabbed on various repositories f
 On any suspicious output, just update the code by hand of the relative modules inside ``src.mrdeveloper/``.
 
 
-
-
-
-Some nots:
+Some notes:
 --------------
 
 - It is also important to know that velruse runs inside the webserver but as a separate component.
@@ -196,5 +213,11 @@ Some nots:
 URLS::
 
     http://localhost:9091 : application
+
+
+Configure your instance
+++++++++++++++++++++++++++
+
+Please read: :ref:`instance configuration` section.
 
 .. vim:set ft=rest sts=4 ts=4 et:

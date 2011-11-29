@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Developer guide (not done at 100% yet) &mdash; Mobyle2 - Last updated: Nov 29, 2011</title>
+    <title>Configuration guide &mdash; Mobyle2 - Last updated: Nov 29, 2011</title>
     
     <link rel="stylesheet" href="../../static/custom.css" type="text/css" />
     <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
@@ -29,8 +29,8 @@
           href="../../static/opensearch.xml"/>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
     <link rel="top" title="Mobyle2 - Last updated: Nov 29, 2011" href="../../index.html" />
-    <link rel="next" title="Install your mobyle2 instance" href="install_mobyle2_dev.html" />
-    <link rel="prev" title="Production installation guide" href="../install_mobyle2_prod.html" />
+    <link rel="next" title="Development mode" href="dev.html" />
+    <link rel="prev" title="Utiliser le pshell" href="../dev_guide/tools_notes.html" />
     <script src="static/jquery.min.js" type="text/javascript"></script>
     <script src="static/jquery.zrssfeed.min.js" type="text/javascript"></script>
 
@@ -43,10 +43,10 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="install_mobyle2_dev.html" title="Install your mobyle2 instance"
+          <a href="dev.html" title="Development mode"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../install_mobyle2_prod.html" title="Production installation guide"
+          <a href="../dev_guide/tools_notes.html" title="Utiliser le pshell"
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
       </ul>
@@ -73,8 +73,8 @@
 <h3><a href="../../index.html">Table Of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install_mobyle2_prod.html">Production installation guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Developer guide (not done at 100% yet)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_guide/index.html">Developer guide (not done at 100% yet)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Configuration guide</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../documente.html">Contribute to the mobyle2 documentation project</a></li>
@@ -102,16 +102,90 @@
     <div class="bodywrapper">
       <div class="body">
         
-  <div class="section" id="developer-guide-not-done-at-100-yet">
-<h1>Developer guide (not done at 100% yet)<a class="headerlink" href="#developer-guide-not-done-at-100-yet" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="configuration-guide">
+<h1>Configuration guide<a class="headerlink" href="#configuration-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="configuration">
+<span id="instance-configuration"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The ost important configuration file is <tt class="docutils literal"><span class="pre">etc/sys/settings.cfg</span></tt>.</p>
+<p>Some of the settings you can find there:</p>
+<div class="highlight-ini"><pre>[users]
+pyramid=mobyle2
+
+[passwords]
+admin=XXXXXX
+
+[db] # parametres postgresql
+user = mobyle2
+password =  ************
+host = localhost
+port = 5432
+name = mobyle2
+
+[hosts]
+instance=0.0.0.0
+instance1=0.0.0.0
+instance2=0.0.0.0
+instance3=0.0.0.0
+instance4=0.0.0.0
+# l'HOST exterieur d'ou est accessible velruse
+velruse=mobyle2.somewhere.fr
+[ports]
+instance=9090
+instance1=9091
+instance2=9092
+instance3=9093
+instance4=9094
+# le port
+velruse=8080</pre>
+</div>
+<p>Please note that it is important to define or verify the configuration settings of:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">The database access</p>
+<blockquote>
+<div><p><strong>[db]</strong> section of the buildout settings file</p>
+</div></blockquote>
+</li>
+<li><p class="first">The filesystem user <strong>in production mode only</strong></p>
+<blockquote>
+<div><p><strong>users:mobyle2</strong> option of the buildout settings file</p>
+</div></blockquote>
+</li>
+<li><p class="first">The passwords</p>
+<p>Some options are security sensitives:</p>
+<blockquote>
+<div><p><strong>db:password</strong> option of the buildout settings file</p>
+</div></blockquote>
+</li>
+<li><p class="first">The SMTP paramaters</p>
+<blockquote>
+<div><p><strong>[mail]</strong> section of the buildout settings file</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>It is also important to configure the &#8216;Velruse&#8217; address. It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).</p>
+<p>Relevant configuration settings:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>hosts:velruse</strong>: host of the webserver hosting velruse</li>
+<li><strong>ports:velruse</strong>: port of the webserver hosting velruse</li>
+<li><strong>instance;velruseapp</strong> : the subpath part of the url to velruse (in <a class="reference external" href="http://foo/velruse">http://foo/velruse</a>, its velruse)</li>
+</ul>
+</div></blockquote>
+<p>To set those settings, use the followings sections depending if you are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>in <a class="reference internal" href="dev.html#override-settings"><em>development mode</em></a></li>
+<li>in <a class="reference internal" href="prod.html#prod-conf"><em>production mode</em></a></li>
+</ul>
+</div></blockquote>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="install_mobyle2_dev.html">Install your mobyle2 instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install_mobyle2_dev.html#update-your-mobyle2-instance">Update your mobyle2 instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install_mobyle2_dev.html#configure-your-instance">Configure your instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools_notes.html">Utiliser le pshell</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools_notes.html#sqlalchemy-migrations">sqlalchemy-migrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prod.html">Production mode</a></li>
 </ul>
+</div>
 </div>
 </div>
 
@@ -127,10 +201,10 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="install_mobyle2_dev.html" title="Install your mobyle2 instance"
+          <a href="dev.html" title="Development mode"
              >next</a> |</li>
         <li class="right" >
-          <a href="../install_mobyle2_prod.html" title="Production installation guide"
+          <a href="../dev_guide/tools_notes.html" title="Utiliser le pshell"
              >previous</a> |</li>
         <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
       </ul>

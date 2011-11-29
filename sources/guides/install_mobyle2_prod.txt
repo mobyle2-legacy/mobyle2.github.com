@@ -66,48 +66,11 @@ Postgresql postgresql
 
 Please note the postgresql password for future reference.
 
-Change by overriding the default buildout configuration files into etc/sys/settings-prod.cfg
+Configuration
+----------------
+Make your changes inside ``etc/sys/settings-prod.cfg``.
+Please refer to the :ref:`prod conf` section of this manual.
 
-.. code-block:: ini
-
-        [users]
-        pyramid=mobyle2
-
-        [passwords]
-        admin=XXXXXX
-
-        [db] # parametres postgresql
-        user = mobyle2
-        password =  ************
-        host = localhost
-        port = 5432
-        name = mobyle2
-
-        [hosts]
-        instance=0.0.0.0
-        instance1=0.0.0.0
-        instance2=0.0.0.0
-        instance3=0.0.0.0
-        instance4=0.0.0.0
-        # l'HOST exterieur d'ou est accessible velruse
-        velruse=mobyle2.somewhere.fr
-        [ports]
-        instance=9090
-        instance1=9091
-        instance2=9092
-        instance3=9093
-        instance4=9094
-        # le port
-        velruse=8080
-
-
-Please note that it is important to define here:
-
-    - The database access
-    - The filesystem user
-    - The passwords
-
-It is also important to configure the 'Velruse' address. It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).
 
 logrotate & init script installation
 -----------------------------------------------------------------

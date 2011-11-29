@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Developer guide (not done at 100% yet) &mdash; Mobyle2 - Last updated: Nov 29, 2011</title>
+    <title>Development mode &mdash; Mobyle2 - Last updated: Nov 29, 2011</title>
     
     <link rel="stylesheet" href="../../static/custom.css" type="text/css" />
     <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
@@ -29,8 +29,9 @@
           href="../../static/opensearch.xml"/>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
     <link rel="top" title="Mobyle2 - Last updated: Nov 29, 2011" href="../../index.html" />
-    <link rel="next" title="Install your mobyle2 instance" href="install_mobyle2_dev.html" />
-    <link rel="prev" title="Production installation guide" href="../install_mobyle2_prod.html" />
+    <link rel="up" title="Configuration guide" href="index.html" />
+    <link rel="next" title="Production mode" href="prod.html" />
+    <link rel="prev" title="Configuration guide" href="index.html" />
     <script src="static/jquery.min.js" type="text/javascript"></script>
     <script src="static/jquery.zrssfeed.min.js" type="text/javascript"></script>
 
@@ -43,12 +44,13 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="install_mobyle2_dev.html" title="Install your mobyle2 instance"
+          <a href="prod.html" title="Production mode"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../install_mobyle2_prod.html" title="Production installation guide"
+          <a href="index.html" title="Configuration guide"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
+        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Configuration guide</a> &raquo;</li> 
       </ul>
     </div>
     <div class="document">
@@ -71,10 +73,10 @@
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
 <h3><a href="../../index.html">Table Of Contents</a></h3>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../install_mobyle2_prod.html">Production installation guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Developer guide (not done at 100% yet)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_guide/index.html">Developer guide (not done at 100% yet)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Configuration guide</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../documente.html">Contribute to the mobyle2 documentation project</a></li>
@@ -102,16 +104,22 @@
     <div class="bodywrapper">
       <div class="body">
         
-  <div class="section" id="developer-guide-not-done-at-100-yet">
-<h1>Developer guide (not done at 100% yet)<a class="headerlink" href="#developer-guide-not-done-at-100-yet" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="install_mobyle2_dev.html">Install your mobyle2 instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install_mobyle2_dev.html#update-your-mobyle2-instance">Update your mobyle2 instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install_mobyle2_dev.html#configure-your-instance">Configure your instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools_notes.html">Utiliser le pshell</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools_notes.html#sqlalchemy-migrations">sqlalchemy-migrations</a></li>
-</ul>
+  <div class="section" id="development-mode">
+<span id="override-settings"></span><h1>Development mode<a class="headerlink" href="#development-mode" title="Permalink to this headline">¶</a></h1>
+<p>This document refers to <a class="reference internal" href="index.html#instance-configuration"><em>the instance configuration</em></a>.</p>
+<p><strong>This apply only to local development instances</strong>.</p>
+<p>It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).</p>
+<p>Make a local config in the project directory file like <tt class="docutils literal"><span class="pre">$prefix/pyramid/mobyle2/myconfig.cfg</span></tt>.</p>
+<div class="highlight-sh"><div class="highlight"><pre>touch myconfig.cfg
+</pre></div>
+</div>
+<p>Input any changes you want after extending the dev buildout configuration:
+EG:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span class="k">[buildout]</span>
+<span class="na">extends</span><span class="o">=</span><span class="s">minitage.buildout-dev.cfg</span>
+<span class="k">[db]</span>
+<span class="na">port</span><span class="o">=</span><span class="s">5439</span>
+</pre></div>
 </div>
 </div>
 
@@ -127,12 +135,13 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="install_mobyle2_dev.html" title="Install your mobyle2 instance"
+          <a href="prod.html" title="Production mode"
              >next</a> |</li>
         <li class="right" >
-          <a href="../install_mobyle2_prod.html" title="Production installation guide"
+          <a href="index.html" title="Configuration guide"
              >previous</a> |</li>
-        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
+        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li>
+          <li><a href="index.html" >Configuration guide</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

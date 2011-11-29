@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Install your mobyle2 instnace &mdash; Mobyle2 - Last updated: Nov 24, 2011</title>
+    <title>Install your mobyle2 instance &mdash; Mobyle2 - Last updated: Nov 29, 2011</title>
     
     <link rel="stylesheet" href="../../static/custom.css" type="text/css" />
     <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'Last updated: Nov 24, 2011',
+        VERSION:     'Last updated: Nov 29, 2011',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,10 +25,10 @@
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
     <link rel="search" type="application/opensearchdescription+xml"
-          title="Search within Mobyle2 - Last updated: Nov 24, 2011"
+          title="Search within Mobyle2 - Last updated: Nov 29, 2011"
           href="../../static/opensearch.xml"/>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="Mobyle2 - Last updated: Nov 24, 2011" href="../../index.html" />
+    <link rel="top" title="Mobyle2 - Last updated: Nov 29, 2011" href="../../index.html" />
     <link rel="up" title="Developer guide (not done at 100% yet)" href="index.html" />
     <link rel="next" title="Utiliser le pshell" href="tools_notes.html" />
     <link rel="prev" title="Developer guide (not done at 100% yet)" href="index.html" />
@@ -49,7 +49,7 @@
         <li class="right" >
           <a href="index.html" title="Developer guide (not done at 100% yet)"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 24, 2011</a> &raquo;</li>
+        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Developer guide (not done at 100% yet)</a> &raquo;</li> 
       </ul>
     </div>
@@ -76,6 +76,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install_mobyle2_prod.html">Production installation guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html">Developer guide (not done at 100% yet)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration guide</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../documente.html">Contribute to the mobyle2 documentation project</a></li>
@@ -103,8 +104,8 @@
     <div class="bodywrapper">
       <div class="body">
         
-  <div class="section" id="install-your-mobyle2-instnace">
-<h1>Install your mobyle2 instnace<a class="headerlink" href="#install-your-mobyle2-instnace" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="install-your-mobyle2-instance">
+<h1>Install your mobyle2 instance<a class="headerlink" href="#install-your-mobyle2-instance" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="create-a-mintiage-user-and-install-mandatory-requirements">
 <h2>Create a mintiage user and install mandatory requirements<a class="headerlink" href="#create-a-mintiage-user-and-install-mandatory-requirements" title="Permalink to this headline">¶</a></h2>
 <p>-:user: root</p>
@@ -151,11 +152,6 @@ ssh-keygen -&gt; enregistrer la clé dans les repos github comme deploy key
 minimerge -av mobyle2
 </pre></div>
 </div>
-<p>When the install crashes, we need to touch the missing production-related settings file which MUST not be commited.
-- :user: mobyle2</p>
-<div class="highlight-sh"><div class="highlight"><pre>touch <span class="nv">$prefix</span>/pyramid/mobyle2/etc/sys/settings-prod.cfg
-</pre></div>
-</div>
 </div>
 <div class="section" id="the-project-shell-profile">
 <h2>The project shell profile<a class="headerlink" href="#the-project-shell-profile" title="Permalink to this headline">¶</a></h2>
@@ -197,48 +193,67 @@ EG</p>
 <div class="section" id="openldap-installation-not-mandatory">
 <h2>Openldap installation (not mandatory)<a class="headerlink" href="#openldap-installation-not-mandatory" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-sh"><div class="highlight"><pre><span class="nv">$MT</span>/bin/easy_install -U minitage.paste.extras
-<span class="nv">$MT</span>/bin/paster create -t minitage.instances.openldap mobyle2 <span class="nv">db_suffix</span><span class="o">=</span>net <span class="nv">db_orga</span><span class="o">=</span>mobyle2 <span class="nv">ssl_port</span><span class="o">=</span>6636  <span class="nv">db_port</span><span class="o">=</span>3389 <span class="nv">db_user</span><span class="o">=</span><span class="k">$(</span>whoami<span class="k">)</span> <span class="nv">db_password</span><span class="o">=</span>secret  --no-interactive
+<span class="nv">$MT</span>/bin/paster create -t minitage.instances.openldap mobyle2 <span class="nv">db_suffix</span><span class="o">=</span>net <span class="nv">db_orga</span><span class="o">=</span>mobyle2 <span class="nv">ssl_port</span><span class="o">=</span>6636  <span class="nv">db_port</span><span class="o">=</span>3389 <span class="nv">db_user</span><span class="o">=</span><span class="k">$(</span>whoami<span class="k">)</span> <span class="nv">db_password</span><span class="o">=</span>secret <span class="nv">db_host</span><span class="o">=</span>127.0.0.1  --no-interactive
+</pre></div>
+</div>
+<p>Mettre</p>
+<div class="highlight-python"><pre>dn: dc=mobyle2,dc=net
+objectClass: dcObject
+objectClass: organization
+dc: mobyle2
+o: Example Corporation
+description: The Example Corporation
+
+dn: dc=people,dc=mobyle2,dc=net
+objectClass: dcObject
+objectClass: organization
+dc: people
+o: Example Corporation
+description: The Example Corporation
+
+dn: dc=people,dc=mobyle2,dc=net
+objectClass: dcObject
+objectClass: organization
+dc: people
+o: Example Corporation
+description:: VGhlIEV4YW1wbGUgQ29ycG9yYXRpb24g
+structuralObjectClass: organization
+creatorsName: cn=kiorky,dc=mobyle2,dc=net
+modifiersName: cn=kiorky,dc=mobyle2,dc=net
+
+dn: cn=toto,dc=people,dc=mobyle2,dc=net
+gidNumber: 2
+objectClass: posixAccount
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+uidNumber: 1
+uid: 1
+homeDirectory: /where
+sn: toto
+cn: toto
+structuralObjectClass: inetOrgPerson
+creatorsName: cn=kiorky,dc=mobyle2,dc=net
+createTimestamp: 20111124184725Z
+mail: toto@foo.com
+userPassword:: e1NTSEF9MmI1THl6UEI0NTFvTW5SdkMzV1Q4QmJUYlNJL3hwWm9iWDg1TEE9PQ==
+modifiersName: cn=kiorky,dc=mobyle2,dc=net</pre>
+</div>
+<p>Dans un fichier base.ldif</p>
+<p>puis</p>
+<div class="highlight-sh"><div class="highlight"><pre>./sys/bin/mobyle2.net.slapadd  -l base.ldif
 </pre></div>
 </div>
 <p>Init script to start the server:</p>
 <div class="highlight-python"><pre>./sys/etc/init.d/openldap_mobyle2_mobyle2.net</pre>
 </div>
 <p>You have preconfigured wrappers to any ldap tools inside <tt class="docutils literal"><span class="pre">sys/bin</span></tt> as usual.</p>
+<p>On peut ensuite se connecter au serveur ldap pour nos tests.</p>
 </div>
 <div class="section" id="how-to-override-some-settings-locally-to-your-instance">
 <h2>How to override some settings locally to your instance:<a class="headerlink" href="#how-to-override-some-settings-locally-to-your-instance" title="Permalink to this headline">¶</a></h2>
-<p>It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).</p>
-<p>Make a local config in the project directory file like <tt class="docutils literal"><span class="pre">$prefix/pyramid/mobyle2/myconfig.cfg</span></tt>.</p>
-<div class="highlight-sh"><div class="highlight"><pre>touch myconfig.cfg
-</pre></div>
-</div>
-<p>Input any changes you want after extending the dev buildout configuration:
-EG:</p>
-<div class="highlight-ini"><div class="highlight"><pre><span class="k">[buildout]</span>
-<span class="na">extends</span><span class="o">=</span><span class="s">minitage.buildout-dev.cfg</span>
-<span class="k">[db]</span>
-<span class="na">port</span><span class="o">=</span><span class="s">5439</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="logrotate-init-script-installation">
-<h2>logrotate &amp; init script installation<a class="headerlink" href="#logrotate-init-script-installation" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><table class="first docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">user:</th><td class="field-body">root</td>
-</tr>
-</tbody>
-</table>
-</li>
-</ul>
-<div class="highlight-sh"><div class="highlight"><pre>ln -s <span class="nv">$prefix</span>/pyramid/mobyle2/etc/init.d/supervisor.initd /etc/init.d/supervisor.mobyle2
-ln -s <span class="nv">$prefix</span>/pyramid/mobyle2/etc/logrotate.conf /etc/logrotate.d/mobyle2
-update-rc.d -f supervisor.mobyle2 defaults 99
-</pre></div>
-</div>
+<p>Please refer to the <a class="reference internal" href="../configuration/dev.html#override-settings"><em>Development mode</em></a> section.</p>
 </div>
 <div class="section" id="launch-the-application-in-foreground">
 <h2>Launch the application in foreground<a class="headerlink" href="#launch-the-application-in-foreground" title="Permalink to this headline">¶</a></h2>
@@ -275,8 +290,8 @@ git pull
 </pre></div>
 </div>
 <p>On any suspicious output, just update the code by hand of the relative modules inside <tt class="docutils literal"><span class="pre">src.mrdeveloper/</span></tt>.</p>
-<div class="section" id="some-nots">
-<h2>Some nots:<a class="headerlink" href="#some-nots" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="some-notes">
+<h2>Some notes:<a class="headerlink" href="#some-notes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>It is also important to know that velruse runs inside the webserver but as a separate component.
 So, we must understand that velruse will be attacked via http and the url must be well configured inside etc/sys/settings.cfg to match the local needs.</li>
@@ -285,6 +300,10 @@ So, we must understand that velruse will be attacked via http and the url must b
 <div class="highlight-python"><pre>http://localhost:9091 : application</pre>
 </div>
 </div>
+</div>
+<div class="section" id="configure-your-instance">
+<h1>Configure your instance<a class="headerlink" href="#configure-your-instance" title="Permalink to this headline">¶</a></h1>
+<p>Please read: <a class="reference internal" href="../configuration/index.html#instance-configuration"><em>Configuration</em></a> section.</p>
 </div>
 
 
@@ -304,13 +323,13 @@ So, we must understand that velruse will be attacked via http and the url must b
         <li class="right" >
           <a href="index.html" title="Developer guide (not done at 100% yet)"
              >previous</a> |</li>
-        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 24, 2011</a> &raquo;</li>
+        <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li>
           <li><a href="index.html" >Developer guide (not done at 100% yet)</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Mathieu Le Marec - Pasquet.
-      Last updated on Nov 24, 2011.
+      Last updated on Nov 29, 2011.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
   </body>
