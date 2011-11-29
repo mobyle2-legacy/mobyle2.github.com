@@ -3,7 +3,7 @@ Install your mobyle2 instance
 ++++++++++++++++++++++++++++++++++
 
 
-Create a mintiage user and install mandatory requirements
+Create a minitage user and install mandatory requirements
 --------------------------------------------------------------
 -:user: root
 
