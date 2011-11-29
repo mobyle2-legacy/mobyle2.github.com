@@ -73,7 +73,7 @@ Relevant configuration settings:
 
     - **hosts:velruse**: host of the webserver hosting velruse
     - **ports:velruse**: port of the webserver hosting velruse
-    - **instance;velruseapp** : the subpath part of the url to velruse (in http://foo/velruse, its velruse)
+    - **instance:velruseapp** : the subpath part of the url to velruse (in http://foo/velruse, its velruse)
 
 To set those settings, use the followings sections depending if you are:
 
