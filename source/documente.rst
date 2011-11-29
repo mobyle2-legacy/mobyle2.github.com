@@ -31,12 +31,20 @@ Then you'll have to regenerate the documentation
     cd source && make html
 
 
+
 When you have finished:
 
     - Verify your build by visiting ./index.html with a regular browser
     - Commit ALL the changes you made and what has been regenerated
     - Push them to github
     - When you receive the email notifying the pages regeneration, look at the website_.
+
+.. code-block:: sh
+
+    cd mobyle2.github.com
+    git add .
+    git commit -am "update doc"
+    git push --all
 
 
 
