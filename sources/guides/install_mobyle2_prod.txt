@@ -49,8 +49,8 @@ When the install crashes, we need to touch the missing production-related settin
     touch /opt/minitage/pyramid/mobyle2-prod/etc/sys/settings-prod.cfg
 
 
-Postgresql postgresql
------------------------------------------------------------------
+Configuring postgresql
+------------------------
 - :user: root
 
 .. code-block:: sh

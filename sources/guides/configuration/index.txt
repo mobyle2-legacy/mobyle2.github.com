@@ -58,9 +58,10 @@ Please note that it is important to define or verify the configuration settings 
 
       Some options are security sensitives:
 
-            **db:password** option of the buildout settings file
+            **[db]** sectionof the buildout settings file
+            **[mail]** sectionof the buildout settings file
 
-    - The SMTP paramaters
+    - The SMTP parameters
 
         **[mail]** section of the buildout settings file
 
@@ -72,7 +73,7 @@ Relevant configuration settings:
 
     - **hosts:velruse**: host of the webserver hosting velruse
     - **ports:velruse**: port of the webserver hosting velruse
-    - **instance;velruseapp** : the subpath part of the url to velruse (in http://foo/velruse, its velruse)
+    - **instance:velruseapp** : the subpath part of the url to velruse (in http://foo/velruse, its velruse)
 
 To set those settings, use the followings sections depending if you are:
 

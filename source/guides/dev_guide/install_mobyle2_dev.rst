@@ -64,7 +64,7 @@ Now, to use it in your current shell, please source it:
 
     . $prefix/pyramid/mobyle2/sys/share/minitage/minitage.env
 
-***PLEASE Always activate the environment shell before doing anything to the project.***
+**PLEASE Always activate the environment shell before doing anything to the project.**
 
 Postgresql installation
 -----------------------------------------------------------------
@@ -215,9 +215,6 @@ URLS::
     http://localhost:9091 : application
 
 
-Configure your instance
-++++++++++++++++++++++++++
 
-Please read: :ref:`instance configuration` section.
 
 .. vim:set ft=rest sts=4 ts=4 et:

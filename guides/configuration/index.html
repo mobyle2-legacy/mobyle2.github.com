@@ -30,7 +30,7 @@
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
     <link rel="top" title="Mobyle2 - Last updated: Nov 29, 2011" href="../../index.html" />
     <link rel="next" title="Development mode" href="dev.html" />
-    <link rel="prev" title="Utiliser le pshell" href="../dev_guide/tools_notes.html" />
+    <link rel="prev" title="Production installation guide" href="../install_mobyle2_prod.html" />
     <script src="static/jquery.min.js" type="text/javascript"></script>
     <script src="static/jquery.zrssfeed.min.js" type="text/javascript"></script>
 
@@ -46,7 +46,7 @@
           <a href="dev.html" title="Development mode"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../dev_guide/tools_notes.html" title="Utiliser le pshell"
+          <a href="../install_mobyle2_prod.html" title="Production installation guide"
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
       </ul>
@@ -72,8 +72,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
 <h3><a href="../../index.html">Table Of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../install_mobyle2_prod.html">Production installation guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev_guide/index.html">Developer guide (not done at 100% yet)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install_mobyle2_prod.html">Production installation guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Configuration guide</a></li>
 </ul>
 <ul>
@@ -154,10 +154,11 @@ velruse=8080</pre>
 <li><p class="first">The passwords</p>
 <p>Some options are security sensitives:</p>
 <blockquote>
-<div><p><strong>db:password</strong> option of the buildout settings file</p>
+<div><p><strong>[db]</strong> sectionof the buildout settings file
+<strong>[mail]</strong> sectionof the buildout settings file</p>
 </div></blockquote>
 </li>
-<li><p class="first">The SMTP paramaters</p>
+<li><p class="first">The SMTP parameters</p>
 <blockquote>
 <div><p><strong>[mail]</strong> section of the buildout settings file</p>
 </div></blockquote>
@@ -170,7 +171,7 @@ velruse=8080</pre>
 <div><ul class="simple">
 <li><strong>hosts:velruse</strong>: host of the webserver hosting velruse</li>
 <li><strong>ports:velruse</strong>: port of the webserver hosting velruse</li>
-<li><strong>instance;velruseapp</strong> : the subpath part of the url to velruse (in <a class="reference external" href="http://foo/velruse">http://foo/velruse</a>, its velruse)</li>
+<li><strong>instance:velruseapp</strong> : the subpath part of the url to velruse (in <a class="reference external" href="http://foo/velruse">http://foo/velruse</a>, its velruse)</li>
 </ul>
 </div></blockquote>
 <p>To set those settings, use the followings sections depending if you are:</p>
@@ -204,7 +205,7 @@ velruse=8080</pre>
           <a href="dev.html" title="Development mode"
              >next</a> |</li>
         <li class="right" >
-          <a href="../dev_guide/tools_notes.html" title="Utiliser le pshell"
+          <a href="../install_mobyle2_prod.html" title="Production installation guide"
              >previous</a> |</li>
         <li><a href="../../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
       </ul>
