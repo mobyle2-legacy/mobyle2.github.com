@@ -1,0 +1,386 @@
+Metadata-Version: 1.0
+Name: minitage.core
+Version: 2.0.27
+Summary: A meta package-manager to deploy projects on UNIX Systemes sponsored by Makina Corpus.
+Home-page: http://cheeseshop.python.org/pypi/minitage.core
+Author: Mathieu Pasquet
+Author-email: kiorky@cryptelium.net
+License: BSD
+Description: ==============================
+        Introduction
+        ==============================
+        
+        .. contents::
+        
+        * minitage is a meta-package manager. It's a package manager which install packages with the help of other build systems.
+        
+        * Its goal is to help you to deploy projects in a standardised layout and to build things quickly and in a simple manner by putting in environment all configurations.
+          like:
+            
+            - cflags
+            - ldflags
+            - $PATH
+        
+        * The main documentation is not there but on http://www.minitage.org, please go there for further instructions.
+        
+        
+        
+        Credits
+        ========
+        Companies
+        ---------
+        |makinacom|_
+        
+          * `Planet Makina Corpus <http://www.makina-corpus.org>`_
+          * `Contact us <mailto:python@makina-corpus.org>`_
+        
+        .. |makinacom| image:: http://depot.makina-corpus.org/public/logo.gif
+        .. _makinacom:  http://www.makina-corpus.com
+        
+        Authors
+        ------------
+        
+        - Mathieu Le Marec - Pasquet <kiorky@cryptelium.net>
+        
+        Contributors
+        -----------------
+        
+        
+        
+        QuickStart with minitage
+        =============================
+        
+        The whole doc is not there
+        -----------------------------------
+        but on http://www.minitage.org
+        
+        
+        Check your Python
+        ---------------------
+        You need a python with setuptools, zlib, bz2 and ssl support.
+        
+        Try that in your interpretery::
+        
+            >>> import tarfile
+            >>> import zipfile
+            >>> import bz2
+            >>> import _ssl
+            >>> import zlib
+            >>> import setuptools
+            >>>
+        
+        If you do not have that, you can give a try to my pyboostrapper that bootstrap
+        a python somewhere::
+        
+            wget http://git.minitage.org/git/minitage/shell/plain/PyBootstrapper.sh
+            chmod -x PyBootstrapper.sh
+            bash ./PyBootstrapper.sh /path/to/pythonPrefix
+        
+        Using virtualenv
+        -------------------
+        You 'd better to use `virtualenv <http://pypi.python.org/pypi/virtualenv>`_ ,
+        minitage fits well with it.
+        
+        virtualenv is a tool that allow you to create isolated Python
+        environments.
+        
+        
+            Here is how to set up an environment with it:
+        
+            - Install virtualenv::
+        
+                easy_install virtualenv #(maybe use sudo ;))
+        
+            - Install minitage prefix::
+        
+                virtualenv --no-site-packages  ~/minitage
+        
+            - activate it::
+        
+                source ~/minitage/bin/activate
+        
+        
+            KEEP IN MIND THAT YOU MUST ACTIVATE VIRTUALENV AT ANY TIME YOU USE IT.
+        
+        minitage installation
+        ----------------------
+        The whole doc is not there but on http://www.minitage.org/installation.html.
+        
+        Minitage is a classical python egg, you can get it throught easy_install.
+        
+        To install minitage in a stable version, follow those steps:
+        
+        - Install minitage::
+        
+            easy_install -U mercurial minitage.core
+        
+        - Sync its packages (all its minilays in minitage terminology).::
+        
+            minimerge -s
+        
+        
+        Syncing packages
+        ----------------------
+        
+            To sync all your minilays
+        
+                If you need to, fire your virtualenv::
+        
+                    source ~/minitage/bin/activate
+        
+                Sync::
+        
+                    minimerge -s
+        
+        
+        Changelog for minitage.core
+        ===============================
+        
+        
+        2.0.27 (2011-02-25)
+        -------------------
+        - proper release
+        
+        
+        2.0.24
+        ---------------------------
+        
+            - fix bug in pretend
+            - move to github
+            - add mercurial to dependencies to facillitate buildout integration
+            - add python versions for pretend and 'eggs' packages 
+            - rebuild 'eggs' packages only if they need to be (markers are now in place for the particular python version)
+            - remove useless mercurial dep
+        
+        2.0
+        -----
+        
+        FEATURES;
+        
+            - Auto Update system.
+              When minimerge upgrade (easy_install -U), we have now the infrastructure to run update callbacks.
+            - Now minibuilds have revisions, this can facilitate their reinstallation as reverse dependencies
+            - give means to select the python to build against for python modules (--all-python-versions or specify python to use along with the package (minimerge -pv foo python-2.4)
+            - force eggs category reinstallation
+            - add an only dependencies switch to buld only dependencies
+            - win32 compatibility (first rush, alpha quality)
+            - add replace/per/os/dependencies mecanism in minibuilds
+            - allow minibuild names with only major as version
+        
+        BUGS:
+        
+            - support symlink in remove_path (API)
+            - enhance remove_path function
+            - fix a bug in bootstrapping buildout
+            - rewrite fetchers
+            - improve proxy handling
+            - fix some tests
+            - make parts shut up
+            - test incomplete downloads and redownload them (package level)
+            - make minibuild name more permissive
+            - fix bug in new checkouts
+            - fix a bug insde the get_from_cache helper when a fragmented url is used and the upstream server does not understand them
+            - add a special exception for search_latest when error happen.
+            - fake user agent in urlopen calls to prevent mad sysadmins restrictions on python useragent.
+            - explicit error when the buildout configuration file is not there
+            - use setuptools package_index.download helper funtion instead of directly urllib2 to avoid sourceforge download errors
+        
+        1.0.19
+        -----------
+        
+            - distribute fix
+        
+        1.0.18
+        --------
+        
+            - remove deprecationwarning
+        
+        1.0.17
+        ---------
+        
+            - remove deprecationwarning
+        
+        1.0.16
+        -------
+        
+        
+            - oups, left print
+        
+        1.0.15
+        --------
+        
+            - let the default minilay be at lower priority among all
+        
+        1.0.14
+        -------
+        
+            - desactivating updates manager for more tests.
+        
+        -> 1.0.13
+        ----------
+        
+            - Minitage now allows binaries to be used instead of compiling programs,
+              in the gentoo -k way.
+            - Minitage has now also an update manager to run udpate functions on
+              upgrade.
+        
+        1.0.5
+        -------
+        
+            - bugfix on url md5sum fragments
+        
+        1.0.4
+        ---------
+        
+            - make conditionnal weither we are offline or not the download in the get_from_cache function.
+        
+        1.0.0 -> 1.0.3
+        ------------------
+        
+            - x64 enlightments
+            - add optionnal force switch to the download cache function
+        
+        
+        1.0
+        -----
+        
+            - some API adds like 'search_latest' and 'which'
+            - bugfix in interfaces for configuration handling
+            - buildout maker can be given an optionnal config to build
+            - code stabilization and sync with other minitage components
+            - official documentation on http://www.minitage.org
+        
+        
+        0.32
+        -----
+        
+            - Fetch by default over http
+        
+        0.4.30
+        --------
+            - Bind buildout newest mode with -u option
+        
+        
+        0.4.30
+        -------
+        
+            - do not delete directories but overwrite when the package src uri change.
+        
+        
+        0.4.29
+        -------
+        
+            - Make minitage lives on git
+        
+        0.4.28
+        -------
+        
+            - Make minitage git aware both in recipes and in core.
+        
+        0.4.27
+        -------
+        
+            - force setuptools version
+        
+        0.4.26
+        -------
+        
+            - bugfix on common functions (API)
+        
+        0.4.21
+        -------
+        
+            - quiet mode is now optionnal are there are numerous bugs with it.
+        
+        0.4.8
+        -----------
+            - Maintenance release
+        
+                - testruner
+                - buildoutified
+                - some refactor and code cleanings
+                - logging is now better handled and your minimerge sessions will be as
+                  quiet as possible.
+        
+        0.4.5
+        -----------
+            - Bug in fetchers (not critical ...)
+        
+        0.4.4
+        ------------
+            - Add an option (-f)
+                - when set : fetch all before build
+                - when not set : fetch and build each package one after another
+        
+        0.4.2
+        ------------
+            - Remove the category check
+        
+        0.4.2
+        ------------
+            - Remove the backtrace from the launcher when minimerge fails
+        
+        0.4.1
+        ------------
+            - Release version
+        
+        0.4_alpha12
+        ------------
+            - Fix scm type validator
+        
+        0.4_alpha11
+        ------------
+            - bzr DVCS integration
+        
+        0.4_alpha10
+        ------------
+            - Add support for variables in minibuilds setted in minitage configuration
+              file. Use $name in minibuilds and set it in the [minitage.variables]
+              section.
+        
+        0.4_alpha9
+        -----------
+            - reinforce buildout code
+        
+        0.4_alpha8
+        -----------
+            - restore previous version scheme
+        
+        a0.4_alpha5
+        ------------
+            - add mercurial explicit dependency
+        
+        0.4_alpha4
+        ------------
+            - remove old minilay
+        
+        0.4_alpha1
+        ------------
+        
+        This is a pre release, minitage is working. But it is not empty from bugs.
+        Feel free to give your feedback :)
+        
+            - Minimerge totally rewritten in python
+            - Support for conditionnal dependencies toward python version
+            - Support for eggs in addition of site-packages added to the PYTHONPATH
+            - Support for conditionnal (OS) dependencies
+            - Lot of improvments on error handling
+            - Logging mode
+            - Configuration via a file is now possible
+        
+        
+        up to 0.3
+        ----------
+        
+        - not public, nothing to see there.
+        
+        
+        
+        
+        
+Platform: UNKNOWN
+Classifier: Framework :: Buildout
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

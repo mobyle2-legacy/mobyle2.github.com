@@ -1,0 +1,4 @@
+setuptools
+
+[buildout]
+zc.buildout

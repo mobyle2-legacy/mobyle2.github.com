@@ -1,0 +1,60 @@
+Pypi md5 check support
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+We need to specify a find-links entry to make the recipe find our 'foo' egg as it is not on pypi
+As we want to show the update capability of the recipe, we will first install the oldest foo version.
+
+Let's create a buildout installation::
+
+    >>> rmdir(tempdir)
+    >>> mkdir(tempdir)
+    >>> cd(tempdir)
+    >>> a = [mkdir(d) for d in ('eggs', 'develop-eggs', 'bin', 'src')]
+    >>> install_develop_eggs(['minitage.recipe.egg'])
+    >>> install_eggs_from_pathes(['zc.buildout'], sys.path)
+    >>> touch('buildout.cfg')
+    >>> sh('buildout -o bootstrap')
+    buildout -o bootstrap...
+
+Pypi has the habit to append an md5 fragment to its egg urls,
+we ll use it to check the already present distribution files in the cache.::
+
+    >>> dlcache = os.path.join('minitage', 'eggs')
+    >>> data = """
+    ... [versions]
+    ... mr.developer = 0.15
+    ... [buildout]
+    ... versions = versions
+    ... eggs-directory =${buildout:directory}/eggs
+    ... download-cache=${buildout:directory}
+    ... parts =
+    ...     part
+    ... [part]
+    ... recipe = minitage.recipe.egg
+    ... eggs=mr.developer
+    ... """
+    >>> touch('buildout.cfg', data=data)
+    >>> sh('bin/buildout install part')
+    b...
+    >>> egg = [egg for egg in os.listdir(dlcache) if 'mr.developer' in egg][0]
+    >>> egg
+    'mr.developer-....zip'
+
+Resetting the file contents.::
+
+    >>> touch(os.path.join(dlcache, egg), data='')
+
+Deleting the installed egg.::
+
+    >>> noecho = [(egg, remove(os.path.join('eggs', egg))) for egg in os.listdir('eggs') if 'developer' in egg]
+
+Trying to reinstall.::
+
+    >>> sh('bin/buildout -vvvvv install part')
+    b...
+    minitage.recipe: Searching cache at /tmp/buildout.test/minitage/eggs
+    minitage.recipe: MD5SUM mismatch for /tmp/buildout.test/minitage/eggs/mr.developer-0.15.zip: Good:796babbb65820f6c052141cae1fb3e8d != Bad:d41d8cd98f00b204e9800998ecf8427e
+    Backuping the old file but re download it!
+    A bakcup will be made in /tmp/buildout.test/minitage/eggs/mr.developer-0.15.zip.md5sum_mismatch.0.
+    minitage.recipe: Cache download http://pypi.python.org/packages/source/m/mr.developer/mr.developer-0.15.zip#md5=796babbb65820f6c052141cae1fb3e8d as /tmp/buildout.test/minitage/eggs
+    minitage.recipe: Downloading http://pypi.python.org/packages/source/m/mr.developer/mr.developer-0.15.zip#md5=796babbb65820f6c052141cae1fb3e8d in /tmp/buildout.test/minitage/eggs/mr.developer-0.15.zip...
+

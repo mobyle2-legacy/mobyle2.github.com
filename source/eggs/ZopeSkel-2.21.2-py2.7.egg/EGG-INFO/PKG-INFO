@@ -1,0 +1,1254 @@
+Metadata-Version: 1.0
+Name: ZopeSkel
+Version: 2.21.2
+Summary: Templates and code generator for quickstarting Plone / Zope projects.
+Home-page: http://svn.plone.org/svn/collective/ZopeSkel/trunk
+Author: Cris Ewing
+Author-email: cris@crisewing.com
+License: MIT
+Description: .. contents ::
+        
+        Introduction
+        ============
+        
+        ZopeSkel provides a collection of project templates for Plone and Zope
+        development projects.
+        
+        ZopeSkel uses the `paster <http://pythonpaste.org/script/>`_ Python library
+        internally.
+        
+        The ABCs of typical Plone development
+        =====================================
+        
+        For the typical developer working on a plone project, the following path is
+        recommended:
+        
+        * Install ZopeSkel package to virtualenv, or otherwise
+          isolated from system Python installation, on your local computer.
+        
+        * Create a new Plone 4 development installation using the
+          ``plone4_buildout`` template.
+        
+        * Create a new logic package for the content types, forms and logic of the
+          site. This can be done using the
+          `Dexterity ZopeSkel template <http://collective-docs.plone.org/content/dexterity.html>`_
+          (included in ``plone4_buildout``).
+        
+        * Create a new theme package for the site. This can be done using the
+          `XDV template <http://collective-docs.plone.org/templates_css_and_javascripts/xdv.html>`_
+          (included in ``plone4_buildout``).
+        
+        * Test and develop on your local computer until everything is perfect.
+        
+        * Put created packages under source code sversion control (Subversion, Git).
+        
+        * Create a Plone installation on the production server. For this step the
+          Plone Unified installer is the preferred method of building a distribution.
+        
+        * Install your site customization packages on the production server.
+        
+        Installing ZopeSkel
+        ====================
+        
+        ZopeSkel can be installed in one of two ways: with `buildout
+        <http://www.buildout.org/>`_ or with `virtualenv <http://virtualenv.org/>`_.
+        
+        .. note ::
+        
+            Despite existing documentation to the contrary, it is not recommended to
+            install ZopeSkel in your system python.
+        
+        Buildout installation
+        ---------------------------
+        
+        Here are instructions how to include ZopeSkel as a part of your
+        local ``buildout.cfg``.
+        
+        * You can use zopeskel to add new projects to your buildout ``src/`` folder.
+        
+        * You can use code skeleton local commands to add more content to your
+          package.
+        
+        .. note ::
+        
+            The ``plone4_buildout`` template has ZopeSkel and paster support out of
+            the box and this is not needed if you used ``plone4_buildout`` to create
+            your ``buildout.cfg``.
+        
+        Add to your ``buildout.cfg``::
+        
+            parts =
+               ...
+               zopeskel
+        
+            [zopeskel]
+            # installs paster and Zopeskel
+            recipe = zc.recipe.egg
+            eggs =
+               PasteScript
+               ZopeSkel
+        
+        After re-running buildout, you will have ``zopeskel`` and ``paster``
+        commands in the ``bin`` directory of your buildout.
+        
+        Virtualenv installation
+        -----------------------
+        
+        First, install virtualenv into your system::
+        
+            easy_install virtualenv
+        
+        Next, create a virtual environment with the new ``virtualenv`` command::
+        
+            virtualenv --no-site-packages --distribute zopeskelenv
+        
+        Once virtualenv is finished, you can install zopeskel to your new virtual
+        environment::
+        
+            zopeskelenv/bin/easy_install zopeskel
+        
+        Once this is complete, you will be left with ``zopeskel`` and ``paster``
+        commands in the ``bin`` directory inside your virtualenv.
+        
+        Available Templates
+        ===================
+        
+        To see details of the available templates::
+        
+            zopeskel --list
+        
+        More info about how zopeskel works::
+        
+            zopeskel --help
+        
+        Using Templates
+        ===============
+        
+        Creating a Plone 4 buildout using virtualenv ZopeSkel installation::
+        
+            source zopeskelenv/bin/activate
+            zopeskel plone4_buildout yourfoldername
+        
+        The folder created (``yourfoldername``) can be checked in to the versioning
+        system of your choice.  It is now a portable, self-contained, ready-to-build
+        Plone site.  You can build the system at any time using the following::
+        
+            cd yourfoldername
+            python bootstrap.py
+            bin/buildout
+        
+        The ``plone4_buildout`` recipe results in a self-contained version of ZopeSkel
+        installed via the buildout method described above. It thus provides the
+        ``zopeskel`` and ``paster`` commands inside its ``bin`` folder. You can use these
+        commands inside the buildout to create packages for your new Plone site::
+        
+            bin/zopeskel plone3_theme src/plonetheme.yourcompanyid
+        
+        The command will ask a few questions such as the desired package name and
+        description, and output a complete package you can immediately start using.
+        Interactive help is available by entering "?" as a response to any question.
+        
+        .. note ::
+        
+            Because ZopeSkel is built on paster you can do anything we describe here
+            using the ``paster`` command directly.  If you do so, you can gain access to
+            certain features of ``paster`` that have been disabled for ``zopeskel``, but
+            you also will lose access to many of the nicer features of ``zopeskel``,
+            including validation and in-line help.
+        
+        Local Commands
+        ==============
+        
+        In addition to project templates, the ZopeSkel system provides local commands.
+        Local commands are context aware commands that help you to add more
+        functionality to an existing ZopeSkel generated project.
+        
+        .. note ::
+        
+            Local commands require using the ``paster`` command directly - the
+            ``zopeskel`` command does not support them yet.
+        
+        .. note ::
+        
+            Not all ZopeSkel templates provide local commands.  In general, if local
+            commands are available, you will be informed of the fact as your new
+            package is generated.
+        
+        Using local commands to create a content type package
+        -----------------------------------------------------
+        
+        To use local commands you need to first include the paster command in your ``buildout.cfg``
+        as instructed above.
+        
+        Starting inside your Plone buildout, first create a new archetypes add-on::
+        
+            cd src
+            ../bin/zopeskel archetype mycompanyid.mycustomcontenttypes
+        
+        Next, change directories into your new package and invoke ``paster`` to add a
+        content type::
+        
+            cd mycompanyid.mycustomcontenttypes
+            ../../bin/paster
+        
+            Usage: ../../bin/paster COMMAND
+            usage: paster [paster_options] COMMAND [command_options]
+        
+            ...
+        
+            Commands:
+            ...
+        
+            ... local commands:
+                addcontent   Adds plone content types to your project
+        
+        
+        As you can see from the ``paster`` command output, your new package supports a
+        local command called ``addcontent``. You can use the ``addcontent`` command
+        to add new code to your package. As with both ``zopeskel`` and ``paster``,
+        you can use the ``--list`` option to see what local commands are available
+        in the context of the package you've created::
+        
+            ../../bin/paster addcontent --list
+        
+            Available templates:
+                atschema:      A handy AT schema builder
+                browserlayer:  A Plone browserlayer
+                contenttype:   A content type skeleton
+                form:          A form skeleton
+                formfield:     Schema field for a form
+                i18nlocale:    An i18n locale directory structure
+                portlet:       A Plone 3 portlet
+                view:          A browser view skeleton
+                zcmlmeta:      A ZCML meta directive skeleton
+        
+        You can add an archetypes content type for managing lectures::
+        
+                ../../bin/paster addcontent -t contenttype LectureInfo
+        
+        Then you can add schema fields to that content type::
+        
+                ../../bin/paster addcontent -t atschema
+        
+        Local commands can be run as many times as needed to create your package.
+        You can iteratively develop your content type, other content types, and
+        more.
+        
+        .. note ::
+        
+            When changing your package code, local commands will often change
+            GenericSetup XML files (found in the in ``profiles/default`` folder of your
+            package). These changes will not appear in Plone/Zope simply by restarting your
+            instance. You will usually need to re-install your package in your development
+            Plone site if you run any local commands in a package you've already installed.
+        
+        More info
+        
+        * http://collective-docs.plone.org/tutorials/paste.html
+        
+        Developing ZopeSkel
+        ===================
+        
+        If you wish to contribute to the zopeskel project we welcome your
+        contribution. Zopeskel is now distributed with its own built-in buildout, so
+        to begin, all you need to do is check out the source, bootstrap with your
+        desired version of python, and run bin/buildout. A couple of things to keep in
+        mind while you work:
+        
+        Testing
+        -------
+        
+        Since version 1.5, ZopeSkel has tests. It's required to run these before you
+        check in any changes you make. You should run the full test suite in both
+        Python 2.4 and Python 2.6, as both versions are in common use among Zope and
+        Plone developers. They can be run like so::
+        
+            bin/test -s zopeskel
+        
+        Please ensure that all tests pass in Python 2.4 and Python 2.6 before making
+        any checkins to the trunk of zopeskel.
+        
+        Fixing Bugs
+        -----------
+        
+        There are a number of open issues in the queue at
+        http://plone.org/products/zopeskel/issues and your help is always welcome in
+        closing any you feel competent to take on. Please note that there is a
+        zopeskel mailing list, so if you have any questions about your approach to
+        fixing a bug, you should post to the list first.
+        
+        Running trunk version
+        ----------------------
+        
+        The easiest way to run the trunk of zopeskel is to check out the code,
+        bootstrap the buildout with your favored version of Python, and run
+        bin/buildout::
+        
+            svn co http://svn.plone.org/svn/collective/ZopeSkel/trunk zopeskel
+            cd zopeskel
+            python2.6 bootstrap.py
+            ...
+            bin/buildout
+        
+        More info
+        =========
+        
+        Issue tracker
+        
+        * http://plone.org/products/zopeskel/issues
+        
+        Plone and ZopeSkel related documentation
+        
+        * http://collective-docs.plone.org/tutorials/paste.html
+        
+        Source code
+        
+        * http://svn.plone.org/svn/collective/ZopeSkel/trunk
+        
+        Mailing List
+        
+        * https://lists.plone.org/mailman/listinfo/zopeskel
+        
+        Please contribute by submitting patches for what you consider 'best of
+        breed' file layouts for starting Zope projects.
+        
+        Changelog
+        =========
+        
+        2.21.1 - October 6, 2011
+        ------------------------
+        
+        * fixing bad bad release fixer [cewing]
+        
+        2.21.1 - October 6, 2011
+        ------------------------
+        
+        * fixing bad release [cewing]
+        
+        2.21 - October 6, 2011
+        ----------------------
+        
+        * Formatting changes, pep8 fixes, add buildout template warning to
+          plone4_buildout [cewing]
+        
+        * Updated default Plone 3 version to 3.3.6 [cewing]
+        
+        * Fixed some wording and made the instructions for using zopeskel in buildout
+          line up with the unified installer method.  We should reduce the number of
+          'conflicting' ways we have displayed in the wild.  [cewing]
+        
+        * Fixed plone4_buildout of trying to checkout collective.docs from the old 
+          location [miohtama]
+        
+        * Bumped Plone version to 4.1 [miohtama]
+        
+        2.20 - August 9, 2011
+        ---------------------
+        
+        * Remove buildout.threatlevel extension from plone4_buildout. [davisagli]
+        
+        * Made plone4_buildout simpler: now it only asks for Plone version [miohtama]
+        
+        * Various references to Internet documentation [miohtama]
+        
+        * Created a recommended path how ZopeSkel templates should be used to create 
+          a new Plone site project [miohtama]
+        
+        * Bumped Plone 4 version to 4.0.5 [miohtama]
+        
+        * Edit plone3_buildout help text, fixes:
+          http://plone.org/products/zopeskel/issues/59
+          [aclark]
+        
+        2.19 - January 21, 2011
+        --------------------------
+        
+        * In every setup.py, replace '%3A' with ':', making list_classifier url an url
+          which can actually be used.
+          [thet]
+        
+        * Added plone4_buildout [miohtama]
+        
+        * Improvements to README [miohtama]
+        
+        2.18 - September 30, 2010
+        -------------------------
+        
+        * Add bin/zopeskel --version flag.  Reports current version of zopeskel
+          (http://plone.org/products/zopeskel/issues/48)
+          [cewing]
+        
+        * plone3_buildout: use Plone 3.3.5 by default.
+          [maurits]
+        
+        * Fixed a problem with the generic setup profile in plone templates in which a
+          profile was registered in zcml, but no profiles directory was created.
+          (http://plone.org/products/zopeskel/issues/46)
+          [cewing]
+        
+        * use i18n:domain plone for portlet title so it need not be translated twice
+          (http://plone.org/products/zopeskel/issues/44)
+          [fRiSi]
+        
+        * use the correct name of package, so it can be used in package with 2 dots or
+          1 dots in package name
+          [lucmult]
+        
+        2.17 - June 14, 2010
+        --------------------
+        
+        * Added a pin for PasteScript>=1.7.2.  This solves an issue where using zopeskel
+          with an early version of PasteScript resulted in a method signature mismatch
+          on the paster command 'challenge' method.  Fixes issue #42
+          (http://plone.org/products/zopeskel/issues/42)
+          [cewing]
+        
+        * Fixed lingering problem in Archetypes template with registering a 'locales'
+          directory before one is created.  Users now need to add an i18nlocale via
+          addcontent in order to get this directory and have it registered via zcml.
+          [cewing]
+        
+        * Fixed dependency in Archetypes template doctests on the presence of the log-in
+          portlet.  Tests now open the 'login_form' instead.  Resolves issue #40
+          (http://plone.org/products/zopeskel/issues/40)
+          [cewing]
+        
+        * Added new browserlayer localcommand for plone and archetype templates.
+          [marcosfromero]
+        
+        * Added stub locales directory for plone3_theme template, resolving issue #33
+          (http://plone.org/products/zopeskel/issues/33)
+          [cewing]
+        
+        * Set the GenericSetup profile version number in the generated
+          metadata.xml to 1000, which is better for the alphabetical ordering
+          that GS does.
+          [maurits]
+        
+        * Added "environment-vars = zope_i18n_compile_mo_files true" to
+          plone3_buildout template. This is enabled only for Plone 4 (eggifiedzope is
+          true).
+          [vincentfretin]
+        
+        2.16 - March 22, 2010
+        ---------------------
+        
+        * Fixed syntax error in generated portlet constructor code
+          [ajung]
+        
+        * Added a new 'BoundedIntVar' variable type.  It validates that the provided
+          argument is both an integer and between provided min and max values (inclusive
+          on both ends).
+          [cewing]
+        
+        * Updated archetype and plone3_portlet templates to comply with pep8 and
+          pyflakes validation at all stages of a skeleton build process.  Resolves the
+          issue here: (http://plone.org/products/zopeskel/issues/24)
+          [cewing]
+        
+        * Added explanatory text to the plone_hosting template regarding the fact that
+          it is unsuitable for use with plone versions later than 3.1.7, fixed
+          http://plone.org/products/zopeskel/issues/25
+          [cewing]
+        
+        * Fixed the problem with generated archetypes content type meta_type names
+          documented here:
+          (http://plone.org/products/zopeskel/issues/22)
+          [cewing]
+        
+        * Updated tests for the plone template to include tests for the fixes to message
+          factory, zcml sub-package include and i18n translation registration problems
+          below
+          [cewing]
+        
+        * Cleaned up a number of issues with defining and importing a package-wide
+          MessageFactory in plone template local commands:
+          (http://plone.org/products/zopeskel/issues/29)
+          [cewing]
+        
+        * Cleaned up a number of issues with importing sub-package zcml files after
+          using local commands in the plone template:
+          (http://plone.org/products/zopeskel/issues/28)
+          [cewing]
+        
+        * Fixed an issue with the plone template zcmlmeta local command to ensure that
+          the proper directive was inserted into the top-level configure.zcml
+          [cewing]
+        
+        * Fixed the bug in the plone template that caused zcml errors when the
+          i18nlocale local command had not been run:
+          (http://plone.org/products/zopeskel/issues/26)
+          [cewing]
+        
+        * Improved i18n for portlets
+          (http://plone.org/products/zopeskel/issues/31)
+          [fRiSi]
+        
+        * Improved test coverage of the zopeskel script
+          [cewing]
+        
+        * Disallowed use of the paster --svn-repository command due to some basic
+          incompatibilities with the way zopeskel is used.  The argument is still
+          allowed for users via 'paster create'.
+          (http://plone.org/products/zopeskel/issues/34
+          http://plone.org/products/zopeskel/issues/35)
+          [cewing]
+        
+        * Added a 'Register Profile' question to the plone template so that users can
+          have a Generic Setup profile registered in the case that they plan on adding
+          things (like portlets) that require a GS Profile to install.  Adapted
+          downstream templates archetype, plone25_theme and plone3_theme to use the new
+          question
+          [cewing]
+        
+        2.15 - January 22, 2010
+        -----------------------
+        
+        * Backed out a few changes from jaroel in favor of retaining working templates
+          OOTB
+          [cewing]
+        
+        * Made archetype, plone3_theme and plone3_portlet pass the PEP8 validator and
+          pyflakes.
+          [jaroel]
+        
+        * Template summaries (one-line descriptions) were improved.
+          [pupq]
+        
+        * Templates now have an optional help attribute, which is a rich description of
+          the template and its purpose. Help has been provided for all the ZopeSkel
+          templates.
+          [pupq/cewing]
+        
+        * Variables (questions in templates) now have a human-facing "title" attribute
+          which can be shown instead of the (uglier + more opaque) actual variable
+          name. Titles have been written for questions.
+          [pupq]
+        
+        * Variables now have optional help attribute, which is a rich description of
+          the variable. This can be shown in pastescript UIs.
+          [pupq]
+        
+        * Interactive help has been added, so that you can enter "?" at any question to
+          receive the rich help for that question.
+          [cewing]
+        
+        * "Modes" have been implemented--easy, expert, and all--to reduce the number of
+          questions posed to beginning users. For example, technical questions (like
+          "namespace package 2") are now shown only in expert mode.
+          [cewing/pupq]
+        
+        * The project name (eg, "plone.app.example") is now split into pieces to become
+          the default values for namespace packages names ("plone", "app", "example").
+          [pupq]
+        
+        * Templates can provide an ndot attribute that signals how many namespaces
+          ("dots") are expected in the project name. When invoked through new zopeskel
+          front-end script, names that don't support that pattern are rejected with
+          help (eg, creating a plone_app with "plone.example" would be rejected, as a
+          2-namespaced-name, "plone.foo.example", is expected)
+          [pupq]
+        
+        * Rather than having to use the checkvar() and post() methods, templates can
+          now support messages that appear pre-questions and post-generation.
+          Appropriate warnings and where-to-go help has been added.
+          [cewing]
+        
+        * Abstract classes for zope2 products and buildouts have been added; this
+          simplifies inheritance of common attrs, and provides appropriate places for
+          future common logic.
+          [pupq]
+        
+        * A front-end script, 'zopeskel', has been added. This has high-level, friendly
+          help, and an improved command line interface for the task of template usage.
+          It can provide a friendly list of templates and a verbosely-detailed list of
+          templates.
+          [pupq/cewing/chrisrossi]
+        
+        * Users can have a "$HOME/.zopeskel" script with default values for questions,
+          either on a all-template or template-by-template basis.
+          [pupq]
+        
+        * The "zopeskel" script can emit a sample ".zopeskel" file, for editing.
+          [pupq/cbc]
+        
+        * A simple HTML help generator can produce a listing of templates, fields, and
+          subtemplates. This will be useful for maintaining an HTML "reference guide"
+          to the ZopeSkel templates. Find this in the zopeskel.doctools package.
+          [pupq/cbc]
+        
+        * Currently-failing unit tests were fixed.
+          [pupq/cewing]
+        
+        * New unit tests were written for new features.
+          [cewing]
+        
+        * New and repaired unit tests were added into the default test suite
+          [cewing]
+        
+        * Rather than using a generic var() class for all variables ("questions"),
+          subclasses for different types of variables--string, boolean, choices,
+          etc.--were added. These normalize their own values and provide validation.
+          Therefore, users will get earlier/better feedback on inappropriate values.
+          [pupq/cewing]
+        
+        * A proposal for splitting the project into zopeskel.* packages was added.
+          [pupq/cbc]
+        
+        * Where questions were duplicated across different templates, they were
+          consolidated for consistency into one place, and referred to from other
+          places.
+          [pupq]
+        
+        * A real-time tool for generating graphs of dependencies and template
+          inheritance was written, suitable for including in high-level documentation.
+          Find this in the zopeskel.doctools package.
+          [cbc]
+        
+        * Use the eggified Zope 2.12.3 for buildouts targeting Plone 4.x.
+          Use 2.9.12 for buildouts targeting Plone 2.x.
+          [maurits]
+        
+        * Remove unnecessary 'title' argument from jsregistry.xml example.
+          This fixes http://plone.org/products/zopeskel/issues/18.
+          [dukebody]
+        
+        2.14.2 - December 8th, 2009
+        ---------------------------
+        
+        * Back out untested, undocumented changes from paris sprint that broke some
+          templates
+          [MatthewWilkes]
+        
+        2.14.1 - November 19th, 2009
+        ----------------------------
+        
+        * Fix packaging error
+          [MatthewWilkes]
+        
+        2.14 - November 19th, 2009
+        --------------------------
+        
+        * Use the eggified Zope 2.12.1 for buildouts targeting Plone 4.x. Bump 3.x
+          default version to 3.3.2.
+          [MatthewWilkes]
+        
+        * Use distribute for Plone buildouts
+          [MatthewWilkes]
+        
+        * Remove extra quotes in a plone_pas template file, which were
+          generating a syntax error.
+          [dukebody]
+        
+        
+        2.13 - October 3rd, 2009
+        ------------------------
+        
+        * Pinned Cheetah to <= 2.2.1 and eliminated install_requires for elementtree
+          (markdown not a requirement for Cheetah 2.2.1). Allows zopeskel to easy_install
+          with python 2.4. Can remove pinning when markdown is fixed.
+          [cbcunc]
+        
+        * plone3_buildout: added 'fake-zope-eggs = true' to the zope2 part, as
+          otherwise you get e.g. 'ImportError: No module named ImplPython'
+          when using a plone.recipe.zope2install < 3.0, like pinned by Plone
+          3.2 versions.cfg.
+          [maurits]
+        
+        * Make the Plone 3 buildout template default to Plone 3.3.1.
+          [dukebody]
+        
+        * Modify HISTORY.txt convention in basic_namespace and nested_namespace
+          templates. Use now "1.0dev (unreleased)" and '-' for changelog items.
+          [vincentfretin]
+        
+        * Fix trove classifiers list url in all setup.py_tmpl
+          [vincentfretin]
+        
+        * Remove old import_steps.xml from profiles/default/ in plone3_theme template,
+          the various import step in registered in profile.zcml now.
+          [vincentfretin]
+        
+        * For plone3_theme, plone3_portlet an archetype templates,
+          start profile version at 1 to follow current convention.
+          [vincentfretin]
+        
+        * Remove http://download.zope.org/ppix/,
+          http://download.zope.org/distribution/, and
+          http://effbot.org/downloads from find-links in the plone3_buildout template.
+          Only Pypi or http://dist.plone.org/release/${plone_version}
+          is really needed.
+          Add http://dist.plone.org/thirdparty for alternative location for
+          elementree, PILwoTk, markdown, python-ldap.
+          [vincentfretin]
+        
+        
+        2.12 - September 23rd, 2009
+        ---------------------------
+        
+        * Remove the options fake-zope-eggs=true and
+          additional-fake-eggs=ZODB3 in the plone3_buildout template since
+          fake-zope-eggs is enabled by default in
+          plone.recipe.zope2install>=3.0, with ZODB3 among the default "fake
+          zope eggs".  [dukebody]
+        
+        * Declare a dependency on elementtree.  It's not a direct dependency
+          of ZopeSkel, but ZopeSkel depends on Cheetah which depends on
+          Markdown, which has an install-time dependency on elementtree but
+          doesn't declare that.
+          [davisagli]
+        
+        * remove the custom `egg_info.writer` and keywords for `paster_plugins`
+          since this has been an entry point of PasteScript since 1.6.3, using
+          the `setup_requires` as per the change log found here:
+          http://pythonpaste.org/script/news.html#id4
+        
+          This solves an issue where the distutils would go into an infinite
+          loop when you add a new `install_requires` package
+          [claytron]
+        
+        * plone3_theme: made the generated viewlet.pt not crash when the
+          accompanying view has not been changed so has no computed_value.
+          Added some inline documentation there and fixed example
+          registration.  [maurits]
+        
+        * In the plone3_theme say that we are creating a theme for Plone 3,
+          not specifically for 3.0.
+          [maurits]
+        
+        * In the plone template fix the generated INSTALL.txt: when telling
+          users to add $project to the eggs, the example snippet should indeed
+          add $project and not the $full_package_name.
+          [maurits]
+        
+        * In the plone_app and plone3_portlet templates use the full package
+          name instead of the project name in zcml lines in the generated
+          INSTALL.txt.  The project/package/egg name may be 'silly' when the
+          package structure is far/better/name, which means the zcml needs to
+          be 'far.better.name'.  Thanks to Espen Moe-Nilssen for spotting this.
+          [maurits]
+        
+        * Make the Plone 3 buildout default to Plone 3.2.2.
+          [maurits]
+        
+        * Removed the setup.cfg from all templates. It makes the common operation of
+          tagging and releasing packages harder with little benefit. It can be easily
+          added by those who know about this particular feature.
+          [hannosch]
+        
+        * Removed the useless `Python Modules` trove classifier from all templates.
+          [hannosch]
+        
+        2.11 - February 5th, 2009
+        -------------------------
+        
+        * Make the Plone 3 buildout default to Plone 3.2.1, and pick up
+          ${versions:zope2-url} for Plone > 3.1
+          [MatthewWilkes]
+        
+        * added a version requirement for Cheetah (>1.0)
+          [tarek]
+        
+        * fix zopeskel/docs/localcommands.txt
+          [yboussard]
+        
+        * Modify zopeskel/templates/plone/+namespace_package+/+package+/tests.py_tmpl
+          to init egg as product if it is a Zope2 product.
+          [yboussard]
+        
+        * Modify plone3_buildout template to ask for a Plone version. If the version
+          is 3.0 or 3.1 it uses the plone install recipe, otherwise it uses the Plone
+          egg from the cheeseshop.
+          [MatthewWilkes]
+        
+        * Link to appropriate PyPI pages for recipes used.
+          [MatthewWilkes]
+        
+        * Add a Zope 2 without Plone buildout template.
+          [evilbungle]
+        
+        * Reconciling HISTORY.txt to mirror what can be found at the following:
+          http://pypi.python.org/pypi/ZopeSkel/2.10. Release of 2.10 was clobbered
+          due to what looks like a merge at r74790.
+          [andrewb]
+        
+        * Update plone2.5_template's buildout.cfg_tmpl to use Zope 2.9.10. This
+          release incorporates Hotfix-2008-08-12. Defaulting to a known insecure
+          Zope seems unwise for people that may be updating legacy environments into
+          buildout, since they're likely to forget to include the hotfix. Url to
+          2.9.10 hard-coded (as opposed to the more elegantly self-aware
+          plone.recipe.plone approach) per the practice of a plone.recipe.distros
+          plone part.
+          [andrewb]
+        
+        * Nearly at the end of the creation of a ZopeSkel template, the local
+          commands available for that template are displayed.
+          [jaraco, markvl]
+        
+        * The Plone template now has local commands. (Basically moved them
+          from the archetype templates to plone templates and made them
+          available for both.
+          [markvl]
+        
+        * Added base test setup to the archetype template. Added wiring code that
+          runs README.txt as a doctest.
+          [esartor]
+        
+        * Added tests to the addcontent contenttype command. These ammend the
+          README.txt file for each content type providing basic tests for creating,
+          editing and removing instances of the added content type.
+          [esartor]
+        
+        
+        2.10 - September 17th, 2008
+        ---------------------------
+        
+        * Fixed a small bug that made most templates create a package that was
+        * showing twice in the Plone quick
+          installer is the top level namespace package was called 'Products'. Bug
+          was fixed in the 'plone' template (since version 1.5), now in other ones
+          where needed too.
+          [davconvent]
+        
+        
+        2.9 - September 1st, 2008
+        -------------------------
+        
+        * Update silva buildout to reflect changes in Silva 2.1 as stable
+          version, and 2.2 as development: SilvaLayout is not shipped anymore
+          as an extra distribution but integrated in Silva all. Remove
+          question, and update buildout.cfg template.
+          [thefunny]
+        
+        
+        2.8 - July 31, 2008
+        -------------------
+        
+        * Generate logrotate configuration file using collective.recipe.template
+          so it does not need to contain absolute paths. This makes it possible
+          to move the generated buildout around, or install it on other machines
+          with different filesystem layouts.
+          [wichert]
+        
+        * Also rotate instance1-Z2.log.
+          [wichert]
+        
+        * Update documentation for hosting template to note that logrotate needs
+          to be told where to put its status file.
+          [wichert]
+        
+        
+        2.7 - July 25, 2008
+        -------------------
+        
+        * Hosting template:
+        
+          - Switch default Plone version to 3.1.4.
+            [wichert]
+        
+          - Corrected a typo in the logrotate template, which prevented the zeo log
+            to be rotated.
+            [hannosch]
+        
+        
+        2.6.2 - July 16, 2008
+        ---------------------
+        
+        * Hosting template:
+        
+          - Corrected even more references of instance to instance1 in proxy support
+            and logrotate handling.
+            [hannosch]
+        
+        
+        2.6.1 - July 16, 2008
+        ---------------------
+        
+        * Hosting template:
+        
+          - Changed the http_port to start at base_port + 10, to make room for
+            additional services.
+            [hannosch]
+        
+          - Corrected hide_summary option, to not show the summary twice.
+            [hannosch]
+        
+        2.6 - July 15, 2008
+        -------------------
+        
+        * Hosting template:
+        
+          - Corrected one last reference of instance to instance1 in the zopepy eggs
+            option of the plone_hosting template.
+            [hannosch]
+        
+        2.5 - July 15, 2008
+        -------------------
+        
+        * Hosting template:
+        
+          - fix test for Varnish-support in the supervisord configuration.
+            [wichert]
+        
+          - Rename the instance part to instance1 and add an instances group. This
+            makes it possible to upgrade to multiple instances later on without
+            having to break invocations.
+            [wichert]
+        
+        2.4 - July 9, 2008
+        ------------------
+        
+        * Restore the cwd after running buildout in the hosting recipe so further
+          processing works correctly.
+          [wichert]
+        
+        * Add a hook in the hosting template to not show the summary. This
+          can be used by derived templates that want to show their own summary
+          or show it at a later point.
+          [wichert]
+        
+        * Set default Plone version to 3.1.3.
+          [wichert]
+        
+        * Added kss plugin template
+          [gotcha, jfroche, adrien01]
+        
+        * Silva layout have been merged with Silva all in the development
+          buildout.
+          [thefunny]
+        
+        2.3 - June 24, 2008
+        -------------------
+        
+        * Fix problem in the hosting template: varnish was always enabled
+          even if not desired.
+          [wichert]
+        
+        * Added ZopeSkel test layer with the apropriate testSetup and testTearDown.
+          The steps in the top of each test file is not anymore needed: delete
+          tempdir/plone.example and then cd to tempdir.
+          [mustapha]
+        
+        * Make the zope2product option in the archetype template default to true.
+          [mustapha]
+        
+        * Modified buildout.cf to only test zopeskel.
+          [mustapha]
+        
+        * Fixed the paster test function: overwrite option should default to True for
+          the create command.
+          [mustapha]
+        
+        * Added ``use_local_commands`` attribute (a la use_cheetah). A zopeskel
+          template that wants to use local commands has to set it to True .
+          [mustapha]
+        
+        * Get rid of zopeskel.txt and use setup.cfg to store the parent template name.
+          [mustapha]
+        
+        * Sub-templates may define a parent_template attribute with the list of
+          templates that can use it.
+          [mustapha]
+        
+        * Fixed tests and updated docs.
+          [mustapha]
+        
+        Version 2.2
+        -----------
+        
+        * Install Plone 3.1.2 by default.
+          [wichert]
+        
+        * Remove useless spans from the portlet template.
+          [wichert]
+        
+        * Add supervisorctl configuration.
+          [wichert]
+        
+        
+        Version 2.1
+        -----------
+        
+        * Revert BaseTemplate usage from the hosting template (changeset
+          57368 from Tarek). It was not used and broke the buildout. This fixes
+          http://plone.org/products/zopeskel/issues/8
+          [wichert]
+        
+        * Replace the generic README in the plone_hosting template with documentation
+          that is important for deployments.
+          [wichert]
+        
+        * Add log rotation support to the hosting buildout. Merged from Jarn's
+          bones package.
+          [wichert]
+        
+        
+        Version 2.0
+        -----------
+        
+        * Switch plone_hosting template to using supervisord to manage processes.
+          Merged from Jarn's bones package.
+          [wichert]
+        
+        * Reduced the number of questions to generate an atschema and used
+          the MessageFactory instead of declaring an i18n_domain attribute
+          [mustapha]
+        
+        * Fixed missing imports in plone2_theme
+          [mustapha]
+        
+        * Removed unused imports in plone_pas
+          [mustapha]
+        
+        * In plone2.5_theme: when the skinname is empty, replace it with a
+          default text, otherwise adding a Plone Site will throw an error when
+          displaying the extension profiles.
+          [maurits]
+        
+        * Added note to profiles.zcml of plone2.5_theme that
+          five.registerPackage needs Five version 1.4.
+          [maurits]
+        
+        * Added a BUILDBOT.txt file.
+          [tarek]
+        
+        * plone3_portlet: added commented out alternative AddForm for when
+          there are no configurable parameters.  That was shorter than listing
+          all the changes (where we forgot one).
+          [maurits]
+        
+        * Fixed typos in archetyps and plone3 portlets: 'portletBotomLeft'
+          should have been 'portletBottomLeft' with two 't's.
+          [maurits]
+        
+        * Made plone3_portlet respect pep8 (and pyflakes).
+          [maurits]
+        
+        * Use 1.0 as default version number for all templates. This is a more sensible
+          default than 0.1 since we start of with dev-versions anyway.
+          [wichert]
+        
+        * sub-templates per ZopeSkel template: Only sub-templates related to the parent
+          template is visible with the -l option
+          [mustapha]
+        
+        * added -a (--list-all) option to show all subtemplates regardless of the
+          current project. Subtemplates that are not for the type of the current
+          project are prefixed with N
+          [mustapha]
+        
+        * Fixed the recreation of the paster_plugins.txt metadata file for archetype.
+          For now we have to run 2 times the egg_info command to get the paster_plugins
+          file recreated (setuptools problem: nice task to fix)
+          [mustapha]
+        
+        * fixed the case of many inner packages: ask the user to choose a packe to
+          inject content into if the command is run outside of an inner package
+          [mustapha]
+        
+        * make all ZopeSkel templates that inherits from BaseTemplate addcontent aware
+          [mustapha]
+        
+        * Added plone_pas template for PlonePas projects and many subtemplates
+          [mustapha]
+        
+        * regrouped archetype subtemplates in templates/archetype
+          [mustapha]
+        
+        * added and fixed tests
+          [mustapha]
+        
+        
+        Version 1.10
+        ------------
+        
+        * Install Plone 3.1.1 as default option.
+          [wichert]
+        
+        * Fixed a problem with ZopeSkel localcommands when we have multiple
+          projects, it was getting the first directory always and sometimes
+          the package dir was not the first directory, so when running the
+          addcontent in the package it was creating the contents in the wrong
+          dir. Thanks to wichert for pointing me this file.
+          [dsa]
+        
+        * Update the hosting template to make running of buildout optional.
+          [wichert]
+        
+        * Update the hosting template to test if a port is already in use and
+          abort if so.
+          [wichert]
+        
+        * Update the hosting template to only ask for a single base port number.
+          [wichert]
+        
+        * Fix broken creation of Plone 3.1(.x) sites.
+          [wichert]
+        
+        
+        Version 1.9
+        -----------
+        
+        * Install Plone 3.1 as default option.
+          [wichert]
+        
+        * Fixed a missing 'import os' in the plone2_theme template. [davisagli]
+        
+        * Fix an ambiguous question in the silva_buildout template, and update
+          the generated README file. [thefunny]
+        
+        
+        Version 1.8
+        -----------
+        
+        * fixed the recipe template buildout.cfg generation, thanks Kai ;)
+          [tarek]
+        
+        Version 1.7
+        -----------
+        
+        * Update the templates to have README.txt and HISTORY.txt in valid
+          restructured format and use those as the package's long description.
+          This automatically gives packages a more readable page on PyPI
+          (and PSC with Tarek's excellent changes).
+          [wichert]
+        
+        * Adjust the trove classifiers on the packages to not claim incorrect
+          frameworks: we should only claim frameworks on which the package
+          can run directly. So, for example, do not claim Zope2 of we also need
+          Plone on top of Zope2.
+          [wichert]
+        
+        
+        Version 1.6
+        -----------
+        
+        * Add templates for a Silva buildout.
+          [thefunny]
+        
+        * Add a metadata.xml to all generated GenericSetup profiles. This is
+          required by new versions of GenericSetup.
+          [wichert]
+        
+        * For nested namespace packages we need to declare both namespace
+          levels as namespace packages. This is a requirement for current
+          versions of setuptools.
+          [wichert]
+        
+        * Use Plone 3.0.6 as default version for new Plone hosting buildouts
+          [wichert]
+        
+        
+        Version 1.5.1
+        -------------
+        
+        * Fix #2 (missing import in 'hosting.py') at
+          http://plone.org/products/zopeskel/issues/2
+          [nouri]
+        
+        Version 1.5
+        -----------
+        
+        * added a new local command into archetype template to inject
+          new content types [spanky]
+        
+        * added a doctest for each template, and refactored the package
+          so we have one python module per template [tarek]
+        
+        * Refactored the zc.buildout recipe to provide structured documention
+          that will render nicely on PyPI, added comments for recipe authors
+          to help writing documentation and tests and added a working doctest
+          skeleton. Implemented automatic license classifiers for common
+          licenses in the generated setup.py. The mapping is in zopeskel.base
+          and can be used for other templates also.
+          [dokai]
+        
+        * The 'five:registerPackage' ZCML directive is added in a project based on the
+          'plone' template only if the top level namespace package is not
+          called 'Products'. This avoids having the product loaded twice in Zope.
+          [davconvent]
+        
+        * Added paragraph about old style Zope 2 Product installation in the
+          INSTALL.txt_tmpl file of the plone template.
+          The paragraph will be added to the installation instructions if the top
+          level namespace package is called 'Products'.
+          [davconvent]
+        
+        Version 1.4
+        -----------
+        
+        * Set the version number for plone.recipe.plone in a new versions part in
+          buildout.cfg. That works around a buildout bug: buildout breaks if you change
+          the revision pin for a recipe.
+          [wichert]
+        
+        * Fixed bug: when running 'paster create' with --no-interactive option,
+          the package variable given in the command line is ignored.
+          [Mustapha]
+        
+        Version 1.3.4
+        -------------
+        
+        * Added MANIFEST.in to prevent bad releases from svn exports.
+          [fschulze]
+        
+        Version 1.3.3
+        -------------
+        
+        * Move to the newly released Varnish 1.1.2.
+          [wichert]
+        
+        * Remove bad import which broke localcommand support.
+          [deo]
+        
+        * Remove unneeded imports and whitespace cleanup.
+          [deo]
+        
+        Version 1.3.2
+        -------------
+        
+        * Small fix in plone3_theme that did not install correctly with easy_install
+          because of some files missing the the egg informations (added MANIFEST.in).
+          [davconvent]
+        
+        Version 1.3.1
+        -------------
+        
+        * Added 'addcontent' local command to make possible injecting content types
+          in ZopeSkel projects and make the Archetype template 'addcontent' aware.
+          [mustapha]
+        
+        * Updated to Plone 3.0.4.
+          [fschulze]
+        
+        * Rerelease because of a bad egg.
+          [fschulze]
+        
+        Version 1.3
+        -----------
+        
+        * added the `recipe` template
+          [tarek]
+        
+        * Add Plone 2.5.5.
+          [wichert]
+        
+        Version 1.2
+        -----------
+        
+        * Merge a slightly stripped down version of the Jarn Plone hosting template.
+          This provides a convenient way to create a buildout for all Plone 2.5 and
+          3.0 versions with ZEO and optional Varnish based caching.
+          [wichert]
+        
+Keywords: web zope command-line skeleton project
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: Zope2
+Classifier: Framework :: Zope3
+Classifier: Framework :: Plone
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content

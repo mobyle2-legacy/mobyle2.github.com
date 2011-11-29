@@ -1,0 +1,80 @@
+$hr
+# Externals mr.developer products & software not packages as python eggs.
+$hr
+
+[buildout]
+sources=sources
+auto-checkout +=
+#if $with_ploneproduct_ploneappblob and ($major < 4)
+    Products.CMFEditions
+# else
+#    Products.CMFEditions
+#end if
+# $autocheckout.sort()
+#for $item in $autocheckout:
+    $item
+#end for
+
+[sources]
+#set $psources_keys = $plone_sources.keys()
+# $psources_keys.sort()
+#for $item in $psources_keys:
+#set source=$plone_sources[item]
+$source['name'] = $source['type'] $source['url'] $source['path'] $source['asegg']
+#end for
+
+#if $with_ploneproduct_ploneappblob and ($major < 4)
+# one plone3 we need this branch with blob storage
+Products.CMFEditions = svn http://svn.plone.org/svn/collective/Products.CMFEditions/branches/1.2
+#else
+#Products.CMFEditions = svn http://svn.plone.org/svn/collective/Products.CMFEditions/branches/1.2
+#end if
+
+
+[groups]
+# OLD ZOPE2 PRODUCTS SUPPORT
+products-urls = #slurp
+#for $product in $plone_products:
+#if product.startswith('#'):
+${product}
+#else:
+    ${product}
+#end if
+#end for
+
+
+version-suffix-packages = #slurp
+#for $product in $plone_vsp:
+#if product.startswith('#'):
+${product}
+#else:
+    ${product}
+#end if
+#end for
+
+
+nested-packages = #slurp
+#for $product in $plone_np:
+#if product.startswith('#'):
+${product}
+#else:
+    ${product}
+#end if
+#end for
+
+vaporization=http://svn.plone.org/svn/collective/Vaporisation/trunk
+
+# on Upgrades
+# Think to change the plone release URL !!!
+find-links = http://dist.plone.org/release/${plone_version}
+             http://pypi.python.org/simple/ZODB4
+# FOR PILWTOK
+             http://download.zope.org/distribution/
+#if $with_wsgi_support:
+             http://dist.repoze.org/zope2/latest/
+#else
+#             http://dist.repoze.org/zope2/latest/
+#end if
+
+
+# vim:set ft=cfg:

@@ -1,0 +1,257 @@
+$hr
+# Project specific settings
+$hr
+
+#if 'zeo' in $mode:
+#set $zeocomment=''
+#else
+#set $zeocomment='#'
+#end if
+#if $with_ploneproduct_fss
+#set $fsscomment=''
+#else
+#set $fsscomment='#'
+#end if
+#if $with_indexing_solr
+#set $solrcomment=''
+#else
+#set $solrcomment='#'
+#end if
+#if $with_ploneproduct_ploneappblob
+#set $blobcomment=''
+#else
+#set $blobcomment='#'
+#end if
+#if $with_no_zcml
+#set $zcmlcomment='#'
+#else
+#set $zcmlcomment=''
+#end if
+#if $with_ploneproduct_paasync
+#set $asynccomment=''
+#else
+#set $asynccomment='#'
+#end if
+
+[buildout]
+develop = \${buildout:directory}/src.mrdeveloper/zopelib
+sources-dir=\${buildout:directory}/src.mrdeveloper
+
+# extra directories oto add to the python path
+extra-paths=
+# better to edit ./sources.cfg
+auto-checkout +=
+
+# auto tracked developement products
+[sources]
+# see http://pypi.python.org/pypi/mr.developer for documentation
+# better to edit ./sources.cfg
+
+# to integrate fancy stuff to your plone install, you can have a look to
+# http://svn.plone.org/svn/plone/buildouts/plone-coredev/branches/4.0/experimental/
+# where you can find sources section to grab back to your buildout (extend, or local download/edit)
+
+
+[instance]
+
+zodb-cache-size = 50000
+zeo-client-cache-size = 5MB
+
+# attacking zopepy:eggs make instance be built after zopepy
+# in any case thx to the buildout automatic parts sort.
+extra-paths+=\${buildout:extra-paths}
+eggs += \${buildout:eggs}
+    zopelib
+    Plone
+# security hotfixes
+    Products.PloneHotfix20110720
+# release helpers
+    zest.releaser
+    jarn.mkrelease
+    z3c.checkversions [buildout]
+#for $product in $additional_eggs:
+#if product.startswith('#'):
+$product
+#else:
+    ${product}
+#end if
+#end for
+
+products =
+    \${buildout:directory}/products
+    \${productdistros:location}
+
+zcml +=
+
+#if $with_ploneproduct_cynin:
+    ubify.viewlets-overrides
+    ubify.cyninv2theme-overrides
+#end if
+#for $product in $plone_zcml:
+#if product.startswith('#'):
+${product}
+#else:
+${zcmlcomment}    ${product}
+#end if
+#end for
+#zope-conf-additional=
+
+# plone.app.async instance if any
+${asynccomment}zcml-additional =
+${asynccomment}    <include package="plone.app.async" file="single_db_instance.zcml" />
+environment-vars =
+    zope_i18n_compile_mo_files = true
+${asynccomment}    ZC_ASYNC_UUID \${buildout:directory}/var/instance-uuid.txt
+${asynccomment}zope-conf-additional +=
+${asynccomment}    <zodb_db async>
+${asynccomment}        cache-size \${instance:zodb-cache-size}
+${asynccomment}        <zeoclient>
+${asynccomment}            server \${zeoserver:zeo-address}
+${asynccomment}            storage 2
+${asynccomment}            name asyncstorage
+${asynccomment}            blob-dir \${zeoserver:blob-storage}
+${asynccomment}            shared-blob-dir on
+${asynccomment}            var \${buildout:parts-directory}/instance/var
+${asynccomment}            cache-size \${instance:zeo-client-cache-size}
+${asynccomment}        </zeoclient>
+${asynccomment}        mount-point /zasync
+${asynccomment}    </zodb_db>
+${asynccomment}    <product-config zc.z3monitor>
+${asynccomment}        port 8081
+${asynccomment}    </product-config>
+
+# plone.app.async instance if any
+${asynccomment}[instance-worker]
+${asynccomment}<= instance
+${asynccomment}http-address = \${hosts:instance-worker}:\${ports:instance-worker}
+${asynccomment}zcml-additional =
+${asynccomment}    <include package="plone.app.async" file="single_db_worker.zcml"/>
+environment-vars =
+${asynccomment}    zope_i18n_compile_mo_files = true
+${asynccomment}    ZC_ASYNC_UUID \${buildout:directory}/var/worker-uuid.txt
+${asynccomment}zope-conf-additional =
+${asynccomment}    <zodb_db async>
+${asynccomment}        cache-size \${instance-worker:zodb-cache-size}
+${asynccomment}        <zeoclient>
+${asynccomment}            server \${zeoserver:zeo-address}
+${asynccomment}            storage 2
+${asynccomment}            name asyncstorage
+${asynccomment}            blob-dir \${zeoserver:blob-storage}
+${asynccomment}            shared-blob-dir on
+${asynccomment}            var \${buildout:parts-directory}/worker/var
+${asynccomment}            cache-size \${instance-worker:zeo-client-cache-size}
+${asynccomment}        </zeoclient>
+${asynccomment}        mount-point /zasync
+${asynccomment}    </zodb_db>
+${asynccomment}zserver-threads = 2
+${asynccomment}zeo-address = \${zeoserver:zeo-address}
+${asynccomment}blob-storage = \${zeoserver:blob-storage}
+
+
+[kgs]
+file=\${buildout:directory}/etc/${project}-kgs.cfg
+
+[zopepy]
+# Scripts generated filtering
+scripts =
+#z3c.checkversions
+    checkversions
+#jarn.mkrelease
+    mkrelease
+#zest.releaser
+    project_diff
+    project_eggs
+    project_md5
+    project_release
+    package_svn_prepare
+    release_eggs
+    zopepy
+#zope2
+    repozo
+    zeoctl
+    zeopack
+    zeopasswd #slurp
+#for $product in $plone_scripts:
+#if product.startswith('#'):
+${product}
+#else:
+    ${product}
+#end if
+#end for
+
+
+extra-paths += \${instance:extra-paths}
+#if $major < 4
+    \${zope2:location}/lib/python
+#end if
+
+# zope.testing testrunner support
+[testenv]
+INSTANCE_HOME=\${instance:location}
+CONFIG_FILE=\${instance:location}/etc/zope.conf
+
+
+# This testrunner is a zc.recipe.testrunner like
+# See http://pypi.python.org/pypi/zc.recipe.testrunner/
+# It can do xml reports addon if you supply -x as a command line argument
+# It is useful for generating reports for hudson or other contineous integration
+[${sane_name}.test]
+recipe = collective.xmltestreport
+eggs = \${instance:eggs}
+extra-paths = \${instance:extra-paths}
+#if $major < 4
+    \${zope2:location}/lib/python
+#end if
+defaults = ['--exit-with-status', '--auto-color', '--auto-progress']
+environment = testenv
+extra-paths = \${zopepy:extra-paths}
+
+# Plone site creation if no other plonesite preset
+[plonesite]
+# http://pypi.python.org/pypi/collective.recipe.plonesite/
+recipe = collective.recipe.plonesite
+site-id = \${plone:site}
+site-replace=false
+enabled=true
+instance = instance
+# products to autoinstall
+products-initial=
+# profils to autorun
+profiles-initial=
+#   ${sane_name}.policy:default
+${zeocomment}zeoserver = zeoserver
+
+# Plone site (re)creation
+[newplonesite]
+<= plonesite
+site-replace=true
+
+[get-datafs]
+recipe = plone.recipe.command
+update-command = \${get-datafs:command}
+command =
+     rsync -av --partial --progress               \${users:staging}@\${hosts:staging}:\${locations:staging}/backups/                \${buildout:directory}/var/backups/;
+     rsync -av --partial --progress               \${users:staging}@\${hosts:staging}:\${locations:staging}/snapshotbackups/        \${buildout:directory}/var/snapshotbackups/;
+${blobcomment}     rsync -av --partial --progress \${users:staging}@\${hosts:staging}:\${locations:staging}/blobstorage/            \${buildout:directory}/var/blobstorage/;
+${fsscomment}     rsync -av --partial --progress  \${users:staging}@\${hosts:staging}:\${locations:staging}/fss_${project}/  \${locations:fss}/;
+
+[cg.devmode]
+recipe=minitage.recipe.scripts
+eggs=\${instance:eggs}
+    collective.generic.devmode
+scripts=cg.devmode
+mail = foo@localhost
+extra-paths = \${zopepy:extra-paths}
+
+[devmode]
+recipe=minitage.recipe.scripts
+scripts=cg.devmode=devmode
+mail = foo@localhost
+extra-paths = \${zopepy:extra-paths}
+initialization=
+    import sys
+    sys.argv[1:] = ['-m', '\${devmode:mail}', '-p', '--password', '\${zope:password}', '-l', '\${plone:site}', '-u', '\${zope:user}']
+eggs=\${instance:eggs}
+    collective.generic.devmode
+
+# vim:set ft=cfg:

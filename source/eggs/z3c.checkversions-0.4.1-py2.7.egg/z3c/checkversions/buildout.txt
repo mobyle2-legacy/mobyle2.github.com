@@ -1,0 +1,148 @@
+Checking versions of a buildout
+-------------------------------
+
+For the tests, we use two fake local indices
+
+>>> import z3c.checkversions
+>>> from os.path import dirname, sep
+>>> testindex = 'file://' + dirname(z3c.checkversions.__file__).replace(sep, '/') + '/testindex'
+>>> testindex2 = 'file://' + dirname(z3c.checkversions.__file__).replace(sep, '/') + '/testindex2'
+>>> print testindex
+file:///.../testindex
+
+We create a buildout with a [versions] section and a custom index:
+
+>>> import os
+>>> from tempfile import mkstemp
+>>> buildout_fd, buildout_path = mkstemp()
+>>> buildout_file = os.fdopen(buildout_fd, 'w')
+>>> buildout_file.write("""
+... [buildout]
+... index = %s
+... versions = versions
+... [versions]
+... zope.interface = 3.4.0
+... zope.component = 3.0.0
+... """ % testindex)
+>>> buildout_file.close()
+
+We can now check the new highest versions:
+
+>>> from z3c.checkversions import buildout
+>>> checker = buildout.Checker(filename=buildout_path)
+>>> checker.get_versions()
+# Checking buildout file ...
+{'zope.interface': '3.4.0', 'zope.component': '3.0.0'}
+>>> checker.check()
+# Checking buildout file ...
+Reading file:///.../zope.interface/
+zope.interface=3.6.1
+Reading file:///.../zope.component/
+zope.component=3.9.4
+
+We can check only the minor versions:
+
+>>> checker.check(level=2)
+# Checking buildout file ...
+zope.interface=3.4.1
+zope.component=3.0.3
+
+
+We can provide a different index url:
+
+>>> checker = buildout.Checker(filename=buildout_path, index_url=testindex2)
+>>> checker.check()
+# Checking buildout file ...
+Reading file:///.../zope.interface/
+zope.interface=3.6.2
+Reading file:///.../zope.component/
+zope.component=3.9.3
+
+The verbose mode gives the current and previous versions
+
+>>> checker = buildout.Checker(filename=buildout_path, verbose=True)
+>>> checker.check(level=2)
+# Checking buildout file ...
+Reading file:///.../zope.interface/
+zope.interface=3.4.1 # was: 3.4.0
+Reading file:///.../zope.component/
+zope.component=3.0.3 # was: 3.0.0
+
+The old comments are removed:
+
+>>> os.remove(buildout_path)
+>>> buildout_fd, buildout_path = mkstemp()
+>>> buildout_file = os.fdopen(buildout_fd, 'w')
+>>> buildout_file.write("""
+... [buildout]
+... index = %s
+... versions = versions
+... [versions]
+... zope.interface = 3.4.1 # was: 3.4.0
+... zope.component = 3.0.3
+... """ % testindex)
+>>> buildout_file.close()
+
+>>> checker = buildout.Checker(filename=buildout_path, verbose=True)
+>>> checker.check()
+# Checking buildout file ...
+Reading file:///.../zope.interface/
+zope.interface=3.6.1 # was: 3.4.1
+Reading file:///.../zope.component/
+zope.component=3.9.4 # was: 3.0.3
+
+We can provide a blacklist file, containing versions to not suggest.
+This file may come from a buildbot remembering failures.
+
+>>> blacklist_fd, blacklist_path = mkstemp()
+>>> blacklist_file = os.fdopen(blacklist_fd, 'w')
+>>> blacklist_file.write("""
+... zope.component =3.9.4  
+... zope.component = 3.9.3""")
+>>> blacklist_file.close()
+
+>>> checker = buildout.Checker(filename=buildout_path,
+...                            verbose=True,
+...                            blacklist=blacklist_path)
+>>> checker.check()
+# Checking buildout file ...
+Reading file:///.../zope.interface/
+zope.interface=3.6.1 # was: 3.4.1
+Reading file:///.../zope.component/
+zope.component=3.9.2 # was: 3.0.3
+
+We can let the checker to suggest only one new package. This should be used to
+test a just single new package against a set of other packages.
+
+>>> checker = buildout.Checker(filename=buildout_path,
+...                            verbose=True,
+...                            incremental=True,
+...                            blacklist=blacklist_path)
+>>> checker.check()
+# Checking buildout file ...
+Reading file:///.../zope.interface/
+zope.interface=3.6.1 # was: 3.4.1
+zope.component=3.0.3
+
+>>> os.remove(blacklist_path)
+>>> os.remove(buildout_path)
+
+
+console script
+--------------
+
+the 'main' module is exposed through a console_script entry point.
+We are using it directly here:
+
+>>> import sys
+>>> from z3c.checkversions import main
+>>> from subprocess import Popen, PIPE
+>>> p = Popen([sys.executable, main.__file__, '-h'],
+...           stdout=PIPE, stdin=PIPE, stderr=PIPE)
+
+# the "usage" attribute of optparse is inconsistent between python versions
+>>> p.stdout.read().lower().startswith('usage: ')
+True
+
+
+

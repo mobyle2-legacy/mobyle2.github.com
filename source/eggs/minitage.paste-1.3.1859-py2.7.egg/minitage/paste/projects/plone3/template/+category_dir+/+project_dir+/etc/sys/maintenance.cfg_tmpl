@@ -1,0 +1,141 @@
+#echo '#\n'
+# Cron and logrotation related stuff
+#echo '#\n'
+
+# crontabs are:
+# * make an incremental backup per day
+# * make a full backup per week
+# * pack datafs everyday
+# * restart zope instance every night
+#if $with_ploneproduct_fss:
+# * backup FSS every day
+#end if
+
+# Think to include the logrotate configuration file inside your logrotate configuration (ln ?)
+#if $with_ploneproduct_sgdcg
+#set $sgdgcomment=''
+#else
+#set $sgdgcomment='#'
+#end if
+#if $with_ploneproduct_fss
+#set $fsscomment=''
+#else
+#set $fsscomment='#'
+#end if
+#if $with_ploneproduct_ploneappblob
+#set $blobcomment=''
+#else
+#set $blobcomment='#'
+#end if
+
+#if $with_ploneproduct_cynin
+#set $cynincomment=''
+#else
+#set $cynincomment='#'
+#end if
+
+# make an incremental backup per day
+[repozodaily]
+recipe = z3c.recipe.usercrontab
+times = \${crons:repozo-daily}
+command = \${buildout:directory}/bin/backup
+
+# make a full backup per week
+[repozoweekly]
+recipe = z3c.recipe.usercrontab
+times = \${crons:repozo-weekly}
+command = \${buildout:directory}/bin/snapshotbackup
+
+# pack datafs everyday
+# eventually, change wget to your platform CLI http browser
+[zopepackdaily]
+recipe = z3c.recipe.usercrontab
+times = \${crons:zope-pack}
+command = wget "http://$address:\${ports:instance1}/Control_Panel/Database/manage_pack"  --http-user '\${zope:user}'  --http-passwd '\${zope:password}' --post-data '?days:float=0' -O /dev/null
+
+
+# restart zope instance every night
+[zoperestartdaily]
+recipe = z3c.recipe.usercrontab
+times = \${crons:zope-restart}
+#if $with_supervisor
+command = \${buildout:directory}/bin/supervisorctl restart instance1
+#else
+#command = \${buildout:directory}/bin/supervisorctl instance1 restart
+#command = \${buildout:directory}/bin/instance1 restart
+#end if
+
+[chmodcron]
+order=\${fssdaily:recipe}
+recipe = plone.recipe.command
+update-command = \${chmodcron:command}
+command =
+    chmod -v 750 \${buildout:directory}/cron_scripts/*.sh
+
+# please edit the .in file to fit your needs if you change the fss storage layout.
+[fssdaily]
+recipe = collective.recipe.template
+input =\${buildout:directory}/etc/templates/fss_daily.sh.in
+output =\${buildout:directory}/cron_scripts/fss_daily.sh
+backuppath=\${locations:fss-backups}
+
+# please edit the .in file to fit your needs if you change the blob storage layout.
+[blobdaily]
+recipe = collective.recipe.template
+input =\${buildout:directory}/etc/templates/blob_daily.sh.in
+output =\${buildout:directory}/cron_scripts/blob_daily.sh
+backuppath=\${locations:blob-backups}
+
+# keep jkust the last backups
+[fssrotate]
+recipe = collective.recipe.template
+input =\${buildout:directory}/etc/templates/keeplastbackups.sh.in
+output =\${buildout:directory}/cron_scripts/fsskeeplastbackups.sh
+backuppath=\${fssdaily:backuppath}
+to_keep=\${crons:nb_backups_to_keep}
+
+[blobrotate]
+recipe = collective.recipe.template
+input =\${buildout:directory}/etc/templates/keeplastbackups.sh.in
+output =\${buildout:directory}/cron_scripts/blobkeeplastbackups.sh
+backuppath=\${blobdaily:backuppath}
+to_keep=\${crons:nb_backups_to_keep}
+
+# backup FSS every day
+[fssdailycron]
+recipe = z3c.recipe.usercrontab
+times = 15 1 * * *
+command =  \${buildout:directory}/cron_scripts/fss_daily.sh && \${buildout:directory}/cron_scripts/fsskeeplastbackups.sh
+
+# backup BLOB every day
+[blobdailycron]
+recipe = z3c.recipe.usercrontab
+times = 15 1 * * *
+command = \${buildout:directory}/cron_scripts/blob_daily.sh && \${buildout:directory}/cron_scripts/blobkeeplastbackups.sh
+
+[backupdirs]
+${fsscomment}order=\${fssdaily:recipe}
+${blobcomment}order=\${blobdaily:recipe}
+recipe = plone.recipe.command
+update-command = \${backupdirs:command}
+command =
+${blobcomment}    mkdir -pv \${blobdaily:backuppath};\
+${fsscomment}     mkdir -pv \${fssdaily:backuppath};\
+    mkdir -pv \${buildout:directory}/var/backups;\
+    mkdir -pv \${buildout:directory}/var/snapshotbackups
+
+[upload-datafs]
+recipe = plone.recipe.command
+update-command = \${upload-datafs:command}
+command =
+     rsync -av --partial --progress               \${buildout:directory}/var/backups/                \${users:staging}@\${hosts:staging}:\${locations:staging}/backups/;
+     rsync -av --partial --progress               \${buildout:directory}/var/snapshotbackups/        \${users:staging}@\${hosts:staging}:\${locations:staging}/snapshotbackups/;
+${blobcomment}     rsync -av --partial --progress \${buildout:directory}/var/blobstorage/            \${users:staging}@\${hosts:staging}:\${locations:staging}/blobstorage/;
+${fsscomment}     rsync -av --partial --progress  \${locations:fss}/                          \${users:staging}@\${hosts:staging}:\${locations:staging}/fss_${project}/;
+
+[logrotate.conf]
+recipe = collective.recipe.template
+input =  \${buildout:directory}/etc/templates/logrotate.conf.template
+output = \${buildout:directory}/etc/logrotate.conf
+
+\# vim:set ft=cfg:

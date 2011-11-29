@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+REPOSITORY="\${blobdaily:backuppath}"
+INSTANCEPATH="\${buildout:directory}"
+mkdir -p \$REPOSITORY
+cd "\$INSTANCEPATH/var/blobstorage"
+DATE="\$(date "+%F")"
+tar czvf "\$REPOSITORY/blob-\$DATE.tgz" storage
+

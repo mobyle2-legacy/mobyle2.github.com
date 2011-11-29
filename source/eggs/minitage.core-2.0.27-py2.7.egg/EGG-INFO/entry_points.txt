@@ -1,0 +1,3 @@
+[console_scripts]
+minimerge = minitage.core.launchers.minimerge:launch
+

@@ -1,0 +1,85 @@
+QuickStart with minitage
+=============================
+
+The whole doc is not there
+-----------------------------------
+but on http://www.minitage.org
+
+
+Check your Python
+---------------------
+You need a python with setuptools, zlib, bz2 and ssl support.
+
+Try that in your interpretery::
+
+    >>> import tarfile
+    >>> import zipfile
+    >>> import bz2
+    >>> import _ssl
+    >>> import zlib
+    >>> import setuptools
+    >>>
+
+If you do not have that, you can give a try to my pyboostrapper that bootstrap
+a python somewhere::
+
+    wget http://git.minitage.org/git/minitage/shell/plain/PyBootstrapper.sh
+    chmod -x PyBootstrapper.sh
+    bash ./PyBootstrapper.sh /path/to/pythonPrefix
+
+Using virtualenv
+-------------------
+You 'd better to use `virtualenv <http://pypi.python.org/pypi/virtualenv>`_ ,
+minitage fits well with it.
+
+virtualenv is a tool that allow you to create isolated Python
+environments.
+
+
+    Here is how to set up an environment with it:
+
+    - Install virtualenv::
+
+        easy_install virtualenv #(maybe use sudo ;))
+
+    - Install minitage prefix::
+
+        virtualenv --no-site-packages  ~/minitage
+
+    - activate it::
+
+        source ~/minitage/bin/activate
+
+
+    KEEP IN MIND THAT YOU MUST ACTIVATE VIRTUALENV AT ANY TIME YOU USE IT.
+
+minitage installation
+----------------------
+The whole doc is not there but on http://www.minitage.org/installation.html.
+
+Minitage is a classical python egg, you can get it throught easy_install.
+
+To install minitage in a stable version, follow those steps:
+
+- Install minitage::
+
+    easy_install -U mercurial minitage.core
+
+- Sync its packages (all its minilays in minitage terminology).::
+
+    minimerge -s
+
+
+Syncing packages
+----------------------
+
+    To sync all your minilays
+
+        If you need to, fire your virtualenv::
+
+            source ~/minitage/bin/activate
+
+        Sync::
+
+            minimerge -s
+

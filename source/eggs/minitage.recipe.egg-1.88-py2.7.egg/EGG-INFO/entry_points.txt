@@ -1,0 +1,4 @@
+[zc.buildout]
+default = minitage.recipe.egg.egg:Recipe
+egg = minitage.recipe.egg.egg:Recipe
+

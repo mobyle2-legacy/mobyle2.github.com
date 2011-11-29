@@ -29,7 +29,7 @@
           href="static/opensearch.xml"/>
     <link rel="shortcut icon" href="static/favicon.ico"/>
     <link rel="top" title="Mobyle2 - Last updated: Nov 29, 2011" href="index.html" />
-    <link rel="prev" title="Utiliser le pshell" href="guides/dev_guide/tools_notes.html" />
+    <link rel="prev" title="Production mode" href="guides/configuration/prod.html" />
     <script src="static/jquery.min.js" type="text/javascript"></script>
     <script src="static/jquery.zrssfeed.min.js" type="text/javascript"></script>
 
@@ -42,7 +42,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="guides/dev_guide/tools_notes.html" title="Utiliser le pshell"
+          <a href="guides/configuration/prod.html" title="Production mode"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
       </ul>
@@ -68,8 +68,9 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="guides/install_mobyle2_prod.html">Production installation guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/dev_guide/index.html">Developer guide (not done at 100% yet)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/install_mobyle2_prod.html">Production installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/configuration/index.html">Configuration guide</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Contribute to the mobyle2 documentation project</a></li>
@@ -113,11 +114,13 @@ bin/buildout
 <p>This documentation uses sphinx and publishes the results using the <a class="reference external" href="http://pypi.python.org/pypi/sphinxtogithub">sphinxtogithub</a> extension to github pages.
 You will need to edit the source files</p>
 <p>Eg:</p>
-<div class="highlight-sh"><div class="highlight"><pre>vim <span class="nb">source</span>/index.rst
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd </span>mobyle2.github.com
+vim <span class="nb">source</span>/index.rst
 </pre></div>
 </div>
 <p>Then you&#8217;ll have to regenerate the documentation</p>
-<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd source</span> <span class="o">&amp;&amp;</span> make html
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd </span>mobyle2.github.com
+make html
 </pre></div>
 </div>
 <p>When you have finished:</p>
@@ -129,6 +132,14 @@ You will need to edit the source files</p>
 <li>When you receive the email notifying the pages regeneration, look at the <a class="reference external" href="http://mobyle2.github.com/">website</a>.</li>
 </ul>
 </div></blockquote>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd </span>mobyle2.github.com
+make
+firefox index.html
+git add .
+git commit -am <span class="s2">&quot;update doc&quot;</span>
+git push --all
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -144,7 +155,7 @@ You will need to edit the source files</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="guides/dev_guide/tools_notes.html" title="Utiliser le pshell"
+          <a href="guides/configuration/prod.html" title="Production mode"
              >previous</a> |</li>
         <li><a href="index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
       </ul>

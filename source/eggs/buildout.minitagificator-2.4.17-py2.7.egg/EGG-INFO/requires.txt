@@ -1,0 +1,14 @@
+zc.buildout
+minitage.recipe.egg >= 1.88
+minitage.recipe.cmmi
+minitage.recipe.scripts
+minitage.recipe.common
+
+[test]
+virtualenv
+ZopeSkel
+IPython
+zope.testing
+mocker
+zc.recipe.egg
+zc.recipe.cmmi

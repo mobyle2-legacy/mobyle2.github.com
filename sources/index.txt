@@ -16,8 +16,9 @@ Installation guides
    :maxdepth: 1
 
 
-   guides/install_mobyle2_prod
    guides/dev_guide/index.rst
+   guides/install_mobyle2_prod
+   guides/configuration/index.rst
 
 How can i contribute to this documentation
 ==================================================
@@ -26,8 +27,6 @@ How can i contribute to this documentation
     :maxdepth: 1
 
     documente.rst
-
-
 
 
 .. Indices and tables

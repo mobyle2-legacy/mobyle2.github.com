@@ -1,0 +1,237 @@
+Metadata-Version: 1.0
+Name: buildout.minitagificator
+Version: 2.4.17
+Summary: A buildout extension to replace buildout part by minitage interesant ones sponsored by Makina Corpus
+Home-page: http://gitweb.minitage.org/?p=minitage/eggs/buildout.minitagificator
+Author: Mathieu Pasquet
+Author-email: kiorky@cryptelium.net
+License: GPL
+Description: 
+        .. contents::
+        
+        Introduction
+        ============
+        
+        
+            - This packages aims to replace some buildout parts by minitage's ones.
+            - It replaces:
+        
+                - All zc.recipe.egg recipes but zc.recipe.custom:develop
+                - zc.buildout.easy_install.install.Installer
+                - zc.recipe.cmmi
+        
+        
+        Installation
+        =============
+        
+            - just add *buildout.minitagificator* to your buildout 's extension variable like ::
+        
+                [buildout]
+                extensions = buildout.minitagificator
+        
+        Makina Corpus sponsored software
+        ======================================
+        |makinacom|_
+        
+        * `Planet Makina Corpus <http://www.makina-corpus.org>`_
+        * `Contact us <mailto:python@makina-corpus.org>`_
+        
+        .. |makinacom| image:: http://depot.makina-corpus.org/public/logo.gif
+        .. _makinacom:  http://www.makina-corpus.com
+        
+        
+        
+        
+        
+        TIPS
+        ========
+        
+            -   set ``minitage-globalenv`` in buildout for the extension to set cflags
+                and other things borrowed from the project minibuild if any.
+        
+        
+        
+        
+        
+        Tests for buildout.minitagificator buildout extension
+        -------------------------------------------------------
+        
+        Let's create a buildout configuration file::
+        
+            >>> data = """
+            ... [buildout]
+            ... parts =
+            ...     part
+            ... extensions = buildout.minitagificator
+            ... [part]
+            ... recipe=iw.recipe.cmd
+            ... on-install=true
+            ... on-update=true
+            ... cmds=ls
+            ... [egg]
+            ... recipe=zc.recipe.egg:eggs
+            ... eggs=zc.buildout
+            ... [script]
+            ... recipe=zc.recipe.egg:scripts
+            ... eggs=zc.buildout
+            ... scripts=buildout
+            ... """
+            >>> rmdir(tempdir, 'buildout.test')
+            >>> cd(tempdir)
+            >>> sh('mkdir buildout.test')
+            mkdir buildout.test
+            <BLANKLINE>
+            >>> cd('buildout.test')
+            >>> touch('buildout.cfg', data=data)
+            >>> ls('.')
+            buildout.cfg
+        
+        Run the buildout and see the patch in action :=)::
+        
+            >>> a= [mkdir(d) for d in ('eggs', 'develop-eggs', 'bin', 'src')]
+            >>> install_develop_eggs(['buildout.minitagificator'])
+            >>> install_eggs_from_pathes(['buildout.minitagificator'], sys.path)
+            >>> buildout('bootstrap')
+            Creating directory '/tmp/buildout.test/parts'.
+            Generated script '/tmp/buildout.test/bin/buildout'.
+            >>> sh('bin/buildout -vvvvv')
+            bin/buildout...
+            Installing part.
+            buildout.minitagificator: Minitaging some recipes
+            buildout.minitagificator: !!!! Can't patch zc.recipe.egg.(Scripts|Eggs): No module named recipe.egg
+            buildout.minitagificator: !!!! Can't patch zc.recipe.egg.custom.Custom.
+            buildout.minitagificator: !!!! Can't patch zc.recipe.cmmi
+            <BLANKLINE>
+        
+        We also monkey patch zc.recipe.egg stuff, to get our eggs happily installed with minitage recipes.::
+        
+            >>> sh('bin/buildout install egg')
+            bin/buildout install egg...
+            buildout.minitagificator: Minitaging Buildout Installer
+            buildout.minitagificator: Minitaging Buildout scripts
+            buildout.minitagificator: Minitaging Buildout Options
+            buildout.minitagificator: Minitaging some recipes...
+            minitage.recipe: Replaced ('zc.recipe.egg', 'eggs') with ('minitage.recipe.egg', 'default')...
+            Installing egg...
+            buildout.minitagificator: Minitaging some recipes...
+            <BLANKLINE>
+        
+            >>> sh('bin/buildout install script')
+            bin/buildout install script...
+            buildout.minitagificator: Minitaging Buildout Installer
+            buildout.minitagificator: Minitaging Buildout scripts
+            buildout.minitagificator: Minitaging Buildout Options
+            buildout.minitagificator: Minitaging some recipes...
+            minitage.recipe: Replaced ('zc.recipe.egg', 'scripts') with ('minitage.recipe.scripts', 'default')...
+            Installing script....
+            buildout.minitagificator: Minitaging some recipes
+            minitage.recipe: Installing console scripts.
+            minitage.recipe: Installing python egg(s).
+            minitage.recipe: Picked: zc.buildout ...
+            minitage.recipe: Picked: setuptools ...
+            minitage.recipe: Generated scripts: 'buildout'.
+            <BLANKLINE>
+        
+        
+        Changelog
+        =========
+        
+        UP
+        -----
+        
+            - zc.buildout 1.5 support
+            - compatibility with buildout.dumppickedversions
+            - Drop unusued recipes dependency
+        
+        
+        2.4.9
+        ------
+        
+            - Snowleopard and crossplatform fix according to related 
+              minitage.recipe.egg improvments (r.platform_scan() adds)
+        
+        2.4.8
+        ------
+        
+            - more distribute friendly
+        
+        2.4.2
+        ---------
+        
+            - offline mode bugfix
+        
+        2.4.1
+        ------
+        
+            - up tests
+        
+        2.4.0
+        ------
+        
+            - more robust code for monkey patch
+        
+        2.3.9
+        -------
+        
+            - up to minitage.recipe.*
+        
+        -> 2.3.8
+        -----------
+        
+            - fix tests
+            - add minitage-globalenv
+        
+        2.3.3 -> 2.3.5
+        ------------------
+        
+            - filtration of scripts
+        
+        2.3
+        -----
+        
+            - fix buildout initialization problem
+        
+        2.1 -> 2.2
+        ---------------
+        
+            * fix tests (the only 2.2 change is in the test;)
+            * bugfix on egg cache searching
+            * bugfix on scripts filtering
+        
+        2.0
+        -----
+        
+            - 1.0 compatibility
+            - zc.recipe.cmmi is now wrapped
+        
+        1.6
+        -----
+        
+        * Get an absolute path for python!
+        
+        1.5
+        --------
+        
+        * Refactor code
+        * Add a wrapper to zc.buildout.easy_install.scripts
+        * Make it work with relative-paths
+        
+        1.4
+        ---------
+        
+        * code cometics
+        
+        1.1  -> 1.2
+        ------------
+        
+        * packaging
+        
+        1.0
+        ----------------
+        * Initial release
+        
+Platform: UNKNOWN
+Classifier: Framework :: Buildout
+Classifier: Framework :: Plone
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

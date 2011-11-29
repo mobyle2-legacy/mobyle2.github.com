@@ -1,0 +1,557 @@
+Metadata-Version: 1.0
+Name: minitage.recipe.common
+Version: 1.79
+Summary: zc.buildout recipes to compile and install software or python packages and generate scripts or configuration files  sponsored by Makina Corpus.
+Home-page: http://cheeseshop.python.org/pypi/minitage.recipe.common
+Author: Mathieu Pasquet
+Author-email: kiorky@cryptelium.net
+License: BSD
+Description: ******************************************************************************
+        Recipe for compiling and installing software with or without minitage
+        ******************************************************************************
+        
+        .. contents::
+        
+        =======================
+        Introduction
+        =======================
+        
+        
+        ``minitage.core.common`` is an abstract recipe extendended by much of
+        minitage.recipe.*
+        
+        That's why many options of the descendant recipes are from there.
+        
+        
+        ======================================
+        Makina Corpus sponsored software
+        ======================================
+        |makinacom|_
+        
+        * `Planet Makina Corpus <http://www.makina-corpus.org>`_
+        * `Contact us <mailto:python@makina-corpus.org>`_
+        
+          .. |makinacom| image:: http://depot.makina-corpus.org/public/logo.gif
+          .. _makinacom:  http://www.makina-corpus.com
+        
+        
+        
+        
+        
+        
+        
+        ====================================
+        Options shared by all the recipes
+        ====================================
+        
+        Notes
+        --------
+        
+            - All recipes inherit all these options, depending which you are using, those options will have an incidence on the build.
+            - Useless to say that the recipes code is not difficult, and as a deployer, its your job to have a look at the code to avoid surprises.
+            - If you are inside a minitage all recipes will look on your minibuild dependencies section to get things into the environment at execution time. Like feeding CFLAGS, pkgconfig, ldflags and so on.
+            - All recipes look for a minitage section in your buildout file and take dependencies and eggs as minitage projects to get into the environnment too::
+        
+                ...
+                [minitage]
+                dependencies = postgresql-8.3
+                eggs = py-libxslt-1.1
+        
+        Options
+        -------------
+            * urls
+              A set of urls to checkout in the form
+        
+        
+                - The last part or the urls will be the name of your checkout dir unless you have precised the name in "destination directory name"
+                - If you don't specify any scm_type, it will be static unless you specify it in options (see scm)
+                - If you don't specify any revision, it will be not set unless you specify it in options (see scm_revision)
+                - The form is a New line separated list of urls to fetcha in the following form (*the | is part of the line ;)*)::
+        
+                        url to checkout | fetch_type | revision | destination directory name | fetcher_args
+        
+              Here are valid inputs ::
+        
+                    svn://toto | svn | 666 | mydirectoryname | --ignore-externals
+                    svn://toto | svn | 666 | mydirectoryname
+                    svn://toto | svn | 666
+                    svn://toto | svn | | | --ignore-externals
+                    svn://toto | svn
+                    file://toto
+                    http://tata/toto.tgz
+        
+              Where::
+        
+                    fetch_type ::= bzr | hg | git | static (for ftp://, file://, http:// and local files) | svn
+                    
+            UNAME is a platform identifier from:
+            
+                - linux
+                - darwin
+                - freebsd
+                - freebsd(6,7,8)
+                - snowleopard
+                - leopard
+                - cygwin  
+            
+            - executable
+                python executable to use
+            - url(-UNAME) (backward cmpatibility)
+                url to get the source from, in the previous urls syntax
+            - scm
+                default scm to use (a valid minitage fetch factory to use (static, git, svn, bzr, hg).)
+                defaults to static.
+            - scm_revision
+                    default revision to checkout if scm is not static
+            - md5sum
+                md5sum of the checkouted source [see cmmi recipe for documentation]
+            - patch-binary
+                path to the patch program
+            - patch-options
+                options to feed the patch program with [see cmmi recipe for documentation]
+            - patches
+                patches to apply [see cmmi recipe for documentation]
+            - patch
+                A patch to apply, compatibility with zc.recipe.cmmi
+            - patches-UNAME / UNAME-patches
+                - patches to apply to a system or a favor of this system (linux, darwin, freebsd, freebsd, freebsd(6,7,8), snowleopard, leopard, cygwin)
+            - location
+                where to put the build result. (default to parts/PART_NAME)
+            - cc(-UNAME)
+                CC compiler to use (set env['CC'], default not set
+            - cpp(-UNAME)
+                CPP compiler to use (set env['CPP'], default not set
+            - cplusplus(-UNAME)
+                c++ compiler to use (set env['C++'], default not set
+            - includes(-UNAME)
+                directories to add to the include search (compatibility)
+            - ldflags(-UNAME)
+                LDFLAGS to set at compilation time
+            - cflags(-UNAME)
+                CFLAGS to give to the compiler
+            - includes-dirs(-UNAME)
+                Directories to add to the include paths  [see cmmi recipe for documentation]
+            - libraries(-UNAME)
+                libraries to give to the linker eg: libiconv
+            - library-dirs(-UNAME)
+                Directories to add to the linker, and they will be added as -rpath too. [see cmmi recipe for documentation]
+            - rpath(-UNAME)
+                Directories to add as -rpath.
+            - skip-flags: do not set CFLAGS/LDFLAGS/LD_RUN_PATH at all.
+            - environment
+                a part name where we can get key/values to add to the build environment [see cmmi recipe for documentation]
+            - path(-UNAME)
+                line separated list of paths to append to $PATH during build
+            - pkgconfigpath(-UNAME)
+                line separated list of paths to append to $PKGCONFIGPATH during build [see cmmi recipe for documentation]
+            - pythonpath(-UNAME)
+                line separated list of paths to append to $PYTHONPATH during build
+        
+            - osx-target: -mmacosx-version-min setting, wanting users will know what that means ;)
+        
+                minitage put -mmacosx-version-min in the env. if you dont set this to 'false'
+                default value on leopard is 10.5.0 and on snowleopard 10.6.0
+        
+            - force-osx-target
+        
+                force MACOSX_DEPLOYMENT_TARGET to value or default if 'true' (snowleopard (10.5) /leopard(10.6))
+        
+        Options incidences
+        ----------------------
+        
+         - `minitage.recipe:cmmi`
+            executable is not taken in account.
+         - `minitage.recipe:fetch`
+            only the download related options are used.
+         - `minitage.recipe:eggs`, `minitage.recipe:wsgi`, `minitage.recipe:scripts`, `minitage.recipe:printer`
+            the configure-*, and make-*, and extra_options are not used
+        
+        Patches
+        -----------
+        
+            - They can be either a file or an url.
+            - You have means to specify options to the patch program, like -pXXX, abuses of it.
+        
+        
+        
+        ===============================================
+        minitage.recipe API tests
+        ===============================================
+        
+        The divide url function
+        ------------------------------
+        
+            - If you dont precise the directory, its the basename of the url::
+        
+                >>> divide_url ('http://foo/bar|svn|666||--ignore-externals')
+                ('http://foo/bar', 'svn', '666', 'http.foo.bar', '--ignore-externals')
+        
+            - Static as a default::
+        
+                >>> divide_url ('')
+                ('', 'static', '', '', '')
+        
+            - arguements can be optionnal::
+        
+                >>> divide_url ('http://foo/bar')
+                ('http://foo/bar', 'static', '', 'http.foo.bar', '')
+        
+        
+        
+        =======================
+        CHANGELOG
+        =======================
+        
+        1.79 (2011-11-28)
+        -----------------
+        
+        - add lion to macosx flavors
+        
+        
+        1.78 (2011-03-31)
+        -----------------------
+            
+            - python 2.4 retrocompatibities fixes
+            - add os subrelease mecanism (cygwin2)
+            - snowleopard bugfix (match kernel version startswith 10)
+            - add an helper to write env files
+            - fix for mercurial checkouts
+            - add many per/os options
+            - win32 fix
+            - API fix
+            - indentation fix
+            - make things shut up
+            - add patch flavors for darwin, now you have:
+        
+                * darwin : all macs
+                * leopard, snowleopard for a specific one
+        
+            - Add extra-paths to PYTHONPATH while setting PYTHONPATH
+            - Add  part/site-pakckages-VER in PYTHONPATH if exists
+        
+        1.42
+        ------
+        
+            - API compatibility for cmmi
+        
+        
+        1.41
+        -----
+        
+            - splitting cmmi stuff
+        
+        -> 1.40
+        ---------
+        
+            - remove deprecationwarning
+        
+        1.36
+        ------
+        
+            - re namespacing
+        
+        1.35
+        -----
+        
+            - split all recipes into singles ones.
+        
+        .34
+        ---
+        
+        all:
+        
+            - fix rst doc
+        
+            - add ``ldflags`` and ``ldflags`` options
+        
+        minitage.recipe.cmmi:
+        
+            - ``install-in-place`` option added and pivot on make install slightly
+              modified
+            - ``skip-flags`` option added
+            - ``prefix`` option added
+        
+        minitage.recipe.fetch:
+        
+            - ``unpack`` option added
+            - md5sum un revision for static fetcher check added
+        
+        minitage.recipe.printer:
+        
+            - remove fake eggs and develop eggs from fixed versions.
+        
+        -> 1.20
+        ---------
+        
+        Minitage.recipe.egg:
+        
+            - better errors handling
+            - In particular for eggs and url, now md5 urls are preferred.
+            - Also when we can't download a distribution from somewhere, we try to
+              fallback to other distributions which achieve the desired requirement
+            - In the same way, try to compile eggs from any other sdist fullfilling the
+              requirement if an error occurs on the first found.
+        
+        Minitage.recipe.cmmi:
+        
+            - new patch selection for freebsd:
+                freebsd-patches
+        
+            - Fix some double spaces left in compilation flags which broke some exotic
+              system builders.
+        
+        1.14
+        -----
+        
+            - add enrionment file generation to the scripts recipe
+        
+        1.13
+        ---------
+        
+            - cmmi buggy update methods
+        
+        1.11 - 1.12
+        ----------------
+        
+            - rescan egg direcrectories at install time because there may be new
+              develop eggs or eggs installed by buildout extensions (mr.developer)
+            - fix for interaction with buildout.minitagificator and
+              zc.buildout.easy_install..*script
+        
+        
+        1.-1.10
+        ---------
+        
+            - bugfix with cache and static distributions.
+        
+        1.8
+        -------
+        
+            - make patches go in a personnal directory with some md5 mecanism to redownload them.
+        
+        1.4->1.7
+        ----------
+        
+            - x64 fixes
+            - bugfix in static distribution install when you have patches to apply.
+        
+        1.3
+        ----
+        
+            - release uncomitted unittests updates
+        
+        1.2
+        -------
+        
+            - make it compatible with zc.buildout 1.0
+        
+        1.1
+        -----
+        
+            - md5 bug
+        
+        1.0
+        ------
+        
+            * first stable release.
+            * All recipe are documented and well tested.
+            * buildout.minitagificator is completed.
+            * stabilized and synced with other minitage components
+            * minitage.recipe:eggs has been drasticly improved in term of algorythms and speed.
+        
+        0.33->0.34
+        -----------
+        
+            - Fix python executable computation
+        
+        0.32
+        -----
+        
+            - Documentation and tests release
+        
+        0.29
+        ----
+        
+            - Fix bug in recipes initialization because of buildout auto-ordering
+        
+        
+        0.28
+        ----
+        
+            - Add another hook to the cmmi recipe: post-download
+        
+        0.27
+        -----
+        
+            - Fix an annoying bug when you are using virtualenv and a classical
+              python as executable in your recipe, it may occur that sometimes, the
+              virtualenv site-packages is appended to PYTHONPATH. As a fix, we now
+              filter all python core lib directories and site packages that are not
+              relevant to the python used by the recipe.
+        
+        0.26
+        -----
+        
+            - Introduce the minitage.recipe:wsgi recipe wich wraps a paste wsgi application
+              in a script eatable by mod_wsgi
+        
+        0.25
+        ------
+        
+            - stop lowering project_name
+        
+        
+        0.23->0.24
+        -----------
+        
+            - Fix small bugs in printer
+        
+        0.22
+        -----
+        
+            - Introduce a new recipe : minitage.recipe:printer which prints/dumps to a
+              file all versions eggs needed to achieve requirements.
+        
+        0.21
+        -----
+        
+            - Fix bug in compilation  directory guessing
+        
+        0.20
+        ------
+        
+            - Fix bug in distribution reloading
+            - Better handling of pkg_resources's working set
+        
+        0.19
+        --------
+        
+            - add a post build hook
+        
+        0.18
+        -------
+        
+            - Change installation order
+        
+        0.16
+        -------
+        
+            - Fix index and find links options
+        
+        0.14 -> 0.15
+        -------------
+            - logging output improved
+            - newest mode handling
+        
+        0.13
+        -----
+        - fix static dist install
+        
+        
+        
+        0.12
+        ------
+        
+            - bugfix for zipped eggs
+        
+        0.11
+        -----
+        
+            - import bugfix for minitagificator
+        
+        0.10
+        -----------
+        
+            - Change some logging options
+            - follow allow host option from buildout for eggs installation
+        
+        0.9
+        -----------
+        
+            - Do not rely anymore on zc.buildout ez for script generation
+        
+        0.7 -> 0.8
+        -----------
+        
+            - egg and scripts recipes were rewritten a lot to adapt their api to
+              zc.recipe.egg
+            - Common to all recipes: all arguements are now identicak to zc.recipe.cmmi
+              or zc.recipe.egg
+            - Dependencies resolver has been improved a lot
+            - For static distribution, you can know speicify multiple urls with 'urls'
+        
+        
+        0.6
+        ------
+        
+            - fix bug in path generation in minitage.recipe:scripts
+        
+        0.2 -> 0.5
+        -------------
+        
+            - add make-options for make option in minitage.recipe.cmmi
+            - multiple bugfixes
+            - make things append in subprocess for environment conversation
+            - add initiaiization code for generated python interpreter in
+              minitage.recipe:scripts
+        
+        0.1
+        ------
+            - add fetch recipe
+        
+        0.0.13
+        -------
+         - fix zip safe flag
+        
+        0.0.11
+        -------
+         - Include eggs dependencies by default
+         - Modulate the script recipe to append in the PYTHONPATH all egg dependencies
+           found into the local eggs cache.
+        
+        0.0.10
+        -------
+         - Add pyc regeneration feature stolen from zc.buildout
+        
+        0.0.9
+        -------
+         - minor fix for run without minitage
+         - fix for long path/compilation flags
+        
+        0.0.8
+        -------
+         - minor fix for scm check outs
+        
+        0.0.7
+        -------
+         - add C compiler cflags/ldflags/makeopts customistation options
+        
+        0.0.6
+        -------
+         - Change the eggs installation way to do, now using easy_install everywhere
+           Also include a buildout option to allow to include eggs dependencies (ez-dependencies-true)
+         - Set the __doc__ variable in scripts to fix some scripts like bzr.
+        
+        0.0.3
+        -------
+         - fix scm choice when there are eggs and url in the same part
+        
+        0.0.2
+        ------
+         - bugfix version
+         - fix linking problem
+        
+        0.0.1
+        ------
+         - Initial version
+        
+        
+        
+        
+Keywords: development buildout recipe
+Platform: UNKNOWN
+Classifier: Framework :: Buildout
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

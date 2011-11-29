@@ -43,12 +43,6 @@ Mobyle2 base Installation
         ssh-keygen -> enregistrer la clé dans les repos github comme deploy key
         minimerge -av mobyle2
 
-When the install crashes, we need to touch the missing production-related settings file which MUST not be commited.
-- :user: mobyle2
-
-.. code-block:: sh
-
-    touch $prefix/pyramid/mobyle2/etc/sys/settings-prod.cfg
 
 The project shell profile
 ------------------------------
@@ -70,7 +64,7 @@ Now, to use it in your current shell, please source it:
 
     . $prefix/pyramid/mobyle2/sys/share/minitage/minitage.env
 
-***PLEASE Always activate the environment shell before doing anything to the project.***
+**PLEASE Always activate the environment shell before doing anything to the project.**
 
 Postgresql installation
 -----------------------------------------------------------------
@@ -174,37 +168,8 @@ On peut ensuite se connecter au serveur ldap pour nos tests.
 
 How to override some settings locally to your instance:
 --------------------------------------------------------
+Please refer to the :ref:`override settings` section.
 
-It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).
-
-Make a local config in the project directory file like ``$prefix/pyramid/mobyle2/myconfig.cfg``.
-
-.. code-block:: sh
-
-    touch myconfig.cfg
-
-Input any changes you want after extending the dev buildout configuration:
-EG:
-
-.. code-block:: ini
-
-
-    [buildout]
-    extends=minitage.buildout-dev.cfg
-    [db]
-    port=5439
-
-
-
-logrotate & init script installation
------------------------------------------------------------------
-- :user: root
-
-.. code-block:: sh
-
-    ln -s $prefix/pyramid/mobyle2/etc/init.d/supervisor.initd /etc/init.d/supervisor.mobyle2
-    ln -s $prefix/pyramid/mobyle2/etc/logrotate.conf /etc/logrotate.d/mobyle2
-    update-rc.d -f supervisor.mobyle2 defaults 99
 
 Launch the application in foreground
 -----------------------------------------------------------------
@@ -239,10 +204,7 @@ Then you can update python packages or sources grabbed on various repositories f
 On any suspicious output, just update the code by hand of the relative modules inside ``src.mrdeveloper/``.
 
 
-
-
-
-Some nots:
+Some notes:
 --------------
 
 - It is also important to know that velruse runs inside the webserver but as a separate component.
@@ -251,5 +213,8 @@ Some nots:
 URLS::
 
     http://localhost:9091 : application
+
+
+
 
 .. vim:set ft=rest sts=4 ts=4 et:

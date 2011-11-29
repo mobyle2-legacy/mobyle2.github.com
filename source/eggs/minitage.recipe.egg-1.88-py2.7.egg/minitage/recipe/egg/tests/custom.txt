@@ -1,0 +1,89 @@
+Installing eggs with custom build_ext_options
+++++++++++++++++++++++++++++++++++++++++++++++++
+::
+
+    >>> rmdir(tempdir)
+    >>> mkdir(tempdir)
+    >>> cd(tempdir)
+    >>> a = [mkdir(d) for d in ('eggs', 'develop-eggs', 'bin', 'src')]
+    >>> install_develop_eggs(['minitage.recipe.egg'])
+    >>> install_eggs_from_pathes(['zc.buildout'], sys.path)
+    >>> touch('buildout.cfg')
+    >>> sh('buildout -o bootstrap')
+    buildout -o bootstrap...
+    >>> index_url = start_server(os.path.sep.join(tempdir))
+    >>> if not os.path.exists('foo'):
+    ...     mkdir('foo')
+    ... else:
+    ...     rmdir('foo')
+    ...     mkdir('foo')
+    >>> cd('foo')
+    >>> touch('setup.py', data="""
+    ... from setuptools import setup
+    ... import os
+    ... if os.path.exists('setup.cfg'):
+    ...     print 'setup.cfg:'
+    ...     print '---------------'
+    ...     print open('setup.cfg').read()
+    ... setup(name='foo', version='2.0')
+    ...
+    ... """)
+    >>> sh('python setup.py sdist')
+    p...
+    >>> noecho = [shutil.copy(os.path.join('dist', d), os.path.join('..', d)) for d in os.listdir('dist')]
+    >>> cd('..')
+
+Just add the bdist_ext options you want to the buildout
+
+    >>> data = """
+    ... [versions]
+    ... [buildout]
+    ... download-cache=${buildout:directory}
+    ... eggs-directory =${buildout:directory}/eggs
+    ... parts =
+    ...     part
+    ... [part]
+    ... recipe=minitage.recipe.egg
+    ... find-links=%(index)s
+    ... define=Foo=1,Bar=2
+    ... bdistext-foo = bar
+    ... bdistext-bar = titi
+    ... foo-bdistext-foo = tutu
+    ... foo-swig-cpp = toto
+    ... eggs=foo
+    ... """%{'index': index_url}
+    >>> touch('buildout.cfg', data=data)
+    >>> sh('bin/buildout -vvvvv install part')
+    b...
+    minitage.recipe: Using bdist_ext option: define = Foo=1,Bar=2
+    minitage.recipe: Using bdist_ext option: bar = titi
+    minitage.recipe: Using bdist_ext option: foo = bar...
+    minitage.recipe: foo: Using bdist_ext option: swig-cpp = toto
+    minitage.recipe: foo: Using bdist_ext option: foo = tutu...
+    setup.cfg:
+    ---------------
+    [egg_info]
+    tag_build =
+    tag_date = 0
+    tag_svn_revision = 0
+    <BLANKLINE>
+    [build_ext]
+    foo = tutu
+    bar = titi
+    swig-cpp = toto
+    define = Foo=1,Bar=2...
+    setup.cfg:
+    ---------------
+    [egg_info]
+    tag_build =
+    tag_date = 0
+    tag_svn_revision = 0
+    <BLANKLINE>
+    [build_ext]
+    foo = tutu
+    bar = titi
+    swig-cpp = toto
+    define = Foo=1,Bar=2...
+    minitage.recipe: All egg dependencies seem to be installed!...
+
+

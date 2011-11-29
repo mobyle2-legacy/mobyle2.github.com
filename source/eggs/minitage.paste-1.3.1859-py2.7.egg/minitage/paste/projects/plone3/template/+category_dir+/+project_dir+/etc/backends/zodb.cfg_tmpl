@@ -1,0 +1,8 @@
+
+
+[buildout]
+storage-mode=zodb
+
+
+
+# vim:set ft=cfg:

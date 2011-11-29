@@ -1,0 +1,117 @@
+Distribute Support
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Let's create a buildout configuration free from anything
+::
+
+    >>> rmdir(tempdir)
+    >>> mkdir(tempdir)
+    >>> cd(tempdir)
+    >>> a = [mkdir(d) for d in ('eggs', 'develop-eggs', 'bin', 'src', 'd')]
+    >>> install_develop_eggs(['minitage.recipe.egg'])
+    >>> install_eggs_from_pathes(['zc.buildout'], sys.path)
+    >>> data = """
+    ... [buildout]
+    ... versions = versions
+    ... eggs-directory=${buildout:directory}/eggs
+    ... download-cache=${buildout:directory}/d
+    ... parts = part
+    ...         s
+    ... [part]
+    ... recipe=minitage.recipe.egg
+    ... eggs = virtualenv
+    ... [s]
+    ... recipe=minitage.recipe.scripts
+    ... eggs = virtualenv
+    ... [versions]
+    ... setuptools = 1
+    ... zc.buildout = 1.3.0
+    ... """
+    >>> touch('buildout.cfg', data=data)
+
+Going disitribute !
+::
+
+    >>> n = [shutil.rmtree(os.path.join('eggs', d)) for d in os.listdir('eggs')]
+    >>> open('bootstrap.py', 'w').write(urllib2.urlopen(BOOTSTRAP).read())
+    >>> sh('%s bootstrap.py -d' % sys.executable)
+    /...
+    >>> ret = os.listdir('eggs');ret.sort();ret
+    ['distribute...', 'zc.buildout...']
+
+If we are in distribute mode, it would significate that distribute is installed and is available on sys.path.
+If so, we detect that and we will just install distribute rather than setuptools if any requirement wants setuptools.
+And even if the version is fixed.
+::
+
+    >>> data = """
+    ... [buildout]
+    ... versions = versions
+    ... eggs-directory =${buildout:directory}/eggs
+    ... download-cache=${buildout:directory}/d
+    ... parts = part
+    ...         s
+    ... [part]
+    ... recipe=minitage.recipe.egg
+    ... eggs = virtualenv
+    ... [s]
+    ... recipe=minitage.recipe.scripts
+    ... eggs = virtualenv
+    ... [versions]
+    ... setuptools = 1
+    ... zc.buildout = 1.3.0
+    ... """
+    >>> touch('buildout.cfg', data=data)
+
+Running buildout with distribute to see that it's picked.
+::
+
+    >>> sh('bin/buildout -vvvvvv install part s')
+    bin/buildout...
+    minitage.recipe: Using distribute!...
+
+Using setuptools, whereas it has its flaws, is supported also.
+
+A little boilerplate to make a environment with setuptools.
+::
+
+    >>> sh('bin/virtualenv venv --no-site-packages')
+    b...
+    setuptools...
+    >>> n = os.remove('bin/buildout')
+    >>> recipe_location = pkg_resources.working_set.find(pkg_resources.Requirement.parse('minitage.recipe.egg')).location
+    >>> cwd = os.getcwd()
+    >>> os.chdir('%s/..' % recipe_location)
+    >>> sh('%s/venv/bin/python setup.py develop' % cwd)
+    /...
+    >>> os.chdir(cwd)
+    >>> n = [shutil.rmtree(os.path.join('eggs', d))
+    ... for d in os.listdir('eggs')
+    ... if os.path.isdir(os.path.join('eggs', d))]
+
+Running buildout with setuptools to see that it's picked.
+::
+
+    >>> sh('venv/bin/python bootstrap.py')
+    venv/bin/python bootstrap.py
+    Generated script '/tmp/buildout.test/bin/buildout'...
+    >>> ret = os.listdir('eggs');ret.sort();ret
+    ['setuptools...', 'zc.buildout...']
+    >>> data = """
+    ... [buildout]
+    ... versions = versions
+    ... eggs-directory =${buildout:directory}/eggs
+    ... download-cache=${buildout:directory}/d
+    ... parts = part
+    ... [part]
+    ... recipe=minitage.recipe.egg
+    ... eggs = virtualenv
+    ... [versions]
+    ... zc.buildout = 1.3.0
+    ... """
+    >>> touch('buildout.cfg', data=data)
+    >>> install_develop_eggs(['minitage.recipe.egg'])
+    >>> sh('bin/buildout -vvvvvv install part')
+    bin/buildout -vvvvvv install part...
+    minitage.recipe: Using setuptools!...
+

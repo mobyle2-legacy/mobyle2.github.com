@@ -29,8 +29,8 @@
           href="../static/opensearch.xml"/>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
     <link rel="top" title="Mobyle2 - Last updated: Nov 29, 2011" href="../index.html" />
-    <link rel="next" title="Developer guide (not done at 100% yet)" href="dev_guide/index.html" />
-    <link rel="prev" title="Welcome to Mobyle2’s documentation!" href="../index.html" />
+    <link rel="next" title="Configuration guide" href="configuration/index.html" />
+    <link rel="prev" title="Utiliser le pshell" href="dev_guide/tools_notes.html" />
     <script src="static/jquery.min.js" type="text/javascript"></script>
     <script src="static/jquery.zrssfeed.min.js" type="text/javascript"></script>
 
@@ -43,10 +43,10 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="dev_guide/index.html" title="Developer guide (not done at 100% yet)"
+          <a href="configuration/index.html" title="Configuration guide"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../index.html" title="Welcome to Mobyle2’s documentation!"
+          <a href="dev_guide/tools_notes.html" title="Utiliser le pshell"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
       </ul>
@@ -72,8 +72,9 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
 <h3><a href="../index.html">Table Of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">Production installation guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_guide/index.html">Developer guide (not done at 100% yet)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Production installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/index.html">Configuration guide</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../documente.html">Contribute to the mobyle2 documentation project</a></li>
@@ -164,8 +165,8 @@ minimerge -av mobyle2-prod
 </pre></div>
 </div>
 </div>
-<div class="section" id="postgresql-postgresql">
-<h2>Postgresql postgresql<a class="headerlink" href="#postgresql-postgresql" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuring-postgresql">
+<h2>Configuring postgresql<a class="headerlink" href="#configuring-postgresql" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><table class="first docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -188,46 +189,11 @@ su postgres -c <span class="s2">&quot;createdb  -Eutf-8 -O mobyle2 mobyle2&quot;
 </pre></div>
 </div>
 <p>Please note the postgresql password for future reference.</p>
-<p>Change by overriding the default buildout configuration files into etc/sys/settings-prod.cfg</p>
-<div class="highlight-ini"><pre>[users]
-pyramid=mobyle2
-
-[passwords]
-admin=XXXXXX
-
-[db] # parametres postgresql
-user = mobyle2
-password =  ************
-host = localhost
-port = 5432
-name = mobyle2
-
-[hosts]
-instance=0.0.0.0
-instance1=0.0.0.0
-instance2=0.0.0.0
-instance3=0.0.0.0
-instance4=0.0.0.0
-# l'HOST exterieur d'ou est accessible velruse
-velruse=mobyle2.somewhere.fr
-[ports]
-instance=9090
-instance1=9091
-instance2=9092
-instance3=9093
-instance4=9094
-# le port
-velruse=8080</pre>
 </div>
-<p>Please note that it is important to define here:</p>
-<blockquote>
-<div><ul class="simple">
-<li>The database access</li>
-<li>The filesystem user</li>
-<li>The passwords</li>
-</ul>
-</div></blockquote>
-<p>It is also important to configure the &#8216;Velruse&#8217; address. It must be accessible both from inside and outside the inner network of this backend (browser, reverse proxy, backend).</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Make your changes inside <tt class="docutils literal"><span class="pre">etc/sys/settings-prod.cfg</span></tt>.
+Please refer to the <a class="reference internal" href="configuration/prod.html#prod-conf"><em>Production mode</em></a> section of this manual.</p>
 </div>
 <div class="section" id="logrotate-init-script-installation">
 <h2>logrotate &amp; init script installation<a class="headerlink" href="#logrotate-init-script-installation" title="Permalink to this headline">¶</a></h2>
@@ -322,10 +288,10 @@ http://localhost:9091 : application</pre>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="dev_guide/index.html" title="Developer guide (not done at 100% yet)"
+          <a href="configuration/index.html" title="Configuration guide"
              >next</a> |</li>
         <li class="right" >
-          <a href="../index.html" title="Welcome to Mobyle2’s documentation!"
+          <a href="dev_guide/tools_notes.html" title="Utiliser le pshell"
              >previous</a> |</li>
         <li><a href="../index.html">Mobyle2 - Last updated: Nov 29, 2011</a> &raquo;</li> 
       </ul>

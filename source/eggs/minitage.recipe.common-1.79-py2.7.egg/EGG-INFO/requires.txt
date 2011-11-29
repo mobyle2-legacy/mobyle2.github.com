@@ -1,0 +1,8 @@
+zc.buildout
+minitage.core
+iniparse
+
+[test]
+IPython
+zope.testing
+mocker

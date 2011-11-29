@@ -1,0 +1,6 @@
+[zc.buildout]
+default = minitage.recipe.scripts.scripts:Recipe
+eggs = minitage.recipe.scripts.scripts:Recipe
+script = minitage.recipe.scripts.scripts:Recipe
+scripts = minitage.recipe.scripts.scripts:Recipe
+

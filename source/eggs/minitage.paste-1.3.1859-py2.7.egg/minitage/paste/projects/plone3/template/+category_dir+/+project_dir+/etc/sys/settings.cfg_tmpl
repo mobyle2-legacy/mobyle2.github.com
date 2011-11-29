@@ -1,0 +1,205 @@
+# Sysadmin settings like hosts, credentials, paths, cache settings, and loglevels
+#if $with_ploneproduct_sgdcg
+#set $sgdgcomment=''
+#else
+#set $sgdgcomment='#'
+#end if
+#if $with_ploneproduct_cynin
+#set $cynincomment=''
+#else
+#set $cynincomment='#'
+#end if 
+
+#if $with_haproxy
+#set $hapcomment=''
+#else:
+#set $hapcomment='#'
+#end if
+
+[reverse_proxy]
+scheme=$reverseproxy_scheme
+host=$reverseproxy_host
+port=$reverseproxy_port
+
+[hosts]
+# setted here but just as information, it may not be used.
+zeo = $zeo_host
+zeo-buildbot = $zeo_host
+instance= $address
+instance1=$address
+instance2=$address
+instance3=$address
+instance4=$address
+instance-worker=$address
+instance-newsletter=$address
+instance-cynin=$address
+instance-buildbot=$address
+#may not be used
+supervisor=$supervisor_host
+balancer=$haproxy_host
+syslog = 127.0.0.1
+solr = $solr_host
+buildbot-master=${buildbot_master_host}
+staging=$staging_host
+#if not $with_haproxy
+zope-front=\${hosts:instance1}
+#end if
+${hapcomment}zope-front=\${hosts:balancer} 
+deliverance=$deliverance_host
+deliverance-backend=\${hosts:zope-front}
+
+[ports]
+# other instances, in case.
+zeo = $zeo_port
+zeo-buildbot =${zeo_port_buildbot}
+instance=$http_port
+instance1=$http_port1
+instance2=$http_port2
+instance3=$http_port3
+instance4=$http_port4
+instance-worker=$http_port9
+instance-newsletter=$http_port5
+instance-cynin=$http_port6
+cynin-webdav=$http_port7
+instance-buildbot=$http_port_buildbot
+#may not be used
+supervisor=$supervisor_port
+balancer=$haproxy_port
+solr = $solr_port
+buildbot-master-control=${buildbot_master_control_port}
+buildbot-master-web=${buildbot_master_web_port}
+#if not $with_haproxy
+zope-front=\${ports:instance1}
+#end if
+${hapcomment}zope-front=\${ports:balancer}
+deliverance=$deliverance_port
+deliverance-backend=\${ports:zope-front}
+
+
+
+
+[buildbot]
+slave-password=${buildbot_slave_password}
+
+[crons]
+# at 3:00am NO WHITESPACE!!!
+buildbot-${project}=$buildbot_cron
+# at 1:03am
+zope-restart=15 1 * * *
+zope-pack=30 1 * * *
+# at 1:05am
+repozo-daily=05 1 * * *
+# only sunday at 1:10am
+repozo-weekly=10 1 * * 6
+# number of backups to rotate
+nb_backups_to_keep=16
+
+#if 'relstorage' in $mode:
+[database]
+\#for non standart port use host:port
+host=$relstorage_host
+port=$relstorage_port
+dbname=$relstorage_dbname
+user=$relstorage_dbuser
+password=$relstorage_password
+#else
+\#for non standart port use host:port
+#host=$relstorage_host
+#port=$relstorage_port
+#dbname=$relstorage_dbname
+#user=$relstorage_dbuser
+#password=$relstorage_password
+#end if
+
+[zope]
+user=$zope_user
+password=$zope_password
+debug-mode=OFF
+verbose-security=off
+z2-log-level=INFO
+event-log-level=INFO
+
+[cache]
+zeo-client-cache-size = 80MB
+session-timeout-minutes=90
+
+[plone]
+# Site ID
+site = $plonesite
+
+[users]
+#system user
+zope=$running_user
+#haproxy user
+staging=$staging_user
+
+[supervisor-webadmin]
+user=$supervisor_user
+password=$supervisor_password
+
+[locations]
+# aboslute paths to avoid buildout auto build of reffered part
+deliverance-themes=\${buildout:directory}/src/themes
+solr = \$solr_path
+blob-storage=\${buildout:directory}/var/blobstorage/storage
+blob-backup=\${buildout:directory}/var/blobstorage/backup
+
+testfss-backup=  \${buildout:directory}/parts/instance/var/fss_backup
+testfss-storage= \${buildout:directory}/parts/instance/var/fss_storage
+fss=\${buildout:directory}/var/fss
+global-fss-backup=  \${locations:fss}/fss_backup_global
+global-fss-storage= \${locations:fss}/fss_storage_global
+fss-backup=  \${locations:fss}/fss_backup_${project}
+fss-storage= \${locations:fss}/fss_storage_${project}
+buildbot-testfss-backup=  \${buildout:directory}/parts/instance-buildbot/var/fss_backup
+buildbot-testfss-storage= \${buildout:directory}/parts/instance-buildbot/var/fss_storage
+${sgdgcomment}testfss-backup-newsletter= \${buildout:directory}/parts/instance-newsletter/var/fss_backup
+${sgdgcomment}testfss-storage-newsletter=\${buildout:directory}/parts/instance-newsletter/var/fss_storage
+${sgdgcomment}fss-backup-newsletter= \${buildout:directory}/var/fss/fss_backupnewsletter_${project}
+${sgdgcomment}fss-storage-newsletter=\${buildout:directory}/var/fss/fss_storagenewsletter_${project} 
+${cynincomment}testfss-backup-cynin= \${buildout:directory}/parts/instance-cynin/var/fss_backup
+${cynincomment}testfss-storage-cynin=\${buildout:directory}/parts/instance-cynin/var/fss_storage
+${cynincomment}fss-backup-cynin= \${buildout:directory}/var/fss/fss_backupcynin_${project}
+${cynincomment}fss-storage-cynin=\${buildout:directory}/var/fss/fss_storagecynin_${project}
+blob-backups=\${buildout:directory}/var/blobbackups
+fss-backups=\${buildout:directory}/var/fssbackups 
+staging=$staging_path
+
+# if you want separated FSS directories, you can use that
+#testfss-backup1= \${buildout:directory}/parts/instance1/var/fss_backup
+#testfss-storage1=\${buildout:directory}/parts/instance1/var/fss_storage
+#testfss-backup2= \${buildout:directory}/parts/instance2/var/fss_backup
+#testfss-storage2=\${buildout:directory}/parts/instance2/var/fss_storage
+#testfss-backup3= \${buildout:directory}/parts/instance3/var/fss_backup
+#testfss-storage3=\${buildout:directory}/parts/instance3/var/fss_storage
+#testfss-backup4= \${buildout:directory}/parts/instance4/var/fss_backup
+#testfss-storage4=\${buildout:directory}/parts/instance4/var/fss_storage
+
+#fss-backup1= \${buildout:directory}/var/fss_backup1_${project}
+#fss-storage1=\${buildout:directory}/var/fss_storage1_${project}
+#fss-backup2= \${buildout:directory}/var/fss_backup2_${project}
+#fss-storage2=\${buildout:directory}/var/fss_storage2_${project}
+#fss-backup3= \${buildout:directory}/var/fss_backup3_${project}
+#fss-storage3=\${buildout:directory}/var/fss_storage3_${project}
+#fss-backup4= \${buildout:directory}/var/fss_backup4_${project}
+#fss-storage4=\${buildout:directory}/var/fss_storage4_${project}
+
+
+# Command below is important
+# if not, fss tests or tests using fss in their configuration will fail
+# You can add here directories to create
+[mkdirs]
+command =
+#    mkdir -pv \${buildout:directory}/foo
+
+
+#do not remove, internal for zeoserver eggs buildout & extends
+[zeoserver]
+eggs=
+
+[mirrors]
+sourceforge = ovh.dl.sourceforge.net
+minitage = distfiles.minitage.org/public/externals/minitage
+plone = plone.org
+zope = download.zope.org
+# vim:set ft=cfg:

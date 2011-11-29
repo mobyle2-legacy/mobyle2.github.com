@@ -22,14 +22,15 @@ Eg:
 
 .. code-block:: sh
 
-        vim source/index.rst
+    cd mobyle2.github.com
+    vim source/index.rst
 
 Then you'll have to regenerate the documentation
 
 .. code-block:: sh
 
-    cd source && make html
-
+    cd mobyle2.github.com
+    make html
 
 When you have finished:
 
@@ -37,6 +38,15 @@ When you have finished:
     - Commit ALL the changes you made and what has been regenerated
     - Push them to github
     - When you receive the email notifying the pages regeneration, look at the website_.
+
+.. code-block:: sh
+
+    cd mobyle2.github.com
+    make
+    firefox index.html
+    git add .
+    git commit -am "update doc"
+    git push --all
 
 
 

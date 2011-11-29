@@ -1,0 +1,129 @@
+Installing eggs with a patch
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+We need to specify a find-links entry to make the recipe find our 'foo' egg as it is not on pypi
+As we want to show the update capability of the recipe, we will first install the oldest foo version.
+
+Let's create a buildout installation::
+
+    >>> rmdir(tempdir)
+    >>> mkdir(tempdir)
+    >>> cd(tempdir)
+    >>> a = [mkdir(d) for d in ('eggs', 'develop-eggs', 'bin', 'src')]
+    >>> install_develop_eggs(['minitage.recipe.egg'])
+    >>> install_eggs_from_pathes(['zc.buildout'], sys.path)
+    >>> touch('buildout.cfg')
+    >>> sh('buildout -o bootstrap')
+    buildout -o bootstrap...
+    >>> if not os.path.exists('foo'):
+    ...     mkdir('foo')
+    ... else:
+    ...     rmdir(foo)
+    ...     mkdir('foo')
+    >>> touch('foo/setup.py', data="""
+    ... from setuptools import setup
+    ... setup(name='foo', version='1.0')
+    ...
+    ... """)
+    >>> touch('foo/toto.py', data="""
+    ... def f():
+    ...     print "foo"
+    ...
+    ... """)
+    >>> noecho = [os.remove(d) for d in os.listdir('.') if '.tar.gz' in d]
+    >>> os.chdir('foo')
+    >>> sh('python setup.py sdist')
+    p...
+    >>> touch('setup.py', data="""
+    ... from setuptools import setup
+    ... setup(name='foo', version='2.0')
+    ...
+    ... """)
+    >>> sh('python setup.py sdist')
+    p...
+    >>> noecho = [shutil.copy(os.path.join('dist', d), os.path.join('..', d)) for d in os.listdir('dist')]
+    >>> os.chdir('..')
+    >>> touch('patch', data="""
+    ... --- foo.old/setup.py    2009-04-18 13:36:40.199680168 +0200
+    ... +++ foo/setup.py        2009-04-18 13:26:12.307692349 +0200
+    ... @@ -2,3 +2,7 @@
+    ...  from setuptools import setup
+    ...  setup(name='foo', version='2.0')
+    ...
+    ... +
+    ... +
+    ... +print 'patched'
+    ... +
+    ... """)
+    >>> index_url = start_server(os.path.sep.join(tempdir))
+
+Patching is easy, just put your patches in YouEgg-patches.
+
+    >>> data = """
+    ... [versions]
+    ... foo=1.0
+    ... [buildout]
+    ... download-cache=${buildout:directory}
+    ... eggs-directory =${buildout:directory}/eggs
+    ... parts =
+    ...     part
+    ... [part]
+    ... recipe=minitage.recipe.egg
+    ... find-links=%(index)s
+    ... foo-patches = ${buildout:directory}/patch
+    ... eggs=foo
+    ... """%{'index': index_url}
+    >>> touch('buildout.cfg', data=data)
+    >>> sh('bin/buildout install part')
+    bin/buildout install part...
+    can't find file to patch at input line 4
+    Perhaps you used the wrong -p or --strip option?
+    The text leading up to this was:
+    --------------------------
+    |
+    |--- foo.old/setup.py...
+    |+++ foo/setup.py...
+    --------------------------
+    No file to patch.  Skipping patch.
+    1 out of 1 hunk ignored...
+    minitage.recipe: Installation error.
+    minitage.recipe: Message was:
+            ('Failed', 'patch -t -Np0 < /tmp/buildout.test/minitage/eggs/patches/foo/1.0/patch_d96115b00b41e282469f73708c68bdaf/patch')...
+
+Oups, the patch level ! .
+
+    >>> data = """\
+    ... [versions]
+    ... foo=1.0
+    ... [buildout]
+    ... download-cache=${buildout:directory}
+    ... eggs-directory =${buildout:directory}/eggs
+    ... parts =
+    ...     part
+    ... [part]
+    ... recipe=minitage.recipe.egg
+    ... find-links=%(index)s
+    ... eggs=foo
+    ... foo-patches = ${buildout:directory}/patch
+    ... foo-patch-options = -Np1
+    ... """%{'index': index_url}
+    >>> touch('buildout.cfg', data=data)
+    >>> sh('bin/buildout -vvvvv install part')
+    b...
+    minitage.recipe: Pinning custom egg version in buildout, trying to write the configuration
+    minitage.recipe: CREATING buildout backup in /tmp/buildout.test/buildout.cfg.before.fixed_version.bak...
+    minitage.recipe: All egg dependencies seem to be installed!...
+
+Now that we have it, try to resintall.
+
+    >>> sh('bin/buildout -vvvvv install part')
+    bin/buildout...
+    minitage.recipe: We have the distribution that satisfies 'foo==1.0-ZMinitagePatched-Patch'.
+    minitage.recipe: Pinning custom egg version in buildout, trying to write the configuration
+    minitage.recipe: Version already pinned, nothing has been wroten...
+
+In all cases our buildout is patched.
+
+    >>> cat('buildout.cfg')
+    [versions]
+    foo...=...1.0-ZMinitagePatched-Patch...
+
