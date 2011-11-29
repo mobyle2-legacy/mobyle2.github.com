@@ -58,7 +58,7 @@ Please note that it is important to define or verify the configuration settings 
 
       Some options are security sensitives:
 
-            **db:password** option of the buildout settings file
+            **[db]** sectionof the buildout settings file
 
     - The SMTP parameters
 
