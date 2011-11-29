@@ -60,7 +60,7 @@ Please note that it is important to define or verify the configuration settings 
 
             **db:password** option of the buildout settings file
 
-    - The SMTP paramaters
+    - The SMTP parameters
 
         **[mail]** section of the buildout settings file
 
