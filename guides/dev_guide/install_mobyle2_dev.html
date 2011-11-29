@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Install your mobyle2 instnace &mdash; Mobyle2 - Last updated: Nov 29, 2011</title>
+    <title>Install your mobyle2 instance &mdash; Mobyle2 - Last updated: Nov 29, 2011</title>
     
     <link rel="stylesheet" href="../../static/custom.css" type="text/css" />
     <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
@@ -103,15 +103,15 @@
     <div class="bodywrapper">
       <div class="body">
         
-  <div class="section" id="install-your-mobyle2-instnace">
-<h1>Install your mobyle2 instnace<a class="headerlink" href="#install-your-mobyle2-instnace" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="install-your-mobyle2-instance">
+<h1>Install your mobyle2 instance<a class="headerlink" href="#install-your-mobyle2-instance" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="create-a-mintiage-user-and-install-mandatory-requirements">
 <h2>Create a mintiage user and install mandatory requirements<a class="headerlink" href="#create-a-mintiage-user-and-install-mandatory-requirements" title="Permalink to this headline">¶</a></h2>
 <p>-:user: root</p>
 <div class="highlight-sh"><div class="highlight"><pre><span class="nb">export </span><span class="nv">prefix</span><span class="o">=</span><span class="nv">$HOME</span>/minitage
 <span class="nb">export </span><span class="nv">python</span><span class="o">=</span><span class="nv">$prefix</span>/tools/python
 mkdir -p <span class="nv">$prefix</span>
-useradd -d <span class="nv">$prefix</span> -m mobyle2
+useradd -d <span class="nv">$prefix</span> -s bash -m mobyle2
 apt-get install build-essential m4 libtool pkg-config autoconf gettext bzip2 groff man-db automake libsigc++-2.0-dev tcl8.4
 chown -Rf mobyle2 <span class="nv">$prefix</span>
 </pre></div>
@@ -159,14 +159,14 @@ minimerge -av mobyle2
 </div>
 <div class="section" id="the-project-shell-profile">
 <h2>The project shell profile<a class="headerlink" href="#the-project-shell-profile" title="Permalink to this headline">¶</a></h2>
-<p>Minitage provide a shell sourcable file that helps you to use the constructed minitage environment.
+<p>Minitage provides a shell sourceable file that helps you using the constructed minitage environment.
 It will update common unix environment variables to grab all your project dependencies along your current shell.
-For exemple, it will put all related binaries inside your current <tt class="docutils literal"><span class="pre">$PATH</span></tt> variable.</p>
+For example, it will put all related binaries inside your current <tt class="docutils literal"><span class="pre">$PATH</span></tt> variable.</p>
 <p>You can generate one by issuing the following command:</p>
-<div class="highlight-sh"><div class="highlight"><pre>miniemrge -NE mobyle2
+<div class="highlight-sh"><div class="highlight"><pre>minimerge -NE mobyle2
 </pre></div>
 </div>
-<p>Think to regenerate it each once you touch to the project minibuilds.</p>
+<p>Remember to regenerate it each time you modify the project minibuilds.</p>
 <p>Now, to use it in your current shell, please source it:</p>
 <div class="highlight-sh"><div class="highlight"><pre>. <span class="nv">$prefix</span>/pyramid/mobyle2/sys/share/minitage/minitage.env
 </pre></div>
@@ -176,18 +176,18 @@ For exemple, it will put all related binaries inside your current <tt class="doc
 <div class="section" id="postgresql-installation">
 <h2>Postgresql installation<a class="headerlink" href="#postgresql-installation" title="Permalink to this headline">¶</a></h2>
 <p>You can install an instance of a postgresql server inside a subdirectory of your minitage based project.
-This is prettry easy:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$MT</span>/bin/paster create -t minitage.instances.postgresql mobyle2 <span class="nv">project_dependencies</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="nv">project_eggs</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="nv">inside_minitage</span><span class="o">=</span>y <span class="nv">db_name</span><span class="o">=</span>mobyle2 <span class="nv">db_port</span><span class="o">=</span>5438 <span class="nv">db_password</span><span class="o">=</span>secret <span class="nv">db_user</span><span class="o">=</span>mobyle2 <span class="nv">db_host</span><span class="o">=</span>localhost
+This is pretty easy:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$prefix</span>/bin/paster create -t minitage.instances.postgresql mobyle2 <span class="nv">project_dependencies</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="nv">project_eggs</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="nv">inside_minitage</span><span class="o">=</span>y <span class="nv">db_name</span><span class="o">=</span>mobyle2 <span class="nv">db_port</span><span class="o">=</span>5438 <span class="nv">db_password</span><span class="o">=</span>secret <span class="nv">db_user</span><span class="o">=</span>mobyle2 <span class="nv">db_host</span><span class="o">=</span>localhost
 </pre></div>
 </div>
 <p>You can start the server with:</p>
 <div class="highlight-sh"><div class="highlight"><pre><span class="nv">$prefix</span>/sys/etc/init.d/mobyle2_postgresql.mobyle2 restart
 </pre></div>
 </div>
-<p>Will install a database named <tt class="docutils literal"><span class="pre">mobyle2</span></tt> listening on the port <tt class="docutils literal"><span class="pre">5438</span></tt> and which lives under <tt class="docutils literal"><span class="pre">$prefix/pyramid/mobyle2/sys/</span></tt>.</p>
-<p>B./sys/etc/init.d/mobyle2_postgresql.mobyle2y default the superuser is named as <tt class="docutils literal"><span class="pre">your</span> <span class="pre">current</span> <span class="pre">loggued</span> <span class="pre">user</span></tt> and the database owner is <tt class="docutils literal"><span class="pre">mobyle2</span></tt>.</p>
+<p>It will install a database named <tt class="docutils literal"><span class="pre">mobyle2</span></tt> listening on the port <tt class="docutils literal"><span class="pre">5438</span></tt> and which lives under <tt class="docutils literal"><span class="pre">$prefix/pyramid/mobyle2/sys/</span></tt>.</p>
+<p>B./sys/etc/init.d/mobyle2_postgresql.mobyle2y default the superuser is named as <tt class="docutils literal"><span class="pre">your</span> <span class="pre">current</span> <span class="pre">logged</span> <span class="pre">user</span></tt> and the database owner is <tt class="docutils literal"><span class="pre">mobyle2</span></tt>.</p>
 <p>Some wrappers have been generated, please look inside <tt class="docutils literal"><span class="pre">sys/bin</span></tt>.
-They are very useful as they make a lot of assumptions like setting automaticly the host &amp; port to connect to (our database).
+They are very useful as they make a lot of assumptions like setting automatically the host &amp; port to connect to (our database).
 EG</p>
 <div class="highlight-sh"><div class="highlight"><pre>mobyle2.psql
 </pre></div>
