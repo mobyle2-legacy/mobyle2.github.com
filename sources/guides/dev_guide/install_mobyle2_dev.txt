@@ -108,13 +108,68 @@ Openldap installation (not mandatory)
 .. code-block:: sh
 
     $MT/bin/easy_install -U minitage.paste.extras
-    $MT/bin/paster create -t minitage.instances.openldap mobyle2 db_suffix=net db_orga=mobyle2 ssl_port=6636  db_port=3389 db_user=$(whoami) db_password=secret  --no-interactive
+    $MT/bin/paster create -t minitage.instances.openldap mobyle2 db_suffix=net db_orga=mobyle2 ssl_port=6636  db_port=3389 db_user=$(whoami) db_password=secret db_host=127.0.0.1  --no-interactive
+
+Mettre ::
+
+    dn: dc=mobyle2,dc=net
+    objectClass: dcObject
+    objectClass: organization
+    dc: mobyle2
+    o: Example Corporation
+    description: The Example Corporation
+
+    dn: dc=people,dc=mobyle2,dc=net
+    objectClass: dcObject
+    objectClass: organization
+    dc: people
+    o: Example Corporation
+    description: The Example Corporation
+
+    dn: dc=people,dc=mobyle2,dc=net
+    objectClass: dcObject
+    objectClass: organization
+    dc: people
+    o: Example Corporation
+    description:: VGhlIEV4YW1wbGUgQ29ycG9yYXRpb24g
+    structuralObjectClass: organization
+    creatorsName: cn=kiorky,dc=mobyle2,dc=net
+    modifiersName: cn=kiorky,dc=mobyle2,dc=net
+
+    dn: cn=toto,dc=people,dc=mobyle2,dc=net
+    gidNumber: 2
+    objectClass: posixAccount
+    objectClass: top
+    objectClass: inetOrgPerson
+    objectClass: organizationalPerson
+    objectClass: person
+    uidNumber: 1
+    uid: 1
+    homeDirectory: /where
+    sn: toto
+    cn: toto
+    structuralObjectClass: inetOrgPerson
+    creatorsName: cn=kiorky,dc=mobyle2,dc=net
+    createTimestamp: 20111124184725Z
+    mail: toto@foo.com
+    userPassword:: e1NTSEF9MmI1THl6UEI0NTFvTW5SdkMzV1Q4QmJUYlNJL3hwWm9iWDg1TEE9PQ==
+    modifiersName: cn=kiorky,dc=mobyle2,dc=net
+
+Dans un fichier base.ldif
+
+puis
+
+.. code-block:: sh
+
+    ./sys/bin/mobyle2.net.slapadd  -l base.ldif
 
 Init script to start the server::
 
-    ./sys/etc/init.d/openldap_mobyle2_mobyle2.net 
-    
-You have preconfigured wrappers to any ldap tools inside ``sys/bin`` as usual.                                 
+    ./sys/etc/init.d/openldap_mobyle2_mobyle2.net
+
+You have preconfigured wrappers to any ldap tools inside ``sys/bin`` as usual.
+
+On peut ensuite se connecter au serveur ldap pour nos tests.
 
 
 How to override some settings locally to your instance:
