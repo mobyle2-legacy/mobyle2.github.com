@@ -114,11 +114,13 @@ bin/buildout
 <p>This documentation uses sphinx and publishes the results using the <a class="reference external" href="http://pypi.python.org/pypi/sphinxtogithub">sphinxtogithub</a> extension to github pages.
 You will need to edit the source files</p>
 <p>Eg:</p>
-<div class="highlight-sh"><div class="highlight"><pre>vim <span class="nb">source</span>/index.rst
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd </span>mobyle2.github.com
+vim <span class="nb">source</span>/index.rst
 </pre></div>
 </div>
 <p>Then you&#8217;ll have to regenerate the documentation</p>
-<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd source</span> <span class="o">&amp;&amp;</span> make html
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd </span>mobyle2.github.com
+make html
 </pre></div>
 </div>
 <p>When you have finished:</p>
@@ -131,6 +133,8 @@ You will need to edit the source files</p>
 </ul>
 </div></blockquote>
 <div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd </span>mobyle2.github.com
+make
+firefox index.html
 git add .
 git commit -am <span class="s2">&quot;update doc&quot;</span>
 git push --all
