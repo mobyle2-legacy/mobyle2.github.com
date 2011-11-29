@@ -15,8 +15,8 @@ Install the documentation project
 Use sphinx, luke
 ------------------
 
-This documentation use sphinx and publish the result using `sphinxtogithub <http://pypi.python.org/pypi/sphinxtogithub>`_ extension to github pages.
-You well need to edit files in source
+This documentation uses sphinx and publishes the results using the `sphinxtogithub <http://pypi.python.org/pypi/sphinxtogithub>`_ extension to github pages.
+You will need to edit the source files
 
 Eg:
 
@@ -24,7 +24,7 @@ Eg:
 
         vim source/index.rst
 
-Then you ll have to regenerate the documentation
+Then you'll have to regenerate the documentation
 
 .. code-block:: sh
 
@@ -36,7 +36,7 @@ When you have finished:
     - Verify your build by visiting ./index.html with a regular browser
     - Commit ALL the changes you made and what has been regenerated
     - Push them to github
-    - When you received the email notifying the pages regeneration, look the website_.
+    - When you receive the email notifying the pages regeneration, look at the website_.
 
 
 
