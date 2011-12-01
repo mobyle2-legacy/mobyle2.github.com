@@ -3,7 +3,7 @@ Install your mobyle2 instance
 ++++++++++++++++++++++++++++++++++
 
 
-Create a mintiage user and install mandatory requirements
+Create a minitage user and install mandatory requirements
 --------------------------------------------------------------
 -:user: root
 
@@ -12,7 +12,7 @@ Create a mintiage user and install mandatory requirements
         export prefix=$HOME/minitage
         export python=$prefix/tools/python
         mkdir -p $prefix
-        useradd -d $prefix -m mobyle2
+        useradd -d $prefix -s bash -m mobyle2
         apt-get install build-essential m4 libtool pkg-config autoconf gettext bzip2 groff man-db automake libsigc++-2.0-dev tcl8.4
         chown -Rf mobyle2 $prefix
 
@@ -46,17 +46,17 @@ Mobyle2 base Installation
 
 The project shell profile
 ------------------------------
-Minitage provide a shell sourcable file that helps you to use the constructed minitage environment.
+Minitage provides a shell sourceable file that helps you using the constructed minitage environment.
 It will update common unix environment variables to grab all your project dependencies along your current shell.
-For exemple, it will put all related binaries inside your current ``$PATH`` variable.
+For example, it will put all related binaries inside your current ``$PATH`` variable.
 
 You can generate one by issuing the following command:
 
 .. code-block:: sh
 
-    miniemrge -NE mobyle2
+    minimerge -NE mobyle2
 
-Think to regenerate it each once you touch to the project minibuilds.
+Remember to regenerate it each time you modify the project minibuilds.
 
 Now, to use it in your current shell, please source it:
 
@@ -70,11 +70,11 @@ Postgresql installation
 -----------------------------------------------------------------
 
 You can install an instance of a postgresql server inside a subdirectory of your minitage based project.
-This is prettry easy:
+This is pretty easy:
 
 .. code-block:: sh
 
-    $MT/bin/paster create -t minitage.instances.postgresql mobyle2 project_dependencies='' project_eggs='' inside_minitage=y db_name=mobyle2 db_port=5438 db_password=secret db_user=mobyle2 db_host=localhost
+    $prefix/bin/paster create -t minitage.instances.postgresql mobyle2 project_dependencies='' project_eggs='' inside_minitage=y db_name=mobyle2 db_port=5438 db_password=secret db_user=mobyle2 db_host=localhost
 
 You can start the server with:
 
@@ -82,12 +82,12 @@ You can start the server with:
 
         $prefix/sys/etc/init.d/mobyle2_postgresql.mobyle2 restart
 
-Will install a database named ``mobyle2`` listening on the port ``5438`` and which lives under ``$prefix/pyramid/mobyle2/sys/``.
+It will install a database named ``mobyle2`` listening on the port ``5438`` and which lives under ``$prefix/pyramid/mobyle2/sys/``.
 
-B./sys/etc/init.d/mobyle2_postgresql.mobyle2y default the superuser is named as ``your current loggued user`` and the database owner is ``mobyle2``.
+B./sys/etc/init.d/mobyle2_postgresql.mobyle2y default the superuser is named as ``your current logged user`` and the database owner is ``mobyle2``.
 
 Some wrappers have been generated, please look inside ``sys/bin``.
-They are very useful as they make a lot of assumptions like setting automaticly the host & port to connect to (our database).
+They are very useful as they make a lot of assumptions like setting automatically the host & port to connect to (our database).
 EG
 
 .. code-block:: sh

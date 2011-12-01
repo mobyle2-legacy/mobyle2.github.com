@@ -5,3 +5,7 @@ a
 bin
 .buildinfo
 objects.inv
+source/download
+source/downloads/
+source/eggs/
+source/parts/
