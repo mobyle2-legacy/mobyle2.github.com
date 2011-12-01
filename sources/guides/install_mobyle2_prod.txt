@@ -66,6 +66,32 @@ Configuring postgresql
 
 Please note the postgresql password for future reference.
 
+
+Configuring ldap
+------------------------
+- :user: root
+
+.. code-block:: sh
+
+    apt-get install slapd ldap-utils
+    dpkg-reconfigure -plow slapd
+        Omit OpenLDAP server configuration? no
+        DNS domain name: mobyle2.rpbs.univ-paris-diderot.fr
+        orga name ? mobyle2
+        password? **** (postgresql)
+
+
+Ajout d'un utilisateur de test toto, mdp toto
+
+.. code-block:: sh
+
+    ldapadd -W -x -D "cn=admin,dc=mobyle2,dc=rpbs,dc=univ-paris-diderot,dc=fr" -f /opt/minitage/pyramid/mobyle2-prod/rpbs.ldif  -c -v
+    # verify # (mdp toto)
+    ldapsearch  -W -x -D "cn=toto,dc=people,dc=mobyle2,dc=rpbs,dc=univ-paris-diderot,dc=fr"  -b dc=people,dc=mobyle2,dc=rpbs,dc=univ-paris-diderot,dc=fr
+
+password is the same as mobyle2 psql
+
+
 Configuration
 ----------------
 Make your changes inside ``etc/sys/settings-prod.cfg``.
