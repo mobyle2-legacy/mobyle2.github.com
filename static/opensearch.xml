@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
   <ShortName>Mobyle2</ShortName>
-  <Description>Search Mobyle2 - Last updated: Dec 01, 2011</Description>
+  <Description>Search Mobyle2 - Last updated: Dec 20, 2011</Description>
   <InputEncoding>utf-8</InputEncoding>
   <Url type="text/html" method="get"
        template="http://mobyle2.github.com/search.html?q={searchTerms}&amp;check_keywords=yes&amp;area=default"/>
-  <LongName>Mobyle2 - Last updated: Dec 01, 2011</LongName>
+  <LongName>Mobyle2 - Last updated: Dec 20, 2011</LongName>
   
 </OpenSearchDescription>
