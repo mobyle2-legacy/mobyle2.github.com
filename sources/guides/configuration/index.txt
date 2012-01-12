@@ -90,7 +90,7 @@ Things to do at the first run
     
   . sys/share/minitage.env
   ./shell.sh
-  >>> from mobyle2.core.tools import create_superuser
+  >>> from mobyle2.core.tools import create_user
   >>> create_user("mynick", "secret", True)
 
 You can then log on the portal with those credentials to do administrative tasks or give privileges to another already or future user   
