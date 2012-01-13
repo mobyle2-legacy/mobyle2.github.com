@@ -6,7 +6,7 @@ Configuration guide
 
 Configuration
 ---------------------
-The ost important configuration file is ``etc/sys/settings.cfg``.
+The most important configuration file is ``etc/sys/settings.cfg``.
 
 
 Some of the settings you can find there:
@@ -86,11 +86,12 @@ Things to do at the first run
 
 - Create a superuser named "mynick" with "secret" as password
 
+.. code-block:: ini
     
   . sys/share/minitage.env
   ./shell.sh
-  >>> from mobyle2.core.tools import create_superuser
-  >>> create_superuser("mynick", "secret")
+  >>> from mobyle2.core.tools import create_user
+  >>> create_user("mynick", "secret", True)
 
 You can then log on the portal with those credentials to do administrative tasks or give privileges to another already or future user   
 

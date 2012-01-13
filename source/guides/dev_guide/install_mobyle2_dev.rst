@@ -5,13 +5,13 @@ Install your mobyle2 instance
 
 Create a minitage user and install mandatory requirements
 --------------------------------------------------------------
--:user: root
+
+- :user: root
 
 .. code-block:: sh
 
         export prefix=$HOME/minitage
         export python=$prefix/tools/python
-        mkdir -p $prefix
         useradd -d $prefix -s bash -m mobyle2
         apt-get install build-essential m4 libtool pkg-config autoconf gettext bzip2 groff man-db automake libsigc++-2.0-dev tcl8.4
         chown -Rf mobyle2 $prefix
@@ -19,6 +19,9 @@ Create a minitage user and install mandatory requirements
 
 Minitage Installation
 --------------------------
+
+- :user: mobyle2
+
 .. code-block:: sh
 
     export prefix=$HOME/
@@ -34,11 +37,10 @@ Minitage Installation
 
 Mobyle2 base Installation
 -----------------------------------------------------------------
-- :user: mobyle2
 
 .. code-block:: sh
 
-        cd $PREFIX/minilays/
+        cd $prefix/minilays/
         git clone https://github.com/mobyle2/mobyle2.minilay.git
         ssh-keygen -> enregistrer la clé dans les repos github comme deploy key
         minimerge -av mobyle2
@@ -80,7 +82,7 @@ You can start the server with:
 
 .. code-block:: sh
 
-        $prefix/sys/etc/init.d/mobyle2_postgresql.mobyle2 restart
+        $prefix/pyramid/mobyle2/sys/etc/init.d/mobyle2_postgresql.mobyle2 restart
 
 It will install a database named ``mobyle2`` listening on the port ``5438`` and which lives under ``$prefix/pyramid/mobyle2/sys/``.
 
