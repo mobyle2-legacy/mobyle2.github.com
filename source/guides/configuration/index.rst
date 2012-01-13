@@ -61,6 +61,10 @@ Please note that it is important to define or verify the configuration settings 
             **[db]** sectionof the buildout settings file
             **[mail]** sectionof the buildout settings file
 
+    - The path to a directory stored on the filesystem which contains all related projects informations like xml files.
+
+        **instance:projects_dir}** absolute path to the projects top directory
+
     - The SMTP parameters
 
         **[mail]** section of the buildout settings file
@@ -89,8 +93,8 @@ Things to do at the first run
     
   . sys/share/minitage.env
   ./shell.sh
-  >>> from mobyle2.core.tools import create_superuser
-  >>> create_superuser("mynick", "secret")
+  >>> from mobyle2.core.tools import create_user
+  >>> create_user("mynick", "secret", super=True)
 
 You can then log on the portal with those credentials to do administrative tasks or give privileges to another already or future user   
 
