@@ -61,6 +61,10 @@ Please note that it is important to define or verify the configuration settings 
             **[db]** sectionof the buildout settings file
             **[mail]** sectionof the buildout settings file
 
+    - The path to a directory stored on the filesystem which contains all related projects informations like xml files.
+
+        **instance:projects_dir}** absolute path to the projects top directory
+
     - The SMTP parameters
 
         **[mail]** section of the buildout settings file
@@ -137,5 +141,6 @@ The only thing you can do is to edit their descriptions.
 
    dev.rst
    prod.rst
+   authentication.rst
 
 .. vim:set ft=rest sts=4 ts=4 et:

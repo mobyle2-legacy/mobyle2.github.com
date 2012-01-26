@@ -141,5 +141,6 @@ The only thing you can do is to edit their descriptions.
 
    dev.rst
    prod.rst
+   authentication.rst
 
 .. vim:set ft=rest sts=4 ts=4 et:
